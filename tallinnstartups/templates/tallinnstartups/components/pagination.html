@@ -1,0 +1,56 @@
+{% if page_obj %}
+<div class="flex items-center justify-center p-4">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="flex size-10 items-center justify-center">
+            <div class="text-[#0d141c]" data-icon="CaretLeft" data-size="18px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"></path>
+                </svg>
+            </div>
+        </a>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+            <span class="text-sm font-bold leading-normal tracking-[0.015em] flex size-10 items-center justify-center text-[#0d141c] rounded-full bg-[#e7edf4]">{{ num }}</span>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a class="text-sm font-normal leading-normal flex size-10 items-center justify-center text-[#0d141c] rounded-full hover:bg-[#e7edf4]" href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ num }}</a>
+        {% elif num == page_obj.number|add:'-4' or num == page_obj.number|add:'4' %}
+            <span class="text-sm font-normal leading-normal flex size-10 items-center justify-center text-[#0d141c] rounded-full">...</span>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="flex size-10 items-center justify-center">
+            <div class="text-[#0d141c]" data-icon="CaretRight" data-size="18px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+                </svg>
+            </div>
+        </a>
+    {% endif %}
+</div>
+{% else %}
+<!-- Static pagination fallback -->
+<div class="flex items-center justify-center p-4">
+    <a href="#" class="flex size-10 items-center justify-center">
+        <div class="text-[#0d141c]" data-icon="CaretLeft" data-size="18px" data-weight="regular">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"></path>
+            </svg>
+        </div>
+    </a>
+    <a class="text-sm font-bold leading-normal tracking-[0.015em] flex size-10 items-center justify-center text-[#0d141c] rounded-full bg-[#e7edf4]" href="#">1</a>
+    <a class="text-sm font-normal leading-normal flex size-10 items-center justify-center text-[#0d141c] rounded-full" href="#">2</a>
+    <a class="text-sm font-normal leading-normal flex size-10 items-center justify-center text-[#0d141c] rounded-full" href="#">3</a>
+    <span class="text-sm font-normal leading-normal flex size-10 items-center justify-center text-[#0d141c] rounded-full">...</span>
+    <a class="text-sm font-normal leading-normal flex size-10 items-center justify-center text-[#0d141c] rounded-full" href="#">10</a>
+    <a href="#" class="flex size-10 items-center justify-center">
+        <div class="text-[#0d141c]" data-icon="CaretRight" data-size="18px" data-weight="regular">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+            </svg>
+        </div>
+    </a>
+</div>
+{% endif %}

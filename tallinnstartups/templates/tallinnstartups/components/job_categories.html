@@ -1,0 +1,34 @@
+<div class="flex gap-3 p-3 flex-wrap pr-4">
+    {% for category in categories %}
+        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e7edf4] pl-4 pr-4">
+            <p class="text-[#0d141c] text-sm font-medium leading-normal">
+                {% if category.url %}
+                    <a href="{{ category.url }}" class="hover:underline">
+                        {{ category.name }} ({{ category.count }})
+                    </a>
+                {% else %}
+                    {{ category.name }} ({{ category.count }})
+                {% endif %}
+            </p>
+        </div>
+    {% empty %}
+        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e7edf4] pl-4 pr-4">
+            <p class="text-[#0d141c] text-sm font-medium leading-normal">Engineering (120)</p>
+        </div>
+        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e7edf4] pl-4 pr-4">
+            <p class="text-[#0d141c] text-sm font-medium leading-normal">Marketing (85)</p>
+        </div>
+        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e7edf4] pl-4 pr-4">
+            <p class="text-[#0d141c] text-sm font-medium leading-normal">Sales (110)</p>
+        </div>
+        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e7edf4] pl-4 pr-4">
+            <p class="text-[#0d141c] text-sm font-medium leading-normal">Product (90)</p>
+        </div>
+        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e7edf4] pl-4 pr-4">
+            <p class="text-[#0d141c] text-sm font-medium leading-normal">Design (75)</p>
+        </div>
+        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e7edf4] pl-4 pr-4">
+            <p class="text-[#0d141c] text-sm font-medium leading-normal">Operations (60)</p>
+        </div>
+    {% endfor %}
+</div>
