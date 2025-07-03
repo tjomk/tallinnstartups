@@ -1,0 +1,103 @@
+{% extends 'tallinnstartups/base.html' %}
+
+{% block title %}{{ job.title }} at {{ job.company.name }} - CareerConnect{% endblock %}
+
+{% block content %}
+<div class="px-40 flex flex-1 justify-center py-5">
+    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+        <!-- Back button -->
+        <div class="flex items-center gap-3 p-3">
+            <a href="{% url 'home' %}" class="text-[#0d7847] hover:text-[#0a5d3a] font-medium">← Back to Jobs</a>
+        </div>
+        
+        <!-- Job header -->
+        <div class="flex flex-col gap-4 px-4 py-6 bg-white rounded-lg shadow-sm border border-[#dde3e8] mb-6">
+            <div class="flex items-start gap-4">
+                {% if job.company.logo_url %}
+                    <img src="{{ job.company.logo_url }}" alt="{{ job.company.name }}" class="w-16 h-16 object-cover rounded-lg">
+                {% else %}
+                    <div class="w-16 h-16 bg-[#0d7847] rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">{{ job.company.name|first }}</span>
+                    </div>
+                {% endif %}
+                
+                <div class="flex-1">
+                    <h1 class="text-2xl font-bold text-[#0e141b] leading-tight">{{ job.title }}</h1>
+                    <p class="text-lg text-[#4e7297] mt-1">{{ job.company.name }}</p>
+                    <div class="flex items-center gap-4 mt-2">
+                        <span class="text-sm text-[#4e7297]">📍 {{ job.location }}</span>
+                        <span class="text-sm text-[#4e7297]">💰 {{ job.salary_range }}</span>
+                        <span class="text-sm bg-[#e7f3ff] text-[#0d7847] px-2 py-1 rounded-full">{{ job.get_category_display }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            {% if job.is_featured %}
+                <div class="flex items-center gap-2 mt-2">
+                    <span class="bg-[#ffd700] text-[#8b6914] text-xs font-medium px-2 py-1 rounded-full">⭐ Featured</span>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Job description -->
+        <div class="bg-white rounded-lg shadow-sm border border-[#dde3e8] p-6 mb-6">
+            <h2 class="text-xl font-bold text-[#0e141b] mb-4">Job Description</h2>
+            <div class="text-[#4e7297] leading-relaxed whitespace-pre-wrap">{{ job.description }}</div>
+        </div>
+        
+        <!-- Job details -->
+        <div class="bg-white rounded-lg shadow-sm border border-[#dde3e8] p-6 mb-6">
+            <h2 class="text-xl font-bold text-[#0e141b] mb-4">Job Details</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <h3 class="font-medium text-[#0e141b] mb-1">Location</h3>
+                    <p class="text-[#4e7297]">{{ job.location }}</p>
+                </div>
+                <div>
+                    <h3 class="font-medium text-[#0e141b] mb-1">Salary Range</h3>
+                    <p class="text-[#4e7297]">{{ job.salary_range }}</p>
+                </div>
+                <div>
+                    <h3 class="font-medium text-[#0e141b] mb-1">Category</h3>
+                    <p class="text-[#4e7297]">{{ job.get_category_display }}</p>
+                </div>
+                <div>
+                    <h3 class="font-medium text-[#0e141b] mb-1">Posted</h3>
+                    <p class="text-[#4e7297]">{{ job.created_at|date:"F j, Y" }}</p>
+                </div>
+                {% if job.expires_at %}
+                <div>
+                    <h3 class="font-medium text-[#0e141b] mb-1">Expires</h3>
+                    <p class="text-[#4e7297]">{{ job.expires_at|date:"F j, Y" }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Apply button -->
+        <div class="bg-white rounded-lg shadow-sm border border-[#dde3e8] p-6 text-center">
+            <h2 class="text-xl font-bold text-[#0e141b] mb-4">Ready to Apply?</h2>
+            <p class="text-[#4e7297] mb-6">Interested in this position? Click the button below to apply.</p>
+            
+            {% if job.application_contact %}
+                {% if '@' in job.application_contact %}
+                    <a href="mailto:{{ job.application_contact }}?subject=Application for {{ job.title }} at {{ job.company.name }}" 
+                       class="bg-[#0d7847] text-white px-8 py-3 rounded-xl font-medium hover:bg-[#0a5d3a] transition-colors inline-block">
+                        Apply via Email
+                    </a>
+                {% else %}
+                    <a href="{{ job.application_contact }}" target="_blank" rel="noopener noreferrer"
+                       class="bg-[#0d7847] text-white px-8 py-3 rounded-xl font-medium hover:bg-[#0a5d3a] transition-colors inline-block">
+                        Apply Now
+                    </a>
+                {% endif %}
+            {% else %}
+                <div class="text-[#4e7297]">
+                    <p>Application contact information not available.</p>
+                    <p class="text-sm mt-2">Please contact the company directly for application details.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

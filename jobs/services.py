@@ -10,12 +10,39 @@ class HomePageService:
         self.job_repository = JobRepository()
         self.company_repository = CompanyRepository()
     
-    def get_home_page_data(self) -> Dict[str, Any]:
-        """Get all data needed for the home page."""
+    def get_home_page_data(self, search_query: str = None) -> Dict[str, Any]:
+        """Get all data needed for the home page, optionally filtered by search query."""
+        if search_query:
+            return self._get_search_results(search_query)
+        else:
+            return {
+                'categories': self._get_formatted_categories(),
+                'featured_jobs': self._get_formatted_featured_jobs(),
+                'latest_jobs': self._get_formatted_latest_jobs(),
+                'is_search_results': False,
+                'search_query': None,
+                'total_results': None
+            }
+    
+    def _get_search_results(self, query: str) -> Dict[str, Any]:
+        """Get search results for the given query."""
+        featured_jobs = JobRepository.search_featured_jobs(query)
+        latest_jobs = JobRepository.search_latest_jobs(query)
+        
+        # Format the jobs
+        formatted_featured = [self._format_job_data(job) for job in featured_jobs]
+        formatted_latest = [self._format_job_data(job) for job in latest_jobs]
+        
+        # Calculate total results
+        total_results = len(formatted_featured) + len(formatted_latest)
+        
         return {
             'categories': self._get_formatted_categories(),
-            'featured_jobs': self._get_formatted_featured_jobs(),
-            'latest_jobs': self._get_formatted_latest_jobs()
+            'featured_jobs': formatted_featured,
+            'latest_jobs': formatted_latest,
+            'is_search_results': True,
+            'search_query': query,
+            'total_results': total_results
         }
     
     def _get_formatted_categories(self) -> List[Dict[str, Any]]:
@@ -53,7 +80,8 @@ class HomePageService:
             'company_name': job.company.name,
             'company_logo': job.company.logo_url or '',
             'location': job.location,
-            'salary_range': job.salary_range
+            'salary_range': job.salary_range,
+            'slug': job.slug,
         }
 
 
@@ -79,7 +107,9 @@ class JobService:
             'salary_range': job.salary_range,
             'category': job.get_category_display(),
             'created_at': job.created_at,
-            'is_featured': job.is_featured
+            'is_featured': job.is_featured,
+            'status': job.get_status_display(),
+            'is_visible': job.is_visible
         }
 
 

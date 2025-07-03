@@ -22,8 +22,10 @@ urlpatterns = [
     path('_/admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('jobs/', views.home, name='jobs'),
+    path('job/<slug:slug>/', views.job_detail, name='job_detail'),
     path('companies/', views.home, name='companies'),
     path('salaries/', views.home, name='salaries'),
     path('career-advice/', views.home, name='career_advice'),
-    path('post-job/', views.home, name='post_job'),
+    path('post-job/', views.post_job, name='post_job'),
+    path('job-submitted/', views.job_submission_success, name='job_submission_success'),
 ]

@@ -1,0 +1,124 @@
+{% extends 'tallinnstartups/base.html' %}
+
+{% block title %}Thank You - Job Submitted - CareerConnect{% endblock %}
+
+{% block content %}
+<div class="px-40 flex flex-1 justify-center py-5">
+    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+        <!-- Success Header -->
+        <div class="flex flex-wrap justify-between gap-3 p-4">
+            <div class="flex min-w-72 flex-col gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center justify-center w-12 h-12 bg-green-100 rounded-full">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-[#0d151c] tracking-light text-[32px] font-bold leading-tight">Thank You!</p>
+                        <p class="text-[#49719c] text-sm font-normal leading-normal">Your job posting has been submitted successfully</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submission Details -->
+        <div class="flex flex-col gap-6 p-4">
+            <div class="bg-green-50 border border-green-200 rounded-xl p-6">
+                <h2 class="text-[#0d151c] text-[22px] font-bold leading-tight tracking-[-0.015em] mb-4">Submission Details</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <span class="text-[#49719c] text-sm font-medium">Job Title:</span>
+                        <p class="text-[#0d151c] text-base font-normal">{{ submission_data.job_title }}</p>
+                    </div>
+                    <div>
+                        <span class="text-[#49719c] text-sm font-medium">Company:</span>
+                        <p class="text-[#0d151c] text-base font-normal">{{ submission_data.company_name }}</p>
+                    </div>
+                    <div>
+                        <span class="text-[#49719c] text-sm font-medium">Post Type:</span>
+                        <p class="text-[#0d151c] text-base font-normal">
+                            {% if submission_data.post_option == 'featured' %}
+                                Featured job post (150€/90 days)
+                            {% else %}
+                                Standard job post (75€/90 days)
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div>
+                        <span class="text-[#49719c] text-sm font-medium">Job ID:</span>
+                        <p class="text-[#0d151c] text-base font-normal">#{{ submission_data.job_id }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- What Happens Next -->
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                <h3 class="text-[#0d151c] text-[18px] font-bold leading-tight tracking-[-0.015em] mb-3">What happens next?</h3>
+                <div class="space-y-3">
+                    <div class="flex items-start gap-3">
+                        <div class="flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full mt-0.5">
+                            <span class="text-blue-600 text-sm font-bold">1</span>
+                        </div>
+                        <div>
+                            <p class="text-[#0d151c] text-sm font-medium">Review Process</p>
+                            <p class="text-[#49719c] text-sm">Our team will review your job posting within 24-48 hours</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full mt-0.5">
+                            <span class="text-blue-600 text-sm font-bold">2</span>
+                        </div>
+                        <div>
+                            <p class="text-[#0d151c] text-sm font-medium">Invoice & Payment</p>
+                            <p class="text-[#49719c] text-sm">You'll receive an invoice at {{ submission_data.invoice_email }}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full mt-0.5">
+                            <span class="text-blue-600 text-sm font-bold">3</span>
+                        </div>
+                        <div>
+                            <p class="text-[#0d151c] text-sm font-medium">Go Live</p>
+                            <p class="text-[#49719c] text-sm">Once approved and paid, your job will be live for 90 days</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-6">
+                <h3 class="text-[#0d151c] text-[18px] font-bold leading-tight tracking-[-0.015em] mb-3">Need Help?</h3>
+                <p class="text-[#49719c] text-sm mb-3">
+                    If you have any questions about your submission or need to make changes, please contact our support team.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-[#49719c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        <span class="text-[#49719c] text-sm">support@careerconnect.ee</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-[#49719c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
+                        </svg>
+                        <span class="text-[#49719c] text-sm">Reference ID: #{{ submission_data.job_id }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3 pt-4">
+                <a href="{% url 'home' %}" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 bg-[#1980e6] text-slate-50 text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#1668c7] transition-colors">
+                    <span class="truncate">Back to Home</span>
+                </a>
+                <a href="{% url 'post_job' %}" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 border border-[#cedbe8] text-[#0d151c] text-base font-bold leading-normal tracking-[0.015em] hover:bg-slate-50 transition-colors">
+                    <span class="truncate">Post Another Job</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

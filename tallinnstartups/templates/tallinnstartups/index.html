@@ -10,19 +10,47 @@
             {% include 'tallinnstartups/components/search_bar.html' with placeholder="Search jobs or companies" large=True %}
         </div>
 
+        <!-- Search Results Header -->
+        {% if is_search_results %}
+            <div class="px-4 py-3">
+                {% if total_results > 0 %}
+                    <h1 class="text-[#0d141c] text-[24px] font-bold leading-tight tracking-[-0.015em]">
+                        Search Results for "{{ search_query }}" ({{ total_results }} found)
+                    </h1>
+                {% else %}
+                    <div class="text-center py-8">
+                        <h1 class="text-[#0d141c] text-[24px] font-bold leading-tight tracking-[-0.015em] mb-2">
+                            No jobs found for "{{ search_query }}"
+                        </h1>
+                        <p class="text-[#49719c] text-base">
+                            Try different keywords or check the spelling. You can also browse all jobs below.
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+
         <!-- Job Categories -->
-        {% include 'tallinnstartups/components/job_categories.html' %}
+        {% if not is_search_results %}
+            {% include 'tallinnstartups/components/job_categories.html' %}
+        {% endif %}
 
         <!-- Featured Jobs Section -->
-        <h2 class="text-[#0d141c] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Featured Jobs</h2>
-        {% if featured_jobs %}
+        {% if featured_jobs or not is_search_results %}
+            {% if is_search_results %}
+                <h2 class="text-[#0d141c] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Featured Results</h2>
+            {% else %}
+                <h2 class="text-[#0d141c] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Featured Jobs</h2>
+            {% endif %}
+            
+            {% if featured_jobs %}
             {% for job in featured_jobs %}
                 {% include 'tallinnstartups/components/job_card.html' %}
             {% endfor %}
         {% else %}
             <!-- Static featured jobs fallback -->
             {% with job=featured_job_1 %}
-                <div class="flex items-center gap-4 bg-slate-50 px-4 min-h-[72px] py-2">
+                <div class="flex items-center gap-4 bg-slate-50 px-4 min-h-[72px] py-2 hover:bg-slate-100 transition-colors">
                     <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
                          style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCYn2hsVs8J9fNNFFvVOjLo237dpSZDhoQpqzY5A4fuQry1YnhSJRy5pC-BnD2fcnxuzpvDJaZ37b6aWTGy5x2wNYDZDzEEZx-u_It4G77YEKYTgEFic9lBDLY1IuG2F246RvuSocBcp5zArJrz2jJ6LeBDL1nQkNgSfpsw_tnCpoS6MrUTtaeTEqNxTzk9MydEx-ABSyhRfGa96PBgj5iyy4v-v5MYHCciEDwuklZ5pNl-hBwvMe10PubDTV-SMUeOzagvRtWVC82K");'>
                     </div>
@@ -33,9 +61,9 @@
                 </div>
             {% endwith %}
             {% with job=featured_job_2 %}
-                <div class="flex items-center gap-4 bg-slate-50 px-4 min-h-[72px] py-2">
+                <div class="flex items-center gap-4 bg-slate-50 px-4 min-h-[72px] py-2 hover:bg-slate-100 transition-colors">
                     <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
-                         style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuABadEEhbQ7XIQR83cy5vPHH6byd9a80Z8EPPRAW3hLo25D492jNSKcW7o3GtT71z_Tk7BrYrIH16hyurB1HSvhzCDdEs7pMHWuN0Cb1AIOGGxuGF3mo7HHnsCoDnUbBP_c_RJlX5iiwpBnvrmNoemx2ZS1cujCPq6KjJOksulGpGV9aV3rEaQXqZ8-ejJmlSIU2526ERY5M-Gtm-ueVyaUue813T4GDU_v4Gwo9aNAdZs_U8NPvPZh0YcV04RYE7uKtrLo5PCw7HiQ");'>
+                         style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuABadEEhbQ7XIQR83cy5vPHH6byd9a80Z8EPPRAW3hLo25D492jNSKcW7o3GtT71z_Tk7BrYrIH16hyurB1HSvhzCDdEs7pMHWuN0Cb1AIOGGxuGF3mo7HHnsCoDnUbBP_c_RJlX5iiwpBnvrmNoemx2ZS1cujCPq6KjJOksulGpGV9aV3rEaQXqZ8-ejJmlSIU2526ERY5M-Gtm-ueVyaUue813T4GDU_v4Gwo9aNAdZs_U8NPvPZh0YcV-04RYE7uKtrLo5PCw7HiQ");'>
                     </div>
                     <div class="flex flex-col justify-center">
                         <p class="text-[#0d141c] text-base font-medium leading-normal line-clamp-1">Marketing Manager</p>
@@ -43,17 +71,24 @@
                     </div>
                 </div>
             {% endwith %}
+            {% endif %}
         {% endif %}
 
         <!-- Latest Jobs Section -->
-        <h2 class="text-[#0d141c] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Latest Jobs</h2>
-        {% if latest_jobs %}
+        {% if latest_jobs or not is_search_results %}
+            {% if is_search_results %}
+                <h2 class="text-[#0d141c] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Latest Results</h2>
+            {% else %}
+                <h2 class="text-[#0d141c] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Latest Jobs</h2>
+            {% endif %}
+            
+            {% if latest_jobs %}
             {% for job in latest_jobs %}
                 {% include 'tallinnstartups/components/job_card.html' %}
             {% endfor %}
         {% else %}
             <!-- Static latest jobs fallback -->
-            <div class="flex items-center gap-4 bg-slate-50 px-4 min-h-[72px] py-2">
+            <div class="flex items-center gap-4 bg-slate-50 px-4 min-h-[72px] py-2 hover:bg-slate-100 transition-colors">
                 <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
                      style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB65e5gzSSgEsr_qFcwXkASAvHxH1YQzwyqCmS_rb6oMJgMuoWAGy8zJgHhAr16JiryG8KBu7srrHZiu4DGfPXSzisS4x362HMwkHQYwO7r5g8r2MMdkCenGHE1Sn1lU7_4TA35X-HmEvk4bsWqOEKarbfGbwwb4wvpNKtdx1PVOEjBHCMZE0HAPvOemA-zaFg5wYjTsEZLdtRgnOU4Psrq9FT2APV9bplH9b5_HssMcJQgWTxgp23H0tte-Fz0RtKieIv93apsBp_7");'>
                 </div>
@@ -62,7 +97,7 @@
                     <p class="text-[#49739c] text-sm font-normal leading-normal line-clamp-2">Tech Innovations Inc.</p>
                 </div>
             </div>
-            <div class="flex items-center gap-4 bg-slate-50 px-4 min-h-[72px] py-2">
+            <div class="flex items-center gap-4 bg-slate-50 px-4 min-h-[72px] py-2 hover:bg-slate-100 transition-colors">
                 <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
                      style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBp9QSyLJLQ1spbiffXKqKKjGnQMGXeF2LKm7WnRxikfVEoNJrEa9AJXyxltOicJUBQZ_KvjlvH9xTD0uaG2W9zhUqXnY9T6UcgNrpg7-Vby1EsWIYWIUU75vIGQH5GHHG_8fGgdgqwZIcmFCGMXDX5nFK8ldnQTQ7JbzggrNLKXXPlAPun3gXO9MiqsO2sxrVpX10H_iEwByq82ytdN-J1gSs4tSKA5W-33yQ6weQuf-My6LlDEE3mD5vWpvImTomNKpnkdyo3Mq1h");'>
                 </div>
@@ -71,7 +106,7 @@
                     <p class="text-[#49739c] text-sm font-normal leading-normal line-clamp-2">Global Marketing Solutions</p>
                 </div>
             </div>
-            <div class="flex items-center gap-4 bg-slate-50 px-4 min-h-[72px] py-2">
+            <div class="flex items-center gap-4 bg-slate-50 px-4 min-h-[72px] py-2 hover:bg-slate-100 transition-colors">
                 <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
                      style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA_pgBfdx7XoyaewQ3TYEgY-b6GycOrEl9g9dR_XR9xhevrhnUMmJlSgJ_0GKnwO2L8c-xhiX3YSbus9QQKmHAZkf-AcEYU7HpR2jmkLz3PULCGzD-qXdnvf5IofQAxW7xRzfCBsL7X72Iz-VZ_gQ92FmZxyEOOQI75ENwMbecc58MPN96Zq3lTej0VHoU6dYpi3-oiaSvW-uHqoNpC8oRw8TRFKhZG9nxC283OvLiiTcjbymfkJqa-kE-nl6Ndyrwid1BEOEOVmrok");'>
                 </div>
@@ -80,7 +115,7 @@
                     <p class="text-[#49739c] text-sm font-normal leading-normal line-clamp-2">Innovate Solutions Ltd.</p>
                 </div>
             </div>
-            <div class="flex items-center gap-4 bg-slate-50 px-4 min-h-[72px] py-2">
+            <div class="flex items-center gap-4 bg-slate-50 px-4 min-h-[72px] py-2 hover:bg-slate-100 transition-colors">
                 <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
                      style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBdcbcFPJv_gP43M7dQY5_ujIYWeSPPs00532-b7OHFRjaEiVyyclJJYVJjjjtUj4OIaKcfcWmz7MXg4hcCKIHCdc1-n6ZTZ7oFpfxSxG9PbVgFQTuMyZ-7doFn-JJhKTu2Xg_8piWzY2g-xeAdsKbKyKFnmua9OQcpaYczq8gRmzRWjiu8SzxLm6175o2IFXzXS0YtAkygat3BmpxpMgOC52zt8wIITXKtCn4bbsW6iOI1WMzFVmRtmQPRan5LLPArPYavYV63Zp-P");'>
                 </div>
@@ -89,7 +124,7 @@
                     <p class="text-[#49739c] text-sm font-normal leading-normal line-clamp-2">Creative Design Studio</p>
                 </div>
             </div>
-            <div class="flex items-center gap-4 bg-slate-50 px-4 min-h-[72px] py-2">
+            <div class="flex items-center gap-4 bg-slate-50 px-4 min-h-[72px] py-2 hover:bg-slate-100 transition-colors">
                 <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
                      style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAGiMxZ1Z5fyyKoNdfEMhtaDcWtlGhOiMjLWgfr8GIG77JbQj-boxE61mwnVeroAmlbYh2PvssX_0nQ3E7u5nT4jBQIWvzD1LjPV0eQmSM0IEr73TLFmi67yaT929q1nEdgrmhKXTRjaDk_neKiHQOiH-7Ep-CDlacNy9sfi0zjnOJnzeohk0bGc9M_J2BuQWFKYNmsbs62cG4bRkvMwwiivZp7fKxOwwMl0VjKms32Kw6z35dKyFeYg6D9JlcBXM-VK5TQrHgZGrow");'>
                 </div>
@@ -98,6 +133,7 @@
                     <p class="text-[#49739c] text-sm font-normal leading-normal line-clamp-2">Operations Excellence Corp.</p>
                 </div>
             </div>
+            {% endif %}
         {% endif %}
 
         <!-- Pagination -->

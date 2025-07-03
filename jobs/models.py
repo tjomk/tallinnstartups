@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
+import uuid
 
 
 class Company(models.Model):
@@ -27,22 +29,51 @@ class Job(models.Model):
         ('other', 'Other'),
     ]
     
+    STATUS_CHOICES = [
+        ('live', 'Live'),
+        ('in_review', 'In Review'),
+    ]
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    featured_until = models.DateTimeField(null=True, blank=True)
+    expires_at = models.DateTimeField(null=True, blank=True, help_text="When this job ad expires and is no longer visible")
+    is_featured = models.BooleanField(default=False, help_text="Whether this job is featured")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='in_review', help_text="Current status of the job posting")
     title = models.CharField(max_length=200)
     description = models.TextField()
     salary_range = models.CharField(max_length=100)
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
     location = models.CharField(max_length=200)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='jobs')
+    application_contact = models.CharField(max_length=255, default="", help_text="Email or URL for job applications")
+    slug = models.SlugField(max_length=255, unique=True, blank=True, null=True, help_text="SEO-friendly URL slug")
     
     def __str__(self):
         return f"{self.title} at {self.company.name}"
     
+    def generate_slug(self):
+        """Generate SEO-friendly slug from job title and company name with UUID suffix"""
+        base_slug = slugify(f"{self.title} at {self.company.name}")
+        # Use first 8 characters of UUID for uniqueness without revealing info
+        uuid_suffix = str(uuid.uuid4())[:8]
+        return f"{base_slug}-{uuid_suffix}"[:255]  # Ensure it fits in the field
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self.generate_slug()
+            # Ensure uniqueness (very unlikely collision with UUID)
+            while Job.objects.filter(slug=self.slug).exists():
+                self.slug = self.generate_slug()
+        super().save(*args, **kwargs)
+    
     @property
-    def is_featured(self):
-        return self.featured_until and self.featured_until > timezone.now()
+    def is_visible(self):
+        """Check if job is visible to public (live status and not expired)"""
+        if self.status != 'live':
+            return False
+        if self.expires_at and self.expires_at <= timezone.now():
+            return False
+        return True
     
     class Meta:
         ordering = ['-created_at']

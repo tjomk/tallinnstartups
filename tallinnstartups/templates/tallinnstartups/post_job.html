@@ -1,0 +1,232 @@
+{% extends 'tallinnstartups/base.html' %}
+
+{% block title %}Post a New Job - CareerConnect{% endblock %}
+
+{% block content %}
+<div class="px-40 flex flex-1 justify-center py-5">
+    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+        <div class="flex flex-wrap justify-between gap-3 p-4">
+            <div class="flex min-w-72 flex-col gap-3">
+                <p class="text-[#0d151c] tracking-light text-[32px] font-bold leading-tight">Post a New Job</p>
+                <p class="text-[#49719c] text-sm font-normal leading-normal">Fill out the form below to post your job opening</p>
+            </div>
+        </div>
+
+        <!-- Display form errors -->
+        {% if messages %}
+            <div class="p-4">
+                {% for message in messages %}
+                    <div class="{% if message.tags == 'error' %}bg-red-50 border border-red-200 text-red-700{% else %}bg-blue-50 border border-blue-200 text-blue-700{% endif %} rounded-xl p-4 mb-4">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post" class="flex flex-col gap-8 p-4">
+            {% csrf_token %}
+            
+            <!-- Step 1: Company Type -->
+            <div class="flex flex-col gap-4">
+                <h2 class="text-[#0d151c] text-[22px] font-bold leading-tight tracking-[-0.015em]">Step 1 - Company Type</h2>
+                <div class="flex flex-col gap-3">
+                    <label class="flex items-center gap-3">
+                        <input type="radio" name="company_type" value="tallinn_startup" required class="h-5 w-5 text-[#1980e6]" {% if form.company_type.value == 'tallinn_startup' %}checked{% endif %}>
+                        <span class="text-[#0d151c] text-sm font-medium">Tallinn-based startup</span>
+                    </label>
+                    <label class="flex items-center gap-3">
+                        <input type="radio" name="company_type" value="estonia_startup" required class="h-5 w-5 text-[#1980e6]" {% if form.company_type.value == 'estonia_startup' %}checked{% endif %}>
+                        <span class="text-[#0d151c] text-sm font-medium">Estonia-based startup</span>
+                    </label>
+                    <label class="flex items-center gap-3">
+                        <input type="radio" name="company_type" value="incubator_accelerator_vc" required class="h-5 w-5 text-[#1980e6]" {% if form.company_type.value == 'incubator_accelerator_vc' %}checked{% endif %}>
+                        <span class="text-[#0d151c] text-sm font-medium">Startup Incubator, Accelerator, or VC</span>
+                    </label>
+                </div>
+                {% if form.company_type.errors %}
+                    <div class="text-red-600 text-sm mt-1">
+                        {% for error in form.company_type.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Step 2: Post Option -->
+            <div class="flex flex-col gap-4">
+                <h2 class="text-[#0d151c] text-[22px] font-bold leading-tight tracking-[-0.015em]">Step 2 - Post Option</h2>
+                <div class="flex flex-col gap-3">
+                    <label class="flex items-center gap-3">
+                        <input type="radio" name="post_option" value="featured" required class="h-5 w-5 text-[#1980e6]" {% if form.post_option.value == 'featured' %}checked{% endif %}>
+                        <span class="text-[#0d151c] text-sm font-medium">Featured job post: 150€/90 days</span>
+                    </label>
+                    <label class="flex items-center gap-3">
+                        <input type="radio" name="post_option" value="standard" required class="h-5 w-5 text-[#1980e6]" {% if form.post_option.value == 'standard' %}checked{% endif %}>
+                        <span class="text-[#0d151c] text-sm font-medium">Standard job post: 75€/90 days</span>
+                    </label>
+                </div>
+                {% if form.post_option.errors %}
+                    <div class="text-red-600 text-sm mt-1">
+                        {% for error in form.post_option.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Step 3: Job Description -->
+            <div class="flex flex-col gap-4">
+                <h2 class="text-[#0d151c] text-[22px] font-bold leading-tight tracking-[-0.015em]">Step 3 - Job Description</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-2">
+                        <label class="text-[#0d151c] text-sm font-medium">Job Title</label>
+                        <input type="text" name="job_title" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] h-14 placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal" value="{{ form.job_title.value|default:'' }}">
+                        {% if form.job_title.errors %}
+                            <div class="text-red-600 text-sm mt-1">
+                                {% for error in form.job_title.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="text-[#0d151c] text-sm font-medium">Company Name</label>
+                        <input type="text" name="company_name" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] h-14 placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal" value="{{ form.company_name.value|default:'' }}">
+                        {% if form.company_name.errors %}
+                            <div class="text-red-600 text-sm mt-1">
+                                {% for error in form.company_name.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="text-[#0d151c] text-sm font-medium">Job Category</label>
+                        <select name="job_category" required class="form-select flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] h-14 placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal">
+                            <option value="">Select a category</option>
+                            <option value="engineering" {% if form.job_category.value == 'engineering' %}selected{% endif %}>Engineering</option>
+                            <option value="design" {% if form.job_category.value == 'design' %}selected{% endif %}>Design</option>
+                            <option value="product" {% if form.job_category.value == 'product' %}selected{% endif %}>Product</option>
+                            <option value="marketing" {% if form.job_category.value == 'marketing' %}selected{% endif %}>Marketing</option>
+                            <option value="sales" {% if form.job_category.value == 'sales' %}selected{% endif %}>Sales</option>
+                            <option value="operations" {% if form.job_category.value == 'operations' %}selected{% endif %}>Operations</option>
+                            <option value="finance" {% if form.job_category.value == 'finance' %}selected{% endif %}>Finance</option>
+                            <option value="hr" {% if form.job_category.value == 'hr' %}selected{% endif %}>HR</option>
+                            <option value="other" {% if form.job_category.value == 'other' %}selected{% endif %}>Other</option>
+                        </select>
+                        {% if form.job_category.errors %}
+                            <div class="text-red-600 text-sm mt-1">
+                                {% for error in form.job_category.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="text-[#0d151c] text-sm font-medium">Link to Company Website</label>
+                        <input type="url" name="company_website" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] h-14 placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal" placeholder="https://example.com" value="{{ form.company_website.value|default:'' }}">
+                        {% if form.company_website.errors %}
+                            <div class="text-red-600 text-sm mt-1">
+                                {% for error in form.company_website.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-[#0d151c] text-sm font-medium">Job Description</label>
+                    <textarea name="job_description" required rows="6" class="form-textarea flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal" placeholder="Describe the role, responsibilities, requirements, and benefits...">{{ form.job_description.value|default:'' }}</textarea>
+                    {% if form.job_description.errors %}
+                        <div class="text-red-600 text-sm mt-1">
+                            {% for error in form.job_description.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-[#0d151c] text-sm font-medium">Email/Link for applications</label>
+                    <input type="text" name="application_contact" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] h-14 placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal" placeholder="careers@company.com or https://company.com/apply" value="{{ form.application_contact.value|default:'' }}">
+                    {% if form.application_contact.errors %}
+                        <div class="text-red-600 text-sm mt-1">
+                            {% for error in form.application_contact.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Step 4: Payment Details -->
+            <div class="flex flex-col gap-4">
+                <h2 class="text-[#0d151c] text-[22px] font-bold leading-tight tracking-[-0.015em]">Step 4 - Payment Details</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-2">
+                        <label class="text-[#0d151c] text-sm font-medium">Legal Company Name</label>
+                        <input type="text" name="legal_company_name" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] h-14 placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal" value="{{ form.legal_company_name.value|default:'' }}">
+                        {% if form.legal_company_name.errors %}
+                            <div class="text-red-600 text-sm mt-1">
+                                {% for error in form.legal_company_name.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="text-[#0d151c] text-sm font-medium">Invoice Email</label>
+                        <input type="email" name="invoice_email" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] h-14 placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal" value="{{ form.invoice_email.value|default:'' }}">
+                        {% if form.invoice_email.errors %}
+                            <div class="text-red-600 text-sm mt-1">
+                                {% for error in form.invoice_email.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-[#0d151c] text-sm font-medium">Company Address</label>
+                    <textarea name="company_address" required rows="3" class="form-textarea flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal" placeholder="Street address, city, postal code, country">{{ form.company_address.value|default:'' }}</textarea>
+                    {% if form.company_address.errors %}
+                        <div class="text-red-600 text-sm mt-1">
+                            {% for error in form.company_address.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-[#0d151c] text-sm font-medium">VAT (Optional)</label>
+                    <input type="text" name="vat_number" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] h-14 placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal" placeholder="EE123456789" value="{{ form.vat_number.value|default:'' }}">
+                    {% if form.vat_number.errors %}
+                        <div class="text-red-600 text-sm mt-1">
+                            {% for error in form.vat_number.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Terms and Submit -->
+            <div class="flex flex-col gap-4">
+                <label class="flex items-start gap-3">
+                    <input type="checkbox" name="terms_accepted" required class="mt-1 h-5 w-5 text-[#1980e6]" {% if form.terms_accepted.value %}checked{% endif %}>
+                    <span class="text-[#0d151c] text-sm font-medium">I agree to Terms and Conditions</span>
+                </label>
+                {% if form.terms_accepted.errors %}
+                    <div class="text-red-600 text-sm mt-1">
+                        {% for error in form.terms_accepted.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <button type="submit" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 bg-[#1980e6] text-slate-50 text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#1668c7] transition-colors">
+                    <span class="truncate">Submit for Review</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
