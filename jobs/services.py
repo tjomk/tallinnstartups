@@ -1,6 +1,8 @@
 from typing import List, Dict, Any
+from django.core.paginator import Paginator
 from .repositories import JobRepository, CompanyRepository
 from .models import Job
+import uuid
 
 
 class HomePageService:
@@ -10,10 +12,10 @@ class HomePageService:
         self.job_repository = JobRepository()
         self.company_repository = CompanyRepository()
     
-    def get_home_page_data(self, search_query: str = None) -> Dict[str, Any]:
+    def get_home_page_data(self, search_query: str = None, page: int = 1, jobs_per_page: int = 10) -> Dict[str, Any]:
         """Get all data needed for the home page, optionally filtered by search query."""
         if search_query:
-            return self._get_search_results(search_query)
+            return self._get_search_results(search_query, page, jobs_per_page)
         else:
             return {
                 'categories': self._get_formatted_categories(),
@@ -21,28 +23,35 @@ class HomePageService:
                 'latest_jobs': self._get_formatted_latest_jobs(),
                 'is_search_results': False,
                 'search_query': None,
-                'total_results': None
+                'total_results': None,
+                'page_obj': None
             }
     
-    def _get_search_results(self, query: str) -> Dict[str, Any]:
-        """Get search results for the given query."""
-        featured_jobs = JobRepository.search_featured_jobs(query)
-        latest_jobs = JobRepository.search_latest_jobs(query)
+    def _get_search_results(self, query: str, page: int = 1, jobs_per_page: int = 10) -> Dict[str, Any]:
+        """Get search results for the given query with pagination."""
+        # Get all search results (without pagination for featured)
+        featured_jobs = JobRepository.search_featured_jobs(query, limit=2)
+        
+        # Get paginated regular search results
+        all_search_jobs = JobRepository.search_jobs(query)
+        paginator = Paginator(all_search_jobs, jobs_per_page)
+        page_obj = paginator.get_page(page)
         
         # Format the jobs
         formatted_featured = [self._format_job_data(job) for job in featured_jobs]
-        formatted_latest = [self._format_job_data(job) for job in latest_jobs]
+        formatted_paginated = [self._format_job_data(job) for job in page_obj]
         
         # Calculate total results
-        total_results = len(formatted_featured) + len(formatted_latest)
+        total_results = paginator.count + len(formatted_featured)
         
         return {
             'categories': self._get_formatted_categories(),
             'featured_jobs': formatted_featured,
-            'latest_jobs': formatted_latest,
+            'latest_jobs': formatted_paginated,
             'is_search_results': True,
             'search_query': query,
-            'total_results': total_results
+            'total_results': total_results,
+            'page_obj': page_obj
         }
     
     def _get_formatted_categories(self) -> List[Dict[str, Any]]:
@@ -83,6 +92,30 @@ class HomePageService:
             'salary_range': job.salary_range,
             'slug': job.slug,
         }
+    
+    def get_jobs_page_data(self, page: int = 1, jobs_per_page: int = 10, search_query: str = None) -> Dict[str, Any]:
+        """Get data for the dedicated jobs listing page with pagination."""
+        if search_query:
+            # Use search results with pagination
+            return self._get_search_results(search_query, page, jobs_per_page)
+        else:
+            # Get all jobs with pagination
+            all_jobs = self.job_repository.get_all_jobs()
+            paginator = Paginator(all_jobs, jobs_per_page)
+            page_obj = paginator.get_page(page)
+            
+            # Format the jobs
+            formatted_jobs = [self._format_job_data(job) for job in page_obj]
+            
+            return {
+                'categories': self._get_formatted_categories(),
+                'featured_jobs': [],  # No featured section on jobs listing page
+                'latest_jobs': formatted_jobs,
+                'is_search_results': bool(search_query),
+                'search_query': search_query,
+                'total_results': paginator.count,
+                'page_obj': page_obj
+            }
 
 
 class JobService:
@@ -91,7 +124,7 @@ class JobService:
     def __init__(self):
         self.job_repository = JobRepository()
     
-    def get_job_details(self, job_id: int) -> Dict[str, Any]:
+    def get_job_details(self, job_id: uuid.UUID) -> Dict[str, Any]:
         """Get detailed job information."""
         job = self.job_repository.get_job_by_id(job_id)
         if not job:

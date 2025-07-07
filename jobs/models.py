@@ -34,6 +34,7 @@ class Job(models.Model):
         ('in_review', 'In Review'),
     ]
     
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     expires_at = models.DateTimeField(null=True, blank=True, help_text="When this job ad expires and is no longer visible")
@@ -54,8 +55,8 @@ class Job(models.Model):
     def generate_slug(self):
         """Generate SEO-friendly slug from job title and company name with UUID suffix"""
         base_slug = slugify(f"{self.title} at {self.company.name}")
-        # Use first 8 characters of UUID for uniqueness without revealing info
-        uuid_suffix = str(uuid.uuid4())[:8]
+        # Use first 8 characters of the job's UUID for uniqueness
+        uuid_suffix = str(self.id)[:8]
         return f"{base_slug}-{uuid_suffix}"[:255]  # Ensure it fits in the field
     
     def save(self, *args, **kwargs):

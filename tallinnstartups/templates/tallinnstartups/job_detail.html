@@ -1,4 +1,5 @@
 {% extends 'tallinnstartups/base.html' %}
+{% load currency_filters %}
 
 {% block title %}{{ job.title }} at {{ job.company.name }} - CareerConnect{% endblock %}
 
@@ -7,7 +8,7 @@
     <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
         <!-- Back button -->
         <div class="flex items-center gap-3 p-3">
-            <a href="{% url 'home' %}" class="text-[#0d7847] hover:text-[#0a5d3a] font-medium">← Back to Jobs</a>
+            <a href="{% url 'home' %}" class="text-[#1980e6] hover:text-[#1668c7] font-medium">← Back to Jobs</a>
         </div>
         
         <!-- Job header -->
@@ -26,8 +27,8 @@
                     <p class="text-lg text-[#4e7297] mt-1">{{ job.company.name }}</p>
                     <div class="flex items-center gap-4 mt-2">
                         <span class="text-sm text-[#4e7297]">📍 {{ job.location }}</span>
-                        <span class="text-sm text-[#4e7297]">💰 {{ job.salary_range }}</span>
-                        <span class="text-sm bg-[#e7f3ff] text-[#0d7847] px-2 py-1 rounded-full">{{ job.get_category_display }}</span>
+                        <span class="text-sm text-[#4e7297]">Salary range: {{ job.salary_range|format_eur_range }}</span>
+                        <span class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-sm bg-[#e7edf4] pl-4 pr-4 text-[#0d141c] text-sm font-medium leading-normal">{{ job.get_category_display }}</span>
                     </div>
                 </div>
             </div>
@@ -55,7 +56,7 @@
                 </div>
                 <div>
                     <h3 class="font-medium text-[#0e141b] mb-1">Salary Range</h3>
-                    <p class="text-[#4e7297]">{{ job.salary_range }}</p>
+                    <p class="text-[#4e7297]">{{ job.salary_range|format_eur_range }}</p>
                 </div>
                 <div>
                     <h3 class="font-medium text-[#0e141b] mb-1">Category</h3>
@@ -82,12 +83,12 @@
             {% if job.application_contact %}
                 {% if '@' in job.application_contact %}
                     <a href="mailto:{{ job.application_contact }}?subject=Application for {{ job.title }} at {{ job.company.name }}" 
-                       class="bg-[#0d7847] text-white px-8 py-3 rounded-xl font-medium hover:bg-[#0a5d3a] transition-colors inline-block">
+                       class="bg-[#1980e6] text-white px-8 py-3 rounded-sm font-medium hover:bg-[#1668c7] transition-colors inline-block">
                         Apply via Email
                     </a>
                 {% else %}
                     <a href="{{ job.application_contact }}" target="_blank" rel="noopener noreferrer"
-                       class="bg-[#0d7847] text-white px-8 py-3 rounded-xl font-medium hover:bg-[#0a5d3a] transition-colors inline-block">
+                       class="bg-[#1980e6] text-white px-8 py-3 rounded-sm font-medium hover:bg-[#1668c7] transition-colors inline-block">
                         Apply Now
                     </a>
                 {% endif %}

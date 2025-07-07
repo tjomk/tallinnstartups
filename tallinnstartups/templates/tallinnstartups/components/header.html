@@ -1,6 +1,6 @@
 <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e7edf4] px-10 py-3">
     <div class="flex items-center gap-8">
-        <div class="flex items-center gap-4 text-[#0d141c]">
+        <a href="{% url 'home' %}" class="flex items-center gap-4 text-[#0d141c]">
             <div class="size-4">
                 <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -10,22 +10,15 @@
                 </svg>
             </div>
             <h2 class="text-[#0d141c] text-lg font-bold leading-tight tracking-[-0.015em]">CareerConnect</h2>
-        </div>
+        </a>
         <nav class="flex items-center gap-9">
-            <a class="text-[#0d141c] text-sm font-medium leading-normal" href="{% url 'home' %}">Home</a>
             <a class="text-[#0d141c] text-sm font-medium leading-normal" href="{% url 'jobs' %}">Jobs</a>
             <a class="text-[#0d141c] text-sm font-medium leading-normal" href="{% url 'companies' %}">Companies</a>
-            <a class="text-[#0d141c] text-sm font-medium leading-normal" href="{% url 'salaries' %}">Salaries</a>
-            <a class="text-[#0d141c] text-sm font-medium leading-normal" href="{% url 'career_advice' %}">Career Advice</a>
         </nav>
     </div>
     <div class="flex flex-1 justify-end gap-8">
-        {% include 'tallinnstartups/components/search_bar.html' with placeholder="Search" %}
-        <a href="{% url 'post_job' %}" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#0c7ff2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
+        <a href="{% url 'post_job' %}" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-sm h-10 px-4 bg-[#0c7ff2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
             <span class="truncate">Post a New Job</span>
         </a>
-        <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
-             style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDmjLn_lShD5Q9gAma7ZUYIdSiCCy-W9Zp5yNPagaMEiTt3V4bW9xZUeL79IrOtiIiMhrRco2_aWMs7X5xOAI9zf_QgZUjxmMqEp-fcd5dQ9ko4N2qUX8QVLM5UxbqYbHpsHXRa4auOjzcgESl-8Pw9eZygA9C7U-HwK9gNVpUj1lCuSXKpRH3zBVoZIlZvzj5U3HRaG_QZayxqJfpTG7MWSvSMizfnPmDLCVHFhkdBofu4ejGTuAmGrBJ-sdjZTANJSHow5PXQ7rzh");'>
-        </div>
     </div>
 </header>

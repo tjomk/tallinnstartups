@@ -1,0 +1,80 @@
+{% extends 'tallinnstartups/base.html' %}
+
+{% block title %}All Jobs - CareerConnect{% endblock %}
+
+{% block content %}
+<div class="px-40 flex flex-1 justify-center py-5">
+    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+        <!-- Header -->
+        <div class="px-4 py-3">
+            <h1 class="text-[#0d141c] text-[32px] font-bold leading-tight tracking-[-0.015em] mb-2">All Jobs</h1>
+            <p class="text-[#49719c] text-base">Find your next opportunity from our latest job openings</p>
+        </div>
+
+        <!-- Search Section -->
+        <div class="px-4 py-3">
+            {% include 'tallinnstartups/components/search_bar.html' with placeholder="Search jobs or companies" large=True %}
+        </div>
+
+        <!-- Search Results Header -->
+        {% if is_search_results %}
+            <div class="px-4 py-3">
+                {% if total_results > 0 %}
+                    <h2 class="text-[#0d141c] text-[24px] font-bold leading-tight tracking-[-0.015em]">
+                        Search Results for "{{ search_query }}" ({{ total_results }} found)
+                    </h2>
+                {% else %}
+                    <div class="text-center py-8">
+                        <h2 class="text-[#0d141c] text-[24px] font-bold leading-tight tracking-[-0.015em] mb-2">
+                            No jobs found for "{{ search_query }}"
+                        </h2>
+                        <p class="text-[#49719c] text-base">
+                            Try different keywords or check the spelling.
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+        {% else %}
+            <!-- Job Count -->
+            {% if total_results %}
+                <div class="px-4 py-2">
+                    <p class="text-[#49719c] text-sm">{{ total_results }} job{{ total_results|pluralize }} available</p>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        <!-- Job Categories -->
+        {% if not is_search_results %}
+            {% include 'tallinnstartups/components/job_categories.html' %}
+        {% endif %}
+
+        <!-- Jobs List -->
+        {% if latest_jobs %}
+            <div class="px-4 py-3">
+                {% if is_search_results %}
+                    <h3 class="text-[#0d141c] text-[20px] font-bold leading-tight tracking-[-0.015em] mb-4">Results</h3>
+                {% else %}
+                    <h3 class="text-[#0d141c] text-[20px] font-bold leading-tight tracking-[-0.015em] mb-4">Latest Jobs</h3>
+                {% endif %}
+                
+                {% for job in latest_jobs %}
+                    {% include 'tallinnstartups/components/job_card.html' %}
+                {% endfor %}
+            </div>
+        {% else %}
+            {% if not is_search_results %}
+                <div class="text-center py-12">
+                    <h3 class="text-[#0d141c] text-[20px] font-bold leading-tight tracking-[-0.015em] mb-2">No jobs available</h3>
+                    <p class="text-[#49719c] text-base mb-4">Check back later for new job opportunities!</p>
+                    <a href="{% url 'post_job' %}" class="inline-flex items-center justify-center rounded-sm h-10 px-4 bg-[#1980e6] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em] hover:bg-[#1668c7] transition-colors">
+                        Post a Job
+                    </a>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        <!-- Pagination -->
+        {% include 'tallinnstartups/components/pagination.html' %}
+    </div>
+</div>
+{% endblock %}

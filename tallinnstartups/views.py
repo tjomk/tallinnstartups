@@ -15,15 +15,34 @@ def home(request):
     """
     search_form = JobSearchForm(request.GET)
     search_query = None
+    page = request.GET.get('page', 1)
     
     if search_form.is_valid() and search_form.cleaned_data.get('q'):
         search_query = search_form.cleaned_data['q']
     
     home_service = HomePageService()
-    context = home_service.get_home_page_data(search_query=search_query)
+    context = home_service.get_home_page_data(search_query=search_query, page=int(page))
     context['search_form'] = search_form
     
     return render(request, 'tallinnstartups/index.html', context)
+
+
+def jobs_list(request):
+    """
+    Jobs listing page with pagination and search functionality.
+    """
+    search_form = JobSearchForm(request.GET)
+    search_query = None
+    page = request.GET.get('page', 1)
+    
+    if search_form.is_valid() and search_form.cleaned_data.get('q'):
+        search_query = search_form.cleaned_data['q']
+    
+    home_service = HomePageService()
+    context = home_service.get_jobs_page_data(page=int(page), search_query=search_query)
+    context['search_form'] = search_form
+    
+    return render(request, 'tallinnstartups/jobs_list.html', context)
 
 
 def post_job(request):
@@ -67,7 +86,7 @@ def post_job(request):
                     
                     # Store additional submission data in session for thank you page
                     request.session['job_submission'] = {
-                        'job_id': job.id,
+                        'job_id': str(job.id),
                         'job_title': job.title,
                         'company_name': company.name,
                         'post_option': form.cleaned_data['post_option'],

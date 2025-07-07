@@ -1,6 +1,6 @@
-<div class="flex gap-3 p-3 flex-wrap pr-4">
+<div class="flex gap-3 px-4 py-3 flex-wrap">
     {% for category in categories %}
-        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e7edf4] pl-4 pr-4">
+        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-sm bg-[#e7edf4] pl-4 pr-4">
             <p class="text-[#0d141c] text-sm font-medium leading-normal">
                 {% if category.url %}
                     <a href="{{ category.url }}" class="hover:underline">
@@ -12,22 +12,22 @@
             </p>
         </div>
     {% empty %}
-        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e7edf4] pl-4 pr-4">
+        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-sm bg-[#e7edf4] pl-4 pr-4">
             <p class="text-[#0d141c] text-sm font-medium leading-normal">Engineering (120)</p>
         </div>
-        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e7edf4] pl-4 pr-4">
+        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-sm bg-[#e7edf4] pl-4 pr-4">
             <p class="text-[#0d141c] text-sm font-medium leading-normal">Marketing (85)</p>
         </div>
-        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e7edf4] pl-4 pr-4">
+        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-sm bg-[#e7edf4] pl-4 pr-4">
             <p class="text-[#0d141c] text-sm font-medium leading-normal">Sales (110)</p>
         </div>
-        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e7edf4] pl-4 pr-4">
+        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-sm bg-[#e7edf4] pl-4 pr-4">
             <p class="text-[#0d141c] text-sm font-medium leading-normal">Product (90)</p>
         </div>
-        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e7edf4] pl-4 pr-4">
+        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-sm bg-[#e7edf4] pl-4 pr-4">
             <p class="text-[#0d141c] text-sm font-medium leading-normal">Design (75)</p>
         </div>
-        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e7edf4] pl-4 pr-4">
+        <div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-sm bg-[#e7edf4] pl-4 pr-4">
             <p class="text-[#0d141c] text-sm font-medium leading-normal">Operations (60)</p>
         </div>
     {% endfor %}

@@ -2,6 +2,7 @@ from typing import List, Dict, Any, Optional
 from django.db.models import Count, QuerySet
 from django.db import models
 from .models import Job, Company
+import uuid
 
 
 class JobRepository:
@@ -30,7 +31,14 @@ class JobRepository:
         ).select_related('company').order_by('-created_at')[:limit]
     
     @staticmethod
-    def get_job_by_id(job_id: int) -> Optional[Job]:
+    def get_all_jobs() -> QuerySet:
+        """Get all live jobs ordered by creation date for pagination."""
+        return Job.objects.filter(
+            status='live'
+        ).select_related('company').order_by('-created_at')
+    
+    @staticmethod
+    def get_job_by_id(job_id: uuid.UUID) -> Optional[Job]:
         """Get a single job by ID with company information."""
         try:
             return Job.objects.select_related('company').get(id=job_id)
