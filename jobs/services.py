@@ -19,7 +19,7 @@ class HomePageService:
             return self._get_search_results(search_query, page, jobs_per_page)
         else:
             # Get paginated latest jobs for home page
-            all_latest_jobs = self.job_repository.get_latest_jobs()
+            all_latest_jobs = self.job_repository.get_all_jobs()
             paginator = Paginator(all_latest_jobs, jobs_per_page)
             page_obj = paginator.get_page(page)
             

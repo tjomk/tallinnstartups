@@ -4,7 +4,8 @@
       "Bash(poetry run:*)",
       "Bash(curl:*)",
       "Bash(grep:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(touch:*)"
     ],
     "deny": []
   }
