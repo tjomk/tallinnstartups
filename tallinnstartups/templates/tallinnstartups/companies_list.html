@@ -23,9 +23,14 @@
                         <div class="theme-card">
                             <!-- Company Logo -->
                             <div class="flex items-center mb-4">
-                                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 mr-4"
-                                     style='background-image: url("{% if company.logo_url %}{{ company.logo_url }}{% else %}https://via.placeholder.com/64x64?text={{ company.name|slice:":1"|upper }}{% endif %}");'>
-                                </div>
+                                {% if company.logo_url %}
+                                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 mr-4"
+                                         style='background-image: url("{{ company.logo_url }}");'>
+                                    </div>
+                                {% else %}
+                                    <div class="company-logo-default aspect-square rounded-lg size-16 mr-4">
+                                    </div>
+                                {% endif %}
                                 <div>
                                     <h3 class="theme-primary-text text-lg font-semibold leading-tight mb-1">
                                         {{ company.name }}
