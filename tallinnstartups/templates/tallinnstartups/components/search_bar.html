@@ -1,6 +1,6 @@
 <form method="GET" action="{% url 'home' %}" class="flex flex-col min-w-40 {% if large %}h-12 w-full{% else %}!h-10 max-w-64{% endif %}">
     <div class="flex w-full flex-1 items-stretch rounded-sm h-full">
-        <div class="text-[#49739c] flex border-none bg-[#e7edf4] items-center justify-center pl-4 rounded-l-sm border-r-0"
+        <div class="theme-secondary-text flex border-none items-center justify-center pl-4 rounded-l-sm border-r-0" style="background-color: var(--bg-light);"
              data-icon="MagnifyingGlass"
              data-size="24px"
              data-weight="regular">
@@ -12,7 +12,7 @@
             placeholder="{{ placeholder|default:'Search' }}"
             name="q"
             type="text"
-            class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-sm text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-full placeholder:text-[#49739c] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal"
+            class="flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-sm rounded-l-none border-l-0 pl-2 h-full border-none focus:outline-0 focus:ring-0 focus:border-none text-base font-normal leading-normal placeholder:text-[var(--text-secondary)]" style="background-color: var(--bg-light); color: var(--text-primary);"
             value="{{ request.GET.q|default:'' }}"
             onkeypress="if(event.key==='Enter'){this.form.submit();}"
         />

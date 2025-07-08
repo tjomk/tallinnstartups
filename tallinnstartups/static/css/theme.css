@@ -1,0 +1,192 @@
+/* CareerConnect Theme Colors */
+:root {
+  /* Primary Colors */
+  --primary-blue: #0c7ff2;
+  --primary-blue-dark: #0056b3;
+  --primary-blue-alt: #007bff;
+  --primary-blue-light: #1668c7;
+  --primary-blue-lighter: #1980e6;
+  
+  /* Text Colors */
+  --text-primary: #0d141c;
+  --text-primary-alt: #0d151c;
+  --text-primary-dark: #0e141b;
+  --text-secondary: #49719c;
+  --text-secondary-alt: #49739c;
+  --text-secondary-dark: #4e7297;
+  --text-warning: #8b6914;
+  
+  /* Background Colors */
+  --bg-light: #e7edf4;
+  --bg-light-alt: #cedbe8;
+  --bg-light-darker: #dde3e8;
+  --bg-success: #0d7847;
+  --bg-warning: #ffd700;
+  
+  /* Border Colors */
+  --border-primary: #1980e6;
+  --border-light: #cedbe8;
+  --border-light-alt: #dde3e8;
+  --border-secondary: #e7edf4;
+  
+  /* Semantic Colors */
+  --color-success: #0d7847;
+  --color-warning: #ffd700;
+  --color-info: #1980e6;
+  --color-danger: #dc3545;
+  
+  /* Neutral Colors */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
+  
+  /* Slate Colors (commonly used in the app) */
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-900: #0f172a;
+}
+
+/* Theme Utility Classes */
+.theme-primary {
+  background-color: var(--primary-blue);
+  color: var(--color-white);
+}
+
+.theme-primary-text {
+  color: var(--text-primary);
+}
+
+.theme-secondary-text {
+  color: var(--text-secondary);
+}
+
+.theme-bg-light {
+  background-color: var(--bg-light);
+}
+
+.theme-border-light {
+  border-color: var(--border-light);
+}
+
+.theme-button-primary {
+  background-color: var(--primary-blue);
+  color: var(--color-slate-50);
+  border-radius: 0.125rem;
+  height: 2.5rem;
+  padding: 0 1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.25rem;
+  letter-spacing: 0.015em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: background-color 0.2s;
+}
+
+.theme-button-primary:hover {
+  background-color: var(--primary-blue-dark);
+}
+
+.theme-card {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-slate-200);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  transition: box-shadow 0.2s;
+}
+
+.theme-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.theme-input {
+  background-color: var(--bg-light);
+  border: none;
+  border-radius: 0.125rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.theme-input::placeholder {
+  color: var(--text-secondary);
+}
+
+.theme-input:focus {
+  outline: none;
+  ring: 0;
+  border: none;
+}
+
+.theme-category-badge {
+  background-color: var(--bg-light);
+  color: var(--text-primary);
+  padding: 0.25rem 1rem;
+  border-radius: 0.125rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  transition: background-color 0.2s;
+}
+
+.theme-category-badge:hover {
+  background-color: var(--color-slate-100);
+}
+
+.theme-job-card {
+  background-color: var(--color-slate-100);
+  border: 1px solid var(--color-slate-200);
+  border-radius: 0.125rem;
+  padding: 0.5rem 1rem;
+  min-height: 4.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-bottom: 0.625rem;
+}
+
+.theme-job-card:hover {
+  background-color: transparent;
+}
+
+.theme-pagination-button {
+  color: var(--text-primary);
+  border-radius: 9999px;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  transition: background-color 0.2s;
+}
+
+.theme-pagination-button:hover {
+  background-color: var(--bg-light);
+}
+
+.theme-pagination-button.active {
+  background-color: var(--bg-light);
+  font-weight: 700;
+  letter-spacing: 0.015em;
+}

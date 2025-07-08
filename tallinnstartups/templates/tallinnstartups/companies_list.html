@@ -1,0 +1,70 @@
+{% extends 'tallinnstartups/base.html' %}
+
+{% block title %}Companies Actively Hiring - CareerConnect{% endblock %}
+
+{% block content %}
+<div class="px-40 flex flex-1 justify-center py-5">
+    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+        <!-- Page Header -->
+        <div class="px-4 py-6">
+            <h1 class="theme-primary-text text-[32px] font-bold leading-tight tracking-[-0.015em] mb-2">
+                Companies Actively Hiring
+            </h1>
+            <p class="theme-secondary-text text-base">
+                {{ total_results }} compan{{ total_results|pluralize:"y,ies" }} with active job openings
+            </p>
+        </div>
+
+        <!-- Companies Grid -->
+        {% if companies %}
+            <div class="px-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {% for company in companies %}
+                        <div class="theme-card">
+                            <!-- Company Logo -->
+                            <div class="flex items-center mb-4">
+                                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 mr-4"
+                                     style='background-image: url("{% if company.logo_url %}{{ company.logo_url }}{% else %}https://via.placeholder.com/64x64?text={{ company.name|slice:":1"|upper }}{% endif %}");'>
+                                </div>
+                                <div>
+                                    <h3 class="theme-primary-text text-lg font-semibold leading-tight mb-1">
+                                        {{ company.name }}
+                                    </h3>
+                                    <p class="theme-secondary-text text-sm">
+                                        {{ company.active_job_count }} active job{{ company.active_job_count|pluralize }}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- Action Button -->
+                            <div class="mt-4">
+                                <a href="/?q={{ company.name|urlencode }}" 
+                                   class="theme-button-primary w-full">
+                                    <span class="truncate">View {{ company.active_job_count }} Job{{ company.active_job_count|pluralize }}</span>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div class="text-center py-8">
+                <h2 class="theme-primary-text text-[24px] font-bold leading-tight tracking-[-0.015em] mb-2">
+                    No companies are currently hiring
+                </h2>
+                <p class="theme-secondary-text text-base mb-4">
+                    There are no companies with active job openings at this time.
+                </p>
+                <a href="/" class="theme-button-primary min-w-[84px] max-w-[480px]">
+                    <span class="truncate">Browse All Jobs</span>
+                </a>
+            </div>
+        {% endif %}
+
+        <!-- Pagination -->
+        {% if page_obj.paginator.num_pages > 1 %}
+            {% include 'tallinnstartups/components/pagination.html' %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

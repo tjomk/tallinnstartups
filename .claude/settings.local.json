@@ -3,7 +3,8 @@
     "allow": [
       "Bash(poetry run:*)",
       "Bash(curl:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(find:*)"
     ],
     "deny": []
   }

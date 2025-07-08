@@ -1,6 +1,7 @@
 from typing import List, Dict, Any, Optional
 from django.db.models import Count, QuerySet
 from django.db import models
+from django.utils import timezone
 from .models import Job, Company
 import uuid
 
@@ -35,6 +36,14 @@ class JobRepository:
         """Get all live jobs ordered by creation date for pagination."""
         return Job.objects.filter(
             status='live'
+        ).select_related('company').order_by('-created_at')
+    
+    @staticmethod
+    def get_jobs_by_category(category: str) -> QuerySet:
+        """Get all live jobs in a specific category ordered by creation date."""
+        return Job.objects.filter(
+            status='live',
+            category=category
         ).select_related('company').order_by('-created_at')
     
     @staticmethod
@@ -121,3 +130,19 @@ class CompanyRepository:
         return Company.objects.annotate(
             job_count=Count('jobs', filter=models.Q(jobs__status='live'))
         ).order_by('-job_count')
+    
+    @staticmethod
+    def get_actively_hiring_companies() -> QuerySet:
+        """Get companies that have active, non-expired jobs."""
+        now = timezone.now()
+        active_jobs_filter = models.Q(
+            jobs__status='live'
+        ) & (
+            models.Q(jobs__expires_at__isnull=True) | models.Q(jobs__expires_at__gt=now)
+        )
+        
+        return Company.objects.filter(
+            active_jobs_filter
+        ).annotate(
+            active_job_count=Count('jobs', filter=active_jobs_filter)
+        ).filter(active_job_count__gt=0).order_by('-active_job_count').distinct()

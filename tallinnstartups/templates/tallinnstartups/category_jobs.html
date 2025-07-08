@@ -1,0 +1,55 @@
+{% extends 'tallinnstartups/base.html' %}
+
+{% block title %}{{ category_display_name }} Jobs - CareerConnect{% endblock %}
+
+{% block content %}
+<div class="px-40 flex flex-1 justify-center py-5">
+    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+        <!-- Category Header -->
+        <div class="px-4 py-6">
+            <h1 class="text-[#0d141c] text-[32px] font-bold leading-tight tracking-[-0.015em] mb-2">
+                {{ category_display_name }} Jobs
+            </h1>
+            <p class="text-[#49719c] text-base">
+                {{ total_results }} job{{ total_results|pluralize }} found in {{ category_display_name|lower }}
+            </p>
+        </div>
+
+        <!-- Job Categories -->
+        <div class="mb-6">
+            <h2 class="text-[#0d141c] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3">Browse Other Categories</h2>
+            {% include 'tallinnstartups/components/job_categories.html' %}
+        </div>
+
+        <!-- Jobs List -->
+        {% if jobs %}
+            <div class="px-4">
+                <h2 class="text-[#0d141c] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 mb-3">
+                    {{ category_display_name }} Jobs
+                </h2>
+                
+                {% for job in jobs %}
+                    {% include 'tallinnstartups/components/job_card.html' %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-8">
+                <h2 class="text-[#0d141c] text-[24px] font-bold leading-tight tracking-[-0.015em] mb-2">
+                    No {{ category_display_name|lower }} jobs found
+                </h2>
+                <p class="text-[#49719c] text-base mb-4">
+                    There are currently no jobs available in the {{ category_display_name|lower }} category.
+                </p>
+                <a href="/" class="inline-block bg-[#007bff] text-white px-6 py-2 rounded-md hover:bg-[#0056b3] transition-colors">
+                    Browse All Jobs
+                </a>
+            </div>
+        {% endif %}
+
+        <!-- Pagination -->
+        {% if page_obj.paginator.num_pages > 1 %}
+            {% include 'tallinnstartups/components/pagination.html' %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

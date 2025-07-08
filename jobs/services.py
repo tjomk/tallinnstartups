@@ -1,5 +1,6 @@
 from typing import List, Dict, Any
 from django.core.paginator import Paginator
+from django.urls import reverse
 from .repositories import JobRepository, CompanyRepository
 from .models import Job
 import uuid
@@ -17,14 +18,22 @@ class HomePageService:
         if search_query:
             return self._get_search_results(search_query, page, jobs_per_page)
         else:
+            # Get paginated latest jobs for home page
+            all_latest_jobs = self.job_repository.get_latest_jobs()
+            paginator = Paginator(all_latest_jobs, jobs_per_page)
+            page_obj = paginator.get_page(page)
+            
+            # Format the paginated jobs
+            formatted_latest = [self._format_job_data(job) for job in page_obj]
+            
             return {
                 'categories': self._get_formatted_categories(),
                 'featured_jobs': self._get_formatted_featured_jobs(),
-                'latest_jobs': self._get_formatted_latest_jobs(),
+                'latest_jobs': formatted_latest,
                 'is_search_results': False,
                 'search_query': None,
-                'total_results': None,
-                'page_obj': None
+                'total_results': paginator.count,
+                'page_obj': page_obj
             }
     
     def _get_search_results(self, query: str, page: int = 1, jobs_per_page: int = 10) -> Dict[str, Any]:
@@ -67,7 +76,7 @@ class HomePageService:
             categories.append({
                 'name': category_name,
                 'count': cat['count'],
-                'url': None
+                'url': reverse('category_jobs', kwargs={'category': cat['category']})
             })
         
         return categories
@@ -116,6 +125,28 @@ class HomePageService:
                 'total_results': paginator.count,
                 'page_obj': page_obj
             }
+    
+    def get_category_page_data(self, category: str, page: int = 1, jobs_per_page: int = 10) -> Dict[str, Any]:
+        """Get data for a specific category page with pagination."""
+        # Get all jobs for this category
+        category_jobs = self.job_repository.get_jobs_by_category(category)
+        paginator = Paginator(category_jobs, jobs_per_page)
+        page_obj = paginator.get_page(page)
+        
+        # Format the jobs
+        formatted_jobs = [self._format_job_data(job) for job in page_obj]
+        
+        # Get category display name
+        category_display_name = dict(Job.CATEGORY_CHOICES).get(category, category.title())
+        
+        return {
+            'category': category,
+            'category_display_name': category_display_name,
+            'categories': self._get_formatted_categories(),
+            'jobs': formatted_jobs,
+            'total_results': paginator.count,
+            'page_obj': page_obj
+        }
 
 
 class JobService:
@@ -164,3 +195,27 @@ class CompanyService:
             }
             for company in companies
         ]
+    
+    def get_actively_hiring_companies_page_data(self, page: int = 1, companies_per_page: int = 12) -> Dict[str, Any]:
+        """Get paginated data for actively hiring companies."""
+        # Get all actively hiring companies
+        all_companies = self.company_repository.get_actively_hiring_companies()
+        paginator = Paginator(all_companies, companies_per_page)
+        page_obj = paginator.get_page(page)
+        
+        # Format the companies
+        formatted_companies = [
+            {
+                'id': company.id,
+                'name': company.name,
+                'logo_url': company.logo_url or '',
+                'active_job_count': company.active_job_count
+            }
+            for company in page_obj
+        ]
+        
+        return {
+            'companies': formatted_companies,
+            'total_results': paginator.count,
+            'page_obj': page_obj
+        }

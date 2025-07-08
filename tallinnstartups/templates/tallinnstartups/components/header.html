@@ -1,6 +1,6 @@
-<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e7edf4] px-10 py-3">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid px-10 py-3" style="border-bottom-color: var(--border-secondary);">
     <div class="flex items-center gap-8">
-        <a href="{% url 'home' %}" class="flex items-center gap-4 text-[#0d141c]">
+        <a href="{% url 'home' %}" class="flex items-center gap-4 theme-primary-text">
             <div class="size-4">
                 <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -9,15 +9,15 @@
                     ></path>
                 </svg>
             </div>
-            <h2 class="text-[#0d141c] text-lg font-bold leading-tight tracking-[-0.015em]">CareerConnect</h2>
+            <h2 class="theme-primary-text text-lg font-bold leading-tight tracking-[-0.015em]">CareerConnect</h2>
         </a>
         <nav class="flex items-center gap-9">
-            <a class="text-[#0d141c] text-sm font-medium leading-normal" href="{% url 'jobs' %}">Jobs</a>
-            <a class="text-[#0d141c] text-sm font-medium leading-normal" href="{% url 'companies' %}">Companies</a>
+            <a class="theme-primary-text text-sm font-medium leading-normal" href="{% url 'jobs' %}">Jobs</a>
+            <a class="theme-primary-text text-sm font-medium leading-normal" href="{% url 'companies' %}">Companies</a>
         </nav>
     </div>
     <div class="flex flex-1 justify-end gap-8">
-        <a href="{% url 'post_job' %}" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-sm h-10 px-4 bg-[#0c7ff2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
+        <a href="{% url 'post_job' %}" class="theme-button-primary min-w-[84px] max-w-[480px]">
             <span class="truncate">Post a New Job</span>
         </a>
     </div>

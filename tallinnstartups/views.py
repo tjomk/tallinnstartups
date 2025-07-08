@@ -4,7 +4,7 @@ from django.db import transaction
 from django.utils import timezone
 from django.http import Http404
 from datetime import timedelta
-from jobs.services import HomePageService
+from jobs.services import HomePageService, CompanyService
 from jobs.forms import JobSubmissionForm, JobSearchForm
 from jobs.models import Job, Company
 
@@ -145,3 +145,32 @@ def job_detail(request, slug):
     return render(request, 'tallinnstartups/job_detail.html', {
         'job': job
     })
+
+
+def category_jobs(request, category):
+    """
+    Category page view that displays jobs for a specific category.
+    """
+    # Validate category exists in choices
+    valid_categories = dict(Job.CATEGORY_CHOICES)
+    if category not in valid_categories:
+        raise Http404("Category not found")
+    
+    page = request.GET.get('page', 1)
+    
+    home_service = HomePageService()
+    context = home_service.get_category_page_data(category=category, page=int(page))
+    
+    return render(request, 'tallinnstartups/category_jobs.html', context)
+
+
+def companies_list(request):
+    """
+    Companies page view that displays actively hiring companies with pagination.
+    """
+    page = request.GET.get('page', 1)
+    
+    company_service = CompanyService()
+    context = company_service.get_actively_hiring_companies_page_data(page=int(page))
+    
+    return render(request, 'tallinnstartups/companies_list.html', context)
