@@ -1,6 +1,6 @@
 {% if job.slug %}
     <a href="{% url 'job_detail' slug=job.slug %}" class="block mb-2.5">
-        <div class="theme-job-card flex items-center gap-4">
+        <div class="theme-job-card flex items-center gap-4 relative">
             {% if job.company_logo %}
                 <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
                      style='background-image: url("{{ job.company_logo }}");'>
@@ -9,7 +9,7 @@
                 <div class="company-logo-default aspect-square rounded-lg size-14">
                 </div>
             {% endif %}
-            <div class="flex flex-col justify-center">
+            <div class="flex flex-col justify-center flex-1">
                 <p class="theme-primary-text text-[18px] font-medium leading-normal line-clamp-1">
                     {{ job.title }}
                 </p>
@@ -17,10 +17,15 @@
                     {{ job.company_name }}
                 </p>
             </div>
+            {% if job.is_featured %}
+                <div class="flex items-center justify-center">
+                    <span class="featured-star-inline" style="font-size: 20px;"></span>
+                </div>
+            {% endif %}
         </div>
     </a>
 {% else %}
-    <div class="theme-job-card flex items-center gap-4">
+    <div class="theme-job-card flex items-center gap-4 relative">
         {% if job.company_logo %}
             <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
                  style='background-image: url("{{ job.company_logo }}");'>
@@ -29,7 +34,7 @@
             <div class="company-logo-default aspect-square rounded-lg size-14">
             </div>
         {% endif %}
-        <div class="flex flex-col justify-center">
+        <div class="flex flex-col justify-center flex-1">
             <p class="theme-primary-text text-[18px] font-medium leading-normal line-clamp-1">
                 {{ job.title }}
             </p>
@@ -37,5 +42,10 @@
                 {{ job.company_name }}
             </p>
         </div>
+        {% if job.is_featured %}
+            <div class="flex items-center justify-center">
+                <span class="featured-star-inline" style="font-size: 20px;"></span>
+            </div>
+        {% endif %}
     </div>
 {% endif %}

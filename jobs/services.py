@@ -100,6 +100,7 @@ class HomePageService:
             'location': job.location,
             'salary_range': job.salary_range,
             'slug': job.slug,
+            'is_featured': job.is_featured,
         }
     
     def get_jobs_page_data(self, page: int = 1, jobs_per_page: int = 10, search_query: str = None) -> Dict[str, Any]:
