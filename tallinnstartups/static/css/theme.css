@@ -216,3 +216,12 @@
   font-size: 0.75rem;
 }
 
+.theme-featured-tag {
+  background-color: rgb(230, 114, 110);
+  color: rgb(233, 237, 242);
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+}
+

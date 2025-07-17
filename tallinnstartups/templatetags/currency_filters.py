@@ -11,7 +11,7 @@ def format_eur_range(value):
         return value
     
     try:
-        min_val, max_val = value.split('-', 1)
+        min_val, max_val = value.replace("€", "").split('-', 1)
         return f"€{min_val} - €{max_val}"
     except ValueError:
         return value
