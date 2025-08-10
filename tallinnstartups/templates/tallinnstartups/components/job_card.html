@@ -2,7 +2,7 @@
     <a href="{% url 'job_detail' slug=job.slug %}" class="block mb-2.5">
         <div class="theme-job-card flex items-center gap-4 relative">
             {% if job.company_logo %}
-                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
+                <div class="bg-center bg-no-repeat aspect-square bg-contain rounded-lg size-14 bg-white border border-gray-100"
                      style='background-image: url("{{ job.company_logo }}");'>
                 </div>
             {% else %}
@@ -27,7 +27,7 @@
 {% else %}
     <div class="theme-job-card flex items-center gap-4 relative">
         {% if job.company_logo %}
-            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
+            <div class="bg-center bg-no-repeat aspect-square bg-contain rounded-lg size-14 bg-white border border-gray-100"
                  style='background-image: url("{{ job.company_logo }}");'>
             </div>
         {% else %}

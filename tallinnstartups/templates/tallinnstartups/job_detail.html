@@ -15,7 +15,7 @@
         <div class="flex flex-col gap-4 px-4 py-6 bg-white rounded-lg shadow-sm border border-[#dde3e8] mb-6">
             <div class="flex items-start gap-4">
                 {% if job.company.logo_url %}
-                    <img src="{{ job.company.logo_url }}" alt="{{ job.company.name }}" class="w-16 h-16 object-cover rounded-lg">
+                    <img src="{{ job.company.logo_url }}" alt="{{ job.company.name }}" class="w-16 h-16 object-contain rounded-lg">
                 {% else %}
                     <div class="w-16 h-16 bg-[#0d7847] rounded-lg flex items-center justify-center">
                         <span class="text-white font-bold text-lg">{{ job.company.name|first }}</span>

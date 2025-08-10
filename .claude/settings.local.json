@@ -5,7 +5,17 @@
       "Bash(curl:*)",
       "Bash(grep:*)",
       "Bash(find:*)",
-      "Bash(touch:*)"
+      "Bash(touch:*)",
+      "WebFetch(domain:careers.montonio.com)",
+      "WebFetch(domain:bolt.eu)",
+      "WebFetch(domain:en.wikipedia.org)",
+      "Bash(rm:*)",
+      "WebFetch(domain:www.modash.io)",
+      "WebFetch(domain:apply.workable.com)",
+      "WebFetch(domain:apply.workable.com)",
+      "WebFetch(domain:apply.workable.com)",
+      "WebFetch(domain:careers.pactum.com)",
+      "WebFetch(domain:starship.teamtailor.com)"
     ],
     "deny": []
   }

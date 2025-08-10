@@ -124,6 +124,78 @@ Current URL patterns (all route to home view for testing):
 - `/post-job/` - Job posting form
 - `/admin/` - Django admin interface
 
+## Database Models
+
+### Company Model (`jobs/models.py`)
+- `name`: Company name (CharField, max_length=200)
+- `logo_url`: Company logo URL (URLField, optional)
+
+### Job Model (`jobs/models.py`)
+- `id`: UUID primary key (auto-generated)
+- `title`: Job title (CharField, max_length=200)
+- `description`: Job description (TextField)
+- `salary_range`: Salary information (CharField, max_length=100)
+- `category`: Job category (CharField with predefined choices)
+- `location`: Job location (CharField, max_length=200)
+- `company`: Foreign key to Company model
+- `application_contact`: Application email/URL (CharField, max_length=255)
+- `status`: Job status ('live' or 'in_review')
+- `is_featured`: Featured job flag (BooleanField, default=False)
+- `expires_at`: Job expiry date (DateTimeField, optional)
+- `slug`: SEO-friendly URL slug (auto-generated)
+- `created_at`, `updated_at`: Timestamps (auto-managed)
+
+Available job categories: engineering, design, marketing, sales, product, operations, finance, hr, customer_support, other
+
+## Adding New Jobs and Companies
+
+### Quick Method - Using Django Shell
+```bash
+poetry run python manage.py shell -c "
+from jobs.models import Company, Job
+from datetime import timedelta
+from django.utils import timezone
+
+# Create company
+company, created = Company.objects.get_or_create(
+    name='Company Name',
+    defaults={'logo_url': 'https://example.com/logo.png'}
+)
+
+# Create job
+job = Job.objects.create(
+    title='Job Title',
+    description='Job description with requirements and benefits...',
+    salary_range='Salary information',
+    category='engineering',  # Choose from available categories
+    location='City, Country',
+    company=company,
+    application_contact='https://careers.company.com/job-url',
+    status='live',
+    expires_at=timezone.now() + timedelta(days=30)
+)
+print(f'Created: {job.title} at {company.name} (ID: {job.id})')
+"
+```
+
+### Script Method - For Complex Jobs
+Create a temporary Python script:
+```python
+import os, sys, django
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tallinnstartups.settings')
+django.setup()
+
+from jobs.models import Company, Job
+from django.utils import timezone
+from datetime import timedelta
+
+# Your job creation code here
+company, created = Company.objects.get_or_create(...)
+job = Job.objects.create(...)
+```
+Then run: `poetry run python script_name.py`
+
 ## Development Notes
 
 - The project uses Poetry for dependency management instead of pip/requirements.txt
@@ -132,3 +204,5 @@ Current URL patterns (all route to home view for testing):
 - Templates support both dynamic data from views and static fallbacks
 - Original `index.html` preserved as reference, new templates are in `tallinnstartups/templates/`
 - Main view logic is in `tallinnstartups/views.py` with sample data for testing
+- Job slugs are auto-generated from title and company name with UUID suffix for uniqueness
+- Jobs with status='live' and non-expired dates are visible to public via `is_visible` property
