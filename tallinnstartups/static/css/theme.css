@@ -60,6 +60,28 @@
   --color-slate-700: #334155;
   --color-slate-800: #1e293b;
   --color-slate-900: #0f172a;
+  
+  /* Nordic Warm Colors */
+  --nordic-cream: #faf9f7;
+  --nordic-sage: #e8f2e8;
+  --nordic-lavender: #f0f0f8;
+  --nordic-peach: #fef7f4;
+  --nordic-blue-gray: #f1f4f7;
+  --nordic-warm-gray: #f8f9fa;
+  --nordic-soft-blue: #f4f7fa;
+  --nordic-mint: #f0f8f4;
+  
+  /* Category Colors */
+  --category-engineering: #f0f0f8;
+  --category-design: #e8f2e8;
+  --category-marketing: #fef7f4;
+  --category-sales: #f4f7fa;
+  --category-product: #f8f5ff;
+  --category-operations: #f1f4f7;
+  --category-finance: #fff8f0;
+  --category-hr: #f0f8f4;
+  --category-support: #f4f8ff;
+  --category-other: #f8f9fa;
 }
 
 /* Theme Utility Classes */
@@ -119,7 +141,7 @@
 }
 
 .theme-input {
-  background-color: var(--bg-light);
+  background-color: var(--nordic-cream);
   border: none;
   border-radius: 0.125rem;
   padding: 0.75rem 1rem;
@@ -154,18 +176,21 @@
 }
 
 .theme-job-card {
-  background-color: var(--bg-light);
+  background-color: var(--nordic-warm-gray);
   border: 1px solid var(--color-slate-200);
   border-radius: 0.125rem;
   padding: 0.5rem 1rem;
   min-height: 4.5rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
   margin-bottom: 0.625rem;
+  border-left: 3px solid var(--color-slate-300);
 }
 
 .theme-job-card:hover {
-  background-color: transparent;
+  background-color: var(--color-white);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .theme-pagination-button {
@@ -223,5 +248,79 @@
   font-weight: 500;
   padding: 0.25rem 0.5rem;
   border-radius: 9999px;
+}
+
+/* Category-specific job card colors */
+.theme-job-card.category-engineering {
+  border-left-color: #6366f1;
+  background-color: var(--category-engineering);
+}
+
+.theme-job-card.category-design {
+  border-left-color: #10b981;
+  background-color: var(--category-design);
+}
+
+.theme-job-card.category-marketing {
+  border-left-color: #f59e0b;
+  background-color: var(--category-marketing);
+}
+
+.theme-job-card.category-sales {
+  border-left-color: #3b82f6;
+  background-color: var(--category-sales);
+}
+
+.theme-job-card.category-product {
+  border-left-color: #8b5cf6;
+  background-color: var(--category-product);
+}
+
+.theme-job-card.category-operations {
+  border-left-color: #6b7280;
+  background-color: var(--category-operations);
+}
+
+.theme-job-card.category-finance {
+  border-left-color: #059669;
+  background-color: var(--category-finance);
+}
+
+.theme-job-card.category-hr {
+  border-left-color: #84cc16;
+  background-color: var(--category-hr);
+}
+
+.theme-job-card.category-customer_support {
+  border-left-color: #06b6d4;
+  background-color: var(--category-support);
+}
+
+.theme-job-card.category-other {
+  border-left-color: var(--color-slate-400);
+  background-color: var(--category-other);
+}
+
+/* Section headers with subtle backgrounds */
+.theme-section-header {
+  background: linear-gradient(135deg, var(--nordic-blue-gray) 0%, var(--nordic-cream) 100%);
+  padding: 0.75rem 1rem;
+  border-radius: 0.25rem;
+  border-left: 4px solid var(--primary-blue-lighter);
+  margin-bottom: 1rem;
+}
+
+.theme-section-header.featured {
+  background: linear-gradient(135deg, var(--nordic-peach) 0%, var(--nordic-cream) 100%);
+  border-left-color: #f59e0b;
+}
+
+.theme-section-header h2 {
+  margin: 0;
+}
+
+/* Gradient background for main container */
+.theme-gradient-bg {
+  background: linear-gradient(135deg, var(--nordic-cream) 0%, var(--nordic-warm-gray) 50%, var(--nordic-blue-gray) 100%);
 }
 

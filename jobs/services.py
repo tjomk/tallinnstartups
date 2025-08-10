@@ -171,6 +171,7 @@ class JobService:
             'location': job.location,
             'salary_range': job.salary_range,
             'category': job.get_category_display(),
+            'category_key': job.category,
             'created_at': job.created_at,
             'is_featured': job.is_featured,
             'status': job.get_status_display(),
