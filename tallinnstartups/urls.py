@@ -16,6 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.contrib.staticfiles import views as static_views
+from django.urls import re_path
+
 from . import views
 
 urlpatterns = [
@@ -29,4 +33,5 @@ urlpatterns = [
     path('career-advice/', views.home, name='career_advice'),
     path('post-job/', views.post_job, name='post_job'),
     path('job-submitted/', views.job_submission_success, name='job_submission_success'),
+    re_path(r"^static/(?P<path>.*)$", static_views.serve),
 ]
