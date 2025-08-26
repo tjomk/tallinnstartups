@@ -211,6 +211,7 @@ class CompanyService:
                 'id': company.id,
                 'name': company.name,
                 'logo_url': company.logo_url or '',
+                'slug': company.slug,
                 'active_job_count': company.active_job_count
             }
             for company in page_obj

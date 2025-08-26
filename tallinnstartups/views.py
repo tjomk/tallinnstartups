@@ -174,3 +174,33 @@ def companies_list(request):
     context = company_service.get_actively_hiring_companies_page_data(page=int(page))
     
     return render(request, 'tallinnstartups/companies_list.html', context)
+
+
+def company_jobs(request, slug):
+    """
+    Company jobs page view that displays all jobs for a specific company.
+    """
+    company = get_object_or_404(Company, slug=slug)
+    page = request.GET.get('page', 1)
+    
+    # Get all visible jobs for this company
+    jobs = Job.objects.filter(
+        company=company,
+        status='live'
+    ).exclude(
+        expires_at__lte=timezone.now()
+    ).order_by('-is_featured', '-created_at')
+    
+    # Pagination (same as other pages, 10 jobs per page)
+    from django.core.paginator import Paginator
+    paginator = Paginator(jobs, 10)
+    page_obj = paginator.get_page(page)
+    
+    context = {
+        'company': company,
+        'jobs': page_obj.object_list,
+        'page_obj': page_obj,
+        'total_results': paginator.count,
+    }
+    
+    return render(request, 'tallinnstartups/company_jobs.html', context)

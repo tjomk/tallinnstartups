@@ -1,0 +1,77 @@
+{% extends 'tallinnstartups/base.html' %}
+
+{% block title %}{{ company.name }} Jobs - Estonian Startup Jobs{% endblock %}
+
+{% block content %}
+<div class="px-4 sm:px-10 lg:px-40 flex flex-1 justify-center py-5">
+    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+        <!-- Header with Company Info -->
+        <div class="px-4 py-6">
+            <div class="flex items-center mb-4">
+                {% if company.logo_url %}
+                    <div class="bg-center bg-no-repeat aspect-square bg-contain rounded-lg size-16 mr-4"
+                         style='background-image: url("{{ company.logo_url }}");'>
+                    </div>
+                {% else %}
+                    <div class="company-logo-default aspect-square rounded-lg size-16 mr-4">
+                    </div>
+                {% endif %}
+                <div>
+                    <h1 class="theme-primary-text text-[32px] font-bold leading-tight tracking-[-0.015em] mb-2">
+                        {{ company.name }}
+                    </h1>
+                    <p class="theme-secondary-text text-base">
+                        {% if total_results > 0 %}
+                            {{ total_results }} open position{{ total_results|pluralize }} available
+                        {% else %}
+                            No open positions at this time
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Back to Companies -->
+            <div class="mb-4">
+                <a href="{% url 'companies' %}" class="theme-secondary-text text-sm hover:theme-primary-text transition-colors">
+                    ← Back to all companies
+                </a>
+            </div>
+        </div>
+
+        <!-- Jobs List -->
+        {% if jobs %}
+            <div class="px-4 py-3">
+                <h2 class="theme-primary-text text-[22px] font-bold leading-tight tracking-[-0.015em] mb-4">
+                    Open Positions
+                </h2>
+                
+                {% for job in jobs %}
+                    {% include 'tallinnstartups/components/job_card.html' %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-12">
+                <h2 class="theme-primary-text text-[24px] font-bold leading-tight tracking-[-0.015em] mb-2">
+                    No Open Positions
+                </h2>
+                <p class="theme-secondary-text text-base mb-4">
+                    {{ company.name }} doesn't have any open positions at the moment. Check back later for new opportunities!
+                </p>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <a href="{% url 'companies' %}" class="theme-button-secondary">
+                        <span class="truncate">Browse Other Companies</span>
+                    </a>
+                    <a href="{% url 'home' %}" class="theme-button-primary">
+                        <span class="truncate">View All Jobs</span>
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Pagination -->
+        {% if page_obj.paginator.num_pages > 1 %}
+            {% include 'tallinnstartups/components/pagination.html' %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

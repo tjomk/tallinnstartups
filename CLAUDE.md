@@ -115,13 +115,17 @@ The project uses a modular Django template system:
 
 ## URL Configuration
 
-Current URL patterns (all route to home view for testing):
+Current URL patterns:
 - `/` - Home page (landing page)
 - `/jobs/` - Job listings page
+- `/job/<slug>/` - Individual job detail page
+- `/categories/<category>/` - Jobs filtered by category
 - `/companies/` - Company directory
+- `/company/<slug>/` - Individual company jobs page (SEO-friendly)
 - `/salaries/` - Salary information
 - `/career-advice/` - Career resources
 - `/post-job/` - Job posting form
+- `/job-submitted/` - Job submission success page
 - `/admin/` - Django admin interface
 
 ## Database Models
@@ -129,6 +133,7 @@ Current URL patterns (all route to home view for testing):
 ### Company Model (`jobs/models.py`)
 - `name`: Company name (CharField, max_length=200)
 - `logo_url`: Company logo URL (URLField, optional)
+- `slug`: SEO-friendly URL slug (auto-generated from company name)
 
 ### Job Model (`jobs/models.py`)
 - `id`: UUID primary key (auto-generated)
@@ -148,6 +153,10 @@ Current URL patterns (all route to home view for testing):
 Available job categories: engineering, design, marketing, sales, product, operations, finance, hr, customer_support, other
 
 ## Adding New Jobs and Companies
+
+**Note**: Both Company and Job models automatically generate SEO-friendly slugs:
+- Company slugs are used for company pages: `/company/<slug>/` (e.g., `/company/bolt/`)
+- Job slugs are used for job detail pages: `/job/<slug>/` (e.g., `/job/senior-engineer-at-bolt-abc123/`)
 
 ### Quick Method - Using Django Shell
 ```bash

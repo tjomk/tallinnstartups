@@ -7,9 +7,25 @@ import uuid
 class Company(models.Model):
     name = models.CharField(max_length=200)
     logo_url = models.URLField(blank=True, null=True)
+    slug = models.SlugField(max_length=255, unique=True, blank=True, null=True, help_text="SEO-friendly URL slug")
     
     def __str__(self):
         return self.name
+    
+    def generate_slug(self):
+        """Generate SEO-friendly slug from company name"""
+        return slugify(self.name)[:255]
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = self.generate_slug()
+            self.slug = base_slug
+            # Ensure uniqueness by appending numbers if needed
+            counter = 1
+            while Company.objects.filter(slug=self.slug).exists():
+                self.slug = f"{base_slug}-{counter}"
+                counter += 1
+        super().save(*args, **kwargs)
     
     class Meta:
         verbose_name_plural = "companies"

@@ -29,6 +29,7 @@ urlpatterns = [
     path('job/<slug:slug>/', views.job_detail, name='job_detail'),
     path('categories/<str:category>/', views.category_jobs, name='category_jobs'),
     path('companies/', views.companies_list, name='companies'),
+    path('company/<slug:slug>/', views.company_jobs, name='company_jobs'),
     path('salaries/', views.home, name='salaries'),
     path('career-advice/', views.home, name='career_advice'),
     path('post-job/', views.post_job, name='post_job'),

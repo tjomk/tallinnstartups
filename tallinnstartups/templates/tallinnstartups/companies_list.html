@@ -1,9 +1,9 @@
 {% extends 'tallinnstartups/base.html' %}
 
-{% block title %}Companies Actively Hiring - CareerConnect{% endblock %}
+{% block title %}Companies Actively Hiring - Estonian Startup Jobs{% endblock %}
 
 {% block content %}
-<div class="px-40 flex flex-1 justify-center py-5">
+<div class="px-4 sm:px-10 lg:px-40 flex flex-1 justify-center py-5">
     <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
         <!-- Page Header -->
         <div class="px-4 py-6">
@@ -17,25 +17,25 @@
 
         <!-- Companies Grid -->
         {% if companies %}
-            <div class="px-4">
+            <div class="px-2 sm:px-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {% for company in companies %}
                         <div class="theme-card">
                             <!-- Company Logo -->
                             <div class="flex items-center mb-4">
                                 {% if company.logo_url %}
-                                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 mr-4"
+                                    <div class="bg-center bg-no-repeat aspect-square bg-contain rounded-lg size-16 mr-4"
                                          style='background-image: url("{{ company.logo_url }}");'>
                                     </div>
                                 {% else %}
                                     <div class="company-logo-default aspect-square rounded-lg size-16 mr-4">
                                     </div>
                                 {% endif %}
-                                <div>
-                                    <h3 class="theme-primary-text text-lg font-semibold leading-tight mb-1">
+                                <div class="flex-1 min-w-0">
+                                    <h3 class="theme-primary-text text-lg font-semibold leading-tight mb-1 break-words">
                                         {{ company.name }}
                                     </h3>
-                                    <p class="theme-secondary-text text-sm">
+                                    <p class="theme-secondary-text text-sm break-words">
                                         {{ company.active_job_count }} active job{{ company.active_job_count|pluralize }}
                                     </p>
                                 </div>
@@ -43,7 +43,7 @@
                             
                             <!-- Action Button -->
                             <div class="mt-4">
-                                <a href="/?q={{ company.name|urlencode }}" 
+                                <a href="{% url 'company_jobs' slug=company.slug %}" 
                                    class="theme-button-primary w-full">
                                     <span class="truncate">View {{ company.active_job_count }} Job{{ company.active_job_count|pluralize }}</span>
                                 </a>
