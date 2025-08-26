@@ -35,7 +35,10 @@
             
             {% if job.is_featured %}
                 <div class="flex items-center gap-2 mt-2">
-                    <span class="theme-featured-tag">⭐ Featured</span>
+                    <span class="theme-featured-tag">
+                        <span class="sm:hidden">⭐</span>
+                        <span class="hidden sm:inline">⭐ Featured</span>
+                    </span>
                 </div>
             {% endif %}
         </div>
