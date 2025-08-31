@@ -4,9 +4,44 @@ from django.db import transaction
 from django.utils import timezone
 from django.http import Http404
 from datetime import timedelta
+import logging
+import hashlib
+import json
+from django_ratelimit.decorators import ratelimit
 from jobs.services import HomePageService, CompanyService
 from jobs.forms import JobSubmissionForm, JobSearchForm
-from jobs.models import Job, Company
+from jobs.models import Job, Company, JobSubmissionLog
+
+# Initialize loggers
+security_logger = logging.getLogger('security')
+submissions_logger = logging.getLogger('job_submissions')
+
+
+def create_audit_log(ip_address, user_agent, result, job=None, company_name='', job_title='', error_details='', form_data=None):
+    """Create audit log entry for job submission"""
+    # Create hash of form data for duplicate detection
+    form_data_hash = ''
+    if form_data:
+        # Only hash non-sensitive fields
+        hashable_data = {
+            'company_name': form_data.get('company_name', ''),
+            'job_title': form_data.get('job_title', ''),
+            'job_category': form_data.get('job_category', ''),
+            'company_website': form_data.get('company_website', ''),
+        }
+        data_string = json.dumps(hashable_data, sort_keys=True)
+        form_data_hash = hashlib.sha256(data_string.encode()).hexdigest()
+    
+    JobSubmissionLog.objects.create(
+        ip_address=ip_address,
+        user_agent=user_agent[:500],  # Truncate if too long
+        result=result,
+        job=job,
+        company_name=company_name[:200],
+        job_title=job_title[:200],
+        error_details=error_details[:1000],
+        form_data_hash=form_data_hash
+    )
 
 
 def home(request):
@@ -45,11 +80,23 @@ def jobs_list(request):
     return render(request, 'tallinnstartups/jobs_list.html', context)
 
 
+@ratelimit(key='ip', rate='3/h', method='POST', block=True)
 def post_job(request):
     """
     Job posting form view with form handling.
     """
+    # Get client IP for logging
+    client_ip = request.META.get('HTTP_X_FORWARDED_FOR')
+    if client_ip:
+        client_ip = client_ip.split(',')[0]
+    else:
+        client_ip = request.META.get('REMOTE_ADDR')
+    
+    user_agent = request.META.get('HTTP_USER_AGENT', 'Unknown')
+    
     if request.method == 'POST':
+        # Log submission attempt
+        submissions_logger.info(f'Job submission attempt from IP: {client_ip}, User-Agent: {user_agent}')
         form = JobSubmissionForm(request.POST)
         if form.is_valid():
             try:
@@ -60,8 +107,9 @@ def post_job(request):
                         defaults={'logo_url': None}
                     )
                     
-                    # Determine if job should be featured
+                    # Determine if job should be featured and set payment amount
                     is_featured = form.cleaned_data['post_option'] == 'featured'
+                    payment_amount = 75.00 if is_featured else 35.00
                     
                     # Set expiration date (90 days from now)
                     expires_at = timezone.now() + timedelta(days=90)
@@ -81,7 +129,9 @@ def post_job(request):
                         application_contact=form.cleaned_data['application_contact'],
                         is_featured=is_featured,
                         expires_at=expires_at,
-                        status='in_review'  # All new jobs start in review
+                        status='in_review',  # All new jobs start in review
+                        payment_status='pending',  # Payment verification required
+                        payment_amount=payment_amount
                     )
                     
                     # Store additional submission data in session for thank you page
@@ -99,13 +149,60 @@ def post_job(request):
                         'company_type': form.cleaned_data['company_type']
                     }
                     
+                    # Create audit log for successful submission
+                    create_audit_log(
+                        ip_address=client_ip,
+                        user_agent=user_agent,
+                        result='success',
+                        job=job,
+                        company_name=company.name,
+                        job_title=job.title,
+                        form_data=form.cleaned_data
+                    )
+                    
+                    # Log successful submission
+                    submissions_logger.info(
+                        f'Job submission successful - ID: {job.id}, Company: {company.name}, '
+                        f'Title: {job.title}, IP: {client_ip}, Payment Status: {job.payment_status}'
+                    )
+                    
+                    # TODO: Send admin notification email about new job submission
+                    # Implement with proper email provider (SendGrid, AWS SES, etc.)
+                    # send_admin_notification_email(job, form.cleaned_data)
+                    
                     return redirect('job_submission_success')
                     
             except Exception as e:
+                # Create audit log for system error
+                create_audit_log(
+                    ip_address=client_ip,
+                    user_agent=user_agent,
+                    result='system_error',
+                    error_details=str(e),
+                    form_data=form.cleaned_data if form.is_valid() else None
+                )
+                
                 messages.error(request, 'An error occurred while submitting your job. Please try again.')
-                # Log the error in production
-                # logger.error(f"Job submission error: {e}")
+                # Log the error
+                security_logger.error(
+                    f'Job submission error from IP: {client_ip}, Error: {str(e)}, '
+                    f'User-Agent: {user_agent}'
+                )
         else:
+            # Create audit log for validation error
+            create_audit_log(
+                ip_address=client_ip,
+                user_agent=user_agent,
+                result='validation_error',
+                error_details=str(form.errors),
+                form_data=request.POST.dict()
+            )
+            
+            # Log form validation errors
+            security_logger.warning(
+                f'Job submission failed validation from IP: {client_ip}, '
+                f'Errors: {form.errors}, User-Agent: {user_agent}'
+            )
             messages.error(request, 'Please correct the errors below.')
     else:
         form = JobSubmissionForm()

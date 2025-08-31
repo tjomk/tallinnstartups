@@ -1,6 +1,10 @@
 from django import forms
 from django.core.validators import URLValidator, EmailValidator
 from django.core.exceptions import ValidationError
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV2Invisible
+import bleach
+from urllib.parse import urlparse
 from .models import Job
 import re
 
@@ -34,8 +38,8 @@ class JobSubmissionForm(forms.Form):
     ]
     
     POST_OPTION_CHOICES = [
-        ('featured', 'Featured job post: 150€/90 days'),
-        ('standard', 'Standard job post: 75€/90 days'),
+        ('featured', 'Featured job post: 75€/90 days'),
+        ('standard', 'Standard job post: 35€/90 days'),
     ]
     
     # Step 1: Company Type
@@ -134,6 +138,19 @@ class JobSubmissionForm(forms.Form):
         error_messages={'required': 'You must accept the Terms and Conditions.'}
     )
     
+    # Security Fields
+    captcha = ReCaptchaField(
+        widget=ReCaptchaV2Invisible,
+        error_messages={'required': 'Please complete the CAPTCHA verification.'}
+    )
+    
+    # Honeypot field (hidden, should remain empty)
+    website_url = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(),
+        initial=''
+    )
+    
     def clean_job_title(self):
         job_title = self.cleaned_data.get('job_title')
         if job_title:
@@ -157,13 +174,18 @@ class JobSubmissionForm(forms.Form):
     def clean_job_description(self):
         job_description = self.cleaned_data.get('job_description')
         if job_description:
-            # Remove script tags for security
-            job_description = re.sub(r'<script[^>]*>.*?</script>', '', job_description, flags=re.DOTALL | re.IGNORECASE)
-            # Allow basic HTML but sanitize dangerous tags
-            dangerous_tags = ['script', 'iframe', 'object', 'embed', 'form', 'input']
-            for tag in dangerous_tags:
-                job_description = re.sub(f'<{tag}[^>]*>.*?</{tag}>', '', job_description, flags=re.DOTALL | re.IGNORECASE)
-                job_description = re.sub(f'<{tag}[^>]*/?>', '', job_description, flags=re.IGNORECASE)
+            # Allow only safe HTML tags and attributes
+            allowed_tags = ['p', 'br', 'strong', 'em', 'u', 'ul', 'ol', 'li', 'h3', 'h4']
+            allowed_attributes = {
+                '*': ['class'],
+                'li': ['type'],
+            }
+            job_description = bleach.clean(
+                job_description, 
+                tags=allowed_tags, 
+                attributes=allowed_attributes,
+                strip=True
+            )
         return job_description
     
     def clean_application_contact(self):
@@ -200,3 +222,35 @@ class JobSubmissionForm(forms.Form):
             if not re.match(r'^[A-Z0-9]+$', clean_vat):
                 raise ValidationError('VAT number should contain only letters and numbers.')
         return vat_number
+    
+    def clean_website_url(self):
+        """Honeypot field validation - should be empty"""
+        website_url = self.cleaned_data.get('website_url')
+        if website_url:
+            raise ValidationError('Automated submissions are not allowed.')
+        return website_url
+    
+    def clean_company_website(self):
+        website = self.cleaned_data.get('company_website')
+        if website:
+            try:
+                # Basic URL validation first
+                URLValidator()(website)
+                
+                # Parse domain and check against suspicious domains
+                domain = urlparse(website).netloc.lower()
+                suspicious_domains = [
+                    'bit.ly', 'tinyurl.com', 'goo.gl', 't.co', 'short.link',
+                    'suspicious.com', 'malware.com', 'phishing.com'
+                ]
+                
+                if any(sus_domain in domain for sus_domain in suspicious_domains):
+                    raise ValidationError('This domain is not allowed.')
+                    
+                # Basic checks for valid domain structure
+                if not domain or '.' not in domain:
+                    raise ValidationError('Please enter a valid company website.')
+                    
+            except ValidationError:
+                raise ValidationError('Please enter a valid company website URL.')
+        return website

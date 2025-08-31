@@ -50,6 +50,13 @@ class Job(models.Model):
         ('in_review', 'In Review'),
     ]
     
+    PAYMENT_STATUS_CHOICES = [
+        ('pending', 'Payment Pending'),
+        ('verified', 'Payment Verified'),
+        ('failed', 'Payment Failed'),
+        ('refunded', 'Refunded'),
+    ]
+    
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -64,6 +71,27 @@ class Job(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='jobs')
     application_contact = models.CharField(max_length=255, default="", help_text="Email or URL for job applications")
     slug = models.SlugField(max_length=255, unique=True, blank=True, null=True, help_text="SEO-friendly URL slug")
+    
+    # Payment tracking fields
+    payment_status = models.CharField(
+        max_length=20, 
+        choices=PAYMENT_STATUS_CHOICES, 
+        default='pending',
+        help_text="Current payment status"
+    )
+    payment_reference = models.CharField(
+        max_length=100, 
+        blank=True, 
+        null=True,
+        help_text="Payment transaction reference"
+    )
+    payment_amount = models.DecimalField(
+        max_digits=6, 
+        decimal_places=2, 
+        null=True, 
+        blank=True,
+        help_text="Payment amount in EUR"
+    )
     
     def __str__(self):
         return f"{self.title} at {self.company.name}"
@@ -85,12 +113,45 @@ class Job(models.Model):
     
     @property
     def is_visible(self):
-        """Check if job is visible to public (live status and not expired)"""
+        """Check if job is visible to public (live status, not expired, and payment verified)"""
         if self.status != 'live':
             return False
         if self.expires_at and self.expires_at <= timezone.now():
+            return False
+        if self.payment_status != 'verified':
             return False
         return True
     
     class Meta:
         ordering = ['-created_at']
+
+
+class JobSubmissionLog(models.Model):
+    """Audit trail for job submissions"""
+    RESULT_CHOICES = [
+        ('success', 'Success'),
+        ('validation_error', 'Validation Error'),
+        ('system_error', 'System Error'),
+        ('rate_limited', 'Rate Limited'),
+        ('spam_detected', 'Spam Detected'),
+    ]
+    
+    ip_address = models.GenericIPAddressField()
+    submitted_at = models.DateTimeField(auto_now_add=True)
+    user_agent = models.TextField(blank=True)
+    result = models.CharField(max_length=20, choices=RESULT_CHOICES)
+    job = models.ForeignKey(Job, null=True, blank=True, on_delete=models.CASCADE)
+    company_name = models.CharField(max_length=200, blank=True)
+    job_title = models.CharField(max_length=200, blank=True)
+    error_details = models.TextField(blank=True)
+    form_data_hash = models.CharField(max_length=64, blank=True)  # SHA256 hash for duplicate detection
+    
+    def __str__(self):
+        return f"{self.ip_address} - {self.result} - {self.submitted_at}"
+    
+    class Meta:
+        ordering = ['-submitted_at']
+        indexes = [
+            models.Index(fields=['ip_address', 'submitted_at']),
+            models.Index(fields=['result', 'submitted_at']),
+        ]

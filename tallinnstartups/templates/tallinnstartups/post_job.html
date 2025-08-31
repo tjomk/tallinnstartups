@@ -58,11 +58,11 @@
                 <div class="flex flex-col gap-3">
                     <label class="flex items-center gap-3">
                         <input type="radio" name="post_option" value="featured" required class="h-5 w-5 text-[#1980e6]" {% if form.post_option.value == 'featured' %}checked{% endif %}>
-                        <span class="text-[#0d151c] text-sm font-medium">Featured job post: 150€/90 days</span>
+                        <span class="text-[#0d151c] text-sm font-medium">Featured job post: 75€/90 days</span>
                     </label>
                     <label class="flex items-center gap-3">
                         <input type="radio" name="post_option" value="standard" required class="h-5 w-5 text-[#1980e6]" {% if form.post_option.value == 'standard' %}checked{% endif %}>
-                        <span class="text-[#0d151c] text-sm font-medium">Standard job post: 75€/90 days</span>
+                        <span class="text-[#0d151c] text-sm font-medium">Standard job post: 35€/90 days</span>
                     </label>
                 </div>
                 {% if form.post_option.errors %}
