@@ -204,3 +204,17 @@ def company_jobs(request, slug):
     }
     
     return render(request, 'tallinnstartups/company_jobs.html', context)
+
+
+def privacy_policy(request):
+    """
+    Privacy policy page view.
+    """
+    return render(request, 'tallinnstartups/privacy_policy.html')
+
+
+def terms_of_service(request):
+    """
+    Terms of service page view.
+    """
+    return render(request, 'tallinnstartups/terms_of_service.html')

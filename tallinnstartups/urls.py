@@ -32,4 +32,6 @@ urlpatterns = [
     path('career-advice/', views.home, name='career_advice'),
     path('post-job/', views.post_job, name='post_job'),
     path('job-submitted/', views.job_submission_success, name='job_submission_success'),
+    path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
+    path('terms-of-service/', views.terms_of_service, name='terms_of_service'),
 ]
