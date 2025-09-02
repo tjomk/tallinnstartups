@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Disallow: /post-job/
+Disallow: /job-submitted/
+
+# Allow crawling of all job and company pages
+Allow: /job/
+Allow: /company/
+Allow: /companies/
+Allow: /jobs/
+Allow: /categories/
+
+# XML Sitemap
+Sitemap: https://estonianstartupjobs.ee/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1

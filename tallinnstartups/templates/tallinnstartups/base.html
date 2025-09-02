@@ -18,6 +18,16 @@
     {% block meta_keywords %}<meta name="keywords" content="Estonia jobs, Tallinn startup jobs, tech jobs Estonia, Estonian companies, startup careers">{% endblock %}
     <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
     
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
+    <link rel="manifest" href="{% static 'site.webmanifest' %}">
+    <meta name="theme-color" content="#1980e6">
+    <meta name="msapplication-TileColor" content="#1980e6">
+    <meta name="msapplication-config" content="{% static 'browserconfig.xml' %}">
+    
     <!-- Open Graph Meta Tags -->
     <meta property="og:type" content="{% block og_type %}website{% endblock %}">
     <meta property="og:title" content="{% block og_title %}Estonian Startup Jobs{% endblock %}">
@@ -34,8 +44,6 @@
     <meta name="twitter:description" content="{% block twitter_description %}Find your dream job at Estonia's most innovative startups. Browse hundreds of tech jobs in Tallinn, Tartu, and across Estonia. Apply directly to top employers.{% endblock %}">
     <meta name="twitter:image" content="{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{% load static %}{% static 'images/og-default.png' %}{% endblock %}">
     <meta name="twitter:image:alt" content="{% block twitter_image_alt %}Estonian Startup Jobs - Find your dream job{% endblock %}">
-    
-    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link rel="stylesheet" href="{% static 'css/theme.css' %}">
     <style>

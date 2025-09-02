@@ -297,6 +297,30 @@ def job_detail(request, slug):
         # For non-visible jobs, show 404 instead of revealing they exist
         raise Http404("Job not found")
     
+    # Get related jobs at the same company (excluding current job)
+    related_company_jobs = Job.objects.filter(
+        company=job.company,
+        status='live',
+        payment_status='verified'
+    ).exclude(
+        id=job.id
+    ).exclude(
+        expires_at__lte=timezone.now()
+    ).select_related('company').order_by('-is_featured', '-created_at')[:3]
+    
+    # Get related jobs in the same category (excluding current job and company jobs)
+    related_category_jobs = Job.objects.filter(
+        category=job.category,
+        status='live',
+        payment_status='verified'
+    ).exclude(
+        id=job.id
+    ).exclude(
+        company=job.company
+    ).exclude(
+        expires_at__lte=timezone.now()
+    ).select_related('company').order_by('-is_featured', '-created_at')[:4]
+    
     # Build breadcrumbs
     breadcrumbs = [
         {'name': 'Home', 'url': reverse('home')},
@@ -306,7 +330,9 @@ def job_detail(request, slug):
     
     return render(request, 'tallinnstartups/job_detail.html', {
         'job': job,
-        'job_breadcrumbs': breadcrumbs
+        'job_breadcrumbs': breadcrumbs,
+        'related_company_jobs': related_company_jobs,
+        'related_category_jobs': related_category_jobs,
     })
 
 

@@ -97,7 +97,9 @@
                     
                     <div class="flex-1 min-w-0">
                         <h1 class="text-xl font-bold text-[#0e141b] leading-tight">{{ job.title }}</h1>
-                        <p class="text-base text-[#4e7297] mt-1">{{ job.company.name }}</p>
+                        <p class="text-base text-[#4e7297] mt-1">
+                            <a href="{% url 'company_jobs' slug=job.company.slug %}" class="hover:text-[#1980e6] transition-colors">{{ job.company.name }}</a>
+                        </p>
                     </div>
                 </div>
                 
@@ -110,7 +112,7 @@
                         <span class="text-sm text-[#4e7297]">💰 {{ job.salary_range|format_eur_range }}</span>
                     </div>
                     <div class="flex items-center">
-                        <span class="inline-flex h-7 items-center justify-center rounded-sm bg-[#e7edf4] px-3 text-[#0d141c] text-sm font-medium">{{ job.get_category_display }}</span>
+                        <a href="{% url 'category_jobs' category=job.category %}" class="inline-flex h-7 items-center justify-center rounded-sm bg-[#e7edf4] px-3 text-[#0d141c] text-sm font-medium hover:bg-[#d1e0f0] transition-colors">{{ job.get_category_display }}</a>
                     </div>
                 </div>
             </div>
@@ -136,11 +138,13 @@
                 
                 <div class="flex-1">
                     <h1 class="text-2xl font-bold text-[#0e141b] leading-tight">{{ job.title }}</h1>
-                    <p class="text-lg text-[#4e7297] mt-1">{{ job.company.name }}</p>
+                    <p class="text-lg text-[#4e7297] mt-1">
+                        <a href="{% url 'company_jobs' slug=job.company.slug %}" class="hover:text-[#1980e6] transition-colors">{{ job.company.name }}</a>
+                    </p>
                     <div class="flex items-center gap-4 mt-2">
                         <span class="text-sm text-[#4e7297]">📍 {{ job.location }}</span>
                         <span class="text-sm text-[#4e7297]">Salary range: {{ job.salary_range|format_eur_range }}</span>
-                        <span class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-sm bg-[#e7edf4] pl-4 pr-4 text-[#0d141c] text-sm font-medium leading-normal">{{ job.get_category_display }}</span>
+                        <a href="{% url 'category_jobs' category=job.category %}" class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-sm bg-[#e7edf4] pl-4 pr-4 text-[#0d141c] text-sm font-medium leading-normal hover:bg-[#d1e0f0] transition-colors">{{ job.get_category_display }}</a>
                     </div>
                 </div>
             </div>
@@ -175,7 +179,9 @@
                 </div>
                 <div>
                     <h3 class="font-medium text-[#0e141b] mb-1">Category</h3>
-                    <p class="text-[#4e7297]">{{ job.get_category_display }}</p>
+                    <p class="text-[#4e7297]">
+                        <a href="{% url 'category_jobs' category=job.category %}" class="hover:text-[#1980e6] transition-colors">{{ job.get_category_display }}</a>
+                    </p>
                 </div>
                 <div>
                     <h3 class="font-medium text-[#0e141b] mb-1">Posted</h3>
@@ -214,6 +220,58 @@
                 </div>
             {% endif %}
         </div>
+        
+        <!-- Related Jobs at Same Company -->
+        {% if related_company_jobs %}
+        <div class="bg-white rounded-lg shadow-sm border border-[#dde3e8] p-6 mb-6">
+            <h2 class="text-xl font-bold text-[#0e141b] mb-4">More Jobs at {{ job.company.name }}</h2>
+            <div class="space-y-3">
+                {% for related_job in related_company_jobs %}
+                <div class="flex items-center justify-between p-3 border border-[#e7edf4] rounded-lg hover:bg-[#f8f9fb] transition-colors">
+                    <div class="flex-1">
+                        <h3 class="font-medium text-[#0e141b] hover:text-[#1980e6]">
+                            <a href="{% url 'job_detail' slug=related_job.slug %}">{{ related_job.title }}</a>
+                        </h3>
+                        <p class="text-sm text-[#4e7297]">{{ related_job.location }}</p>
+                    </div>
+                    <span class="text-xs bg-[#e7edf4] px-2 py-1 rounded-sm text-[#0d141c]">{{ related_job.get_category_display }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="mt-4">
+                <a href="{% url 'company_jobs' slug=job.company.slug %}" class="text-[#1980e6] hover:text-[#1668c7] font-medium text-sm">
+                    View all {{ job.company.name }} jobs →
+                </a>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Related Jobs in Same Category -->
+        {% if related_category_jobs %}
+        <div class="bg-white rounded-lg shadow-sm border border-[#dde3e8] p-6 mb-6">
+            <h2 class="text-xl font-bold text-[#0e141b] mb-4">Similar {{ job.get_category_display }} Jobs</h2>
+            <div class="space-y-3">
+                {% for related_job in related_category_jobs %}
+                <div class="flex items-center justify-between p-3 border border-[#e7edf4] rounded-lg hover:bg-[#f8f9fb] transition-colors">
+                    <div class="flex-1">
+                        <h3 class="font-medium text-[#0e141b] hover:text-[#1980e6]">
+                            <a href="{% url 'job_detail' slug=related_job.slug %}">{{ related_job.title }}</a>
+                        </h3>
+                        <p class="text-sm text-[#4e7297]">{{ related_job.company.name }} • {{ related_job.location }}</p>
+                    </div>
+                    {% if related_job.is_featured %}
+                    <span class="text-xs bg-[#f76969] text-white px-2 py-1 rounded-sm">Featured</span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="mt-4">
+                <a href="{% url 'category_jobs' category=job.category %}" class="text-[#1980e6] hover:text-[#1668c7] font-medium text-sm">
+                    View all {{ job.get_category_display }} jobs →
+                </a>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
