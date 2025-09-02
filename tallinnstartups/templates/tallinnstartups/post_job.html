@@ -213,7 +213,7 @@
             <div class="flex flex-col gap-4">
                 <label class="flex items-start gap-3">
                     <input type="checkbox" name="terms_accepted" required class="mt-1 h-5 w-5 text-[#1980e6]" {% if form.terms_accepted.value %}checked{% endif %}>
-                    <span class="text-[#0d151c] text-sm font-medium">I agree to Terms and Conditions</span>
+                    <span class="text-[#0d151c] text-sm font-medium">I agree to <a href="{% url 'terms_of_service' %}" target="_blank" class="text-[#1980e6] underline hover:text-[#1668c7]">Terms and Conditions</a></span>
                 </label>
                 {% if form.terms_accepted.errors %}
                     <div class="text-red-600 text-sm mt-1">
@@ -222,6 +222,22 @@
                         {% endfor %}
                     </div>
                 {% endif %}
+                
+                <!-- reCAPTCHA -->
+                <div class="flex flex-col gap-2">
+                    {{ form.captcha }}
+                    {% if form.captcha.errors %}
+                        <div class="text-red-600 text-sm mt-1">
+                            {% for error in form.captcha.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Honeypot field (hidden) -->
+                {{ form.website_url }}
+                
                 <button type="submit" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-sm h-12 px-5 bg-[#1980e6] text-slate-50 text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#1668c7] transition-colors">
                     <span class="truncate">Submit for Review</span>
                 </button>
