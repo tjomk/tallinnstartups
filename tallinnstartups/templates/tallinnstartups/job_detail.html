@@ -1,23 +1,135 @@
 {% extends 'tallinnstartups/base.html' %}
 {% load currency_filters %}
 
-{% block title %}{{ job.title }} at {{ job.company.name }} - Estonian Startup Jobs{% endblock %}
+{% block title %}{{ job.title }} at {{ job.company.name }} | {{ job.location }} | Estonian Startup Jobs{% endblock %}
+
+{% block meta_description %}{{ job.title }} position at {{ job.company.name }} in {{ job.location }}. {{ job.get_category_display }} role with competitive salary. {{ job.description|truncatewords:25|striptags }} Apply now!{% endblock %}
+
+{% block meta_keywords %}<meta name="keywords" content="{{ job.title }}, {{ job.company.name }} jobs, {{ job.get_category_display }} jobs Estonia, {{ job.location }} jobs, Estonian startup careers">{% endblock %}
+
+{% block og_type %}article{% endblock %}
+
+{% block og_title %}{{ job.title }} at {{ job.company.name }} - Apply Now!{% endblock %}
+
+{% block og_description %}{{ job.get_category_display }} position at {{ job.company.name }} in {{ job.location }}. Join an innovative Estonian startup and advance your career. Competitive salary and great benefits.{% endblock %}
+
+{% block og_image %}{% if job.company.logo_url %}{{ job.company.logo_url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% load static %}{% static 'images/og-job-default.png' %}{% endif %}{% endblock %}
+
+{% block og_image_alt %}{{ job.title }} at {{ job.company.name }} - Job opportunity{% endblock %}
+
+{% block extra_head %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "JobPosting",
+  "title": "{{ job.title|escapejs }}",
+  "description": "{{ job.description|escapejs }}",
+  "identifier": {
+    "@type": "PropertyValue",
+    "name": "Job ID",
+    "value": "{{ job.id }}"
+  },
+  "datePosted": "{{ job.created_at|date:'c' }}",
+  {% if job.expires_at %}
+  "validThrough": "{{ job.expires_at|date:'c' }}",
+  {% endif %}
+  "employmentType": "FULL_TIME",
+  "hiringOrganization": {
+    "@type": "Organization",
+    "name": "{{ job.company.name|escapejs }}",
+    "sameAs": "{{ request.scheme }}://{{ request.get_host }}{% url 'company_jobs' slug=job.company.slug %}"
+    {% if job.company.logo_url %},
+    "logo": "{{ job.company.logo_url }}"
+    {% endif %}
+  },
+  "jobLocation": {
+    "@type": "Place",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "{{ job.location|escapejs }}",
+      "addressCountry": "EE"
+    }
+  },
+  "baseSalary": {
+    "@type": "MonetaryAmount",
+    "currency": "EUR",
+    "value": {
+      "@type": "QuantitativeValue",
+      "value": "Competitive"
+    }
+  },
+  "occupationalCategory": "{{ job.get_category_display|escapejs }}",
+  "jobBenefits": "Competitive salary, innovative work environment, career growth opportunities",
+  "industry": "Technology, Startups"
+}
+</script>
+{% endblock %}
 
 {% block content %}
-<div class="px-40 flex flex-1 justify-center py-5">
+<div class="px-4 sm:px-8 lg:px-40 flex flex-1 justify-center py-5">
     <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-        <!-- Back button -->
-        <div class="flex items-center gap-3 p-3">
-            <a href="{% url 'home' %}" class="text-[#1980e6] hover:text-[#1668c7] font-medium">← Back to Jobs</a>
+        <!-- Breadcrumbs -->
+        <div class="px-4">
+            {% include 'tallinnstartups/components/breadcrumbs.html' with breadcrumbs=job_breadcrumbs %}
         </div>
         
         <!-- Job header -->
         <div class="flex flex-col gap-4 px-4 py-6 bg-white rounded-lg shadow-sm border border-[#dde3e8] mb-6">
-            <div class="flex items-start gap-4">
+            <!-- Mobile layout: Logo and basic info -->
+            <div class="block sm:hidden">
+                <div class="flex items-start gap-3 mb-3">
+                    {% if job.company.logo_url %}
+                        <img src="{{ job.company.logo_url }}" 
+                             alt="{{ job.company.name }} company logo - {{ job.title }} position"
+                             loading="lazy"
+                             class="w-12 h-12 object-contain rounded-lg flex-shrink-0"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-12 h-12 bg-[#0d7847] rounded-lg flex items-center justify-center flex-shrink-0" style="display: none;">
+                            <span class="text-white font-bold text-sm" aria-label="{{ job.company.name }} logo">{{ job.company.name|first }}</span>
+                        </div>
+                    {% else %}
+                        <div class="w-12 h-12 bg-[#0d7847] rounded-lg flex items-center justify-center flex-shrink-0" 
+                             role="img" 
+                             aria-label="{{ job.company.name }} company logo">
+                            <span class="text-white font-bold text-sm">{{ job.company.name|first }}</span>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="flex-1 min-w-0">
+                        <h1 class="text-xl font-bold text-[#0e141b] leading-tight">{{ job.title }}</h1>
+                        <p class="text-base text-[#4e7297] mt-1">{{ job.company.name }}</p>
+                    </div>
+                </div>
+                
+                <!-- Mobile: Job details in rows -->
+                <div class="space-y-2">
+                    <div class="flex items-center">
+                        <span class="text-sm text-[#4e7297]">📍 {{ job.location }}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-sm text-[#4e7297]">💰 {{ job.salary_range|format_eur_range }}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="inline-flex h-7 items-center justify-center rounded-sm bg-[#e7edf4] px-3 text-[#0d141c] text-sm font-medium">{{ job.get_category_display }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Desktop layout: Original horizontal layout -->
+            <div class="hidden sm:flex items-start gap-4">
                 {% if job.company.logo_url %}
-                    <img src="{{ job.company.logo_url }}" alt="{{ job.company.name }}" class="w-16 h-16 object-contain rounded-lg">
+                    <img src="{{ job.company.logo_url }}" 
+                         alt="{{ job.company.name }} company logo - {{ job.title }} position"
+                         loading="lazy"
+                         class="w-16 h-16 object-contain rounded-lg"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="w-16 h-16 bg-[#0d7847] rounded-lg flex items-center justify-center" style="display: none;">
+                        <span class="text-white font-bold text-lg" aria-label="{{ job.company.name }} logo">{{ job.company.name|first }}</span>
+                    </div>
                 {% else %}
-                    <div class="w-16 h-16 bg-[#0d7847] rounded-lg flex items-center justify-center">
+                    <div class="w-16 h-16 bg-[#0d7847] rounded-lg flex items-center justify-center" 
+                         role="img" 
+                         aria-label="{{ job.company.name }} company logo">
                         <span class="text-white font-bold text-lg">{{ job.company.name|first }}</span>
                     </div>
                 {% endif %}

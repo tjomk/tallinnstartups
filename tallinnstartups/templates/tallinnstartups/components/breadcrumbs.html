@@ -1,0 +1,55 @@
+{% if breadcrumbs %}
+<nav aria-label="Breadcrumb" class="mb-6">
+    <!-- Mobile breadcrumb: Show only back to parent -->
+    <div class="block sm:hidden">
+        {% if breadcrumbs|length > 1 %}
+            {% with breadcrumbs|slice:"-2:-1"|first as parent %}
+                {% if parent.url %}
+                    <a href="{{ parent.url }}" class="inline-flex items-center text-sm text-[#1980e6] hover:text-[#1668c7] transition-colors">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                        Back to {{ parent.name }}
+                    </a>
+                {% endif %}
+            {% endwith %}
+        {% endif %}
+    </div>
+    
+    <!-- Desktop breadcrumb: Show full trail -->
+    <div class="hidden sm:flex items-center space-x-1 text-sm text-[#4e7297]">
+        {% for breadcrumb in breadcrumbs %}
+            {% if not forloop.last %}
+                {% if breadcrumb.url %}
+                    <a href="{{ breadcrumb.url }}" class="hover:text-[#1980e6] transition-colors">{{ breadcrumb.name }}</a>
+                {% else %}
+                    <span>{{ breadcrumb.name }}</span>
+                {% endif %}
+                <svg class="w-4 h-4 text-[#a8b3cf] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                </svg>
+            {% else %}
+                <span class="text-[#0d141c] font-medium">{{ breadcrumb.name }}</span>
+            {% endif %}
+        {% endfor %}
+    </div>
+</nav>
+
+<!-- Structured Data for Breadcrumbs -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {% for breadcrumb in breadcrumbs %}
+    {
+      "@type": "ListItem",
+      "position": {{ forloop.counter }},
+      "name": "{{ breadcrumb.name|escapejs }}",
+      {% if breadcrumb.url %}"item": "{{ request.scheme }}://{{ request.get_host }}{{ breadcrumb.url }}"{% endif %}
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endif %}

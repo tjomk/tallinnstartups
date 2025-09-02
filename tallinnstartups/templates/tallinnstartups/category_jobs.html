@@ -1,10 +1,19 @@
 {% extends 'tallinnstartups/base.html' %}
 
-{% block title %}{{ category_display_name }} Jobs - Estonian Startup Jobs{% endblock %}
+{% block title %}{{ category_display_name }} Jobs in Estonia - {{ total_results }} Startup Opportunities{% endblock %}
+
+{% block meta_description %}Find {{ total_results }} {{ category_display_name|lower }} jobs at Estonian startups. Browse positions in Tallinn, Tartu, and across Estonia. Apply to innovative companies hiring {{ category_display_name|lower }} professionals.{% endblock %}
+
+{% block meta_keywords %}<meta name="keywords" content="{{ category_display_name|lower }} jobs Estonia, {{ category_display_name|lower }} startup jobs Tallinn, Estonian {{ category_display_name|lower }} careers, {{ category_display_name|lower }} positions Estonia">{% endblock %}
 
 {% block content %}
-<div class="px-40 flex flex-1 justify-center py-5">
+<div class="px-4 sm:px-8 lg:px-40 flex flex-1 justify-center py-5">
     <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+        <!-- Breadcrumbs -->
+        <div class="px-4">
+            {% include 'tallinnstartups/components/breadcrumbs.html' with breadcrumbs=category_breadcrumbs %}
+        </div>
+        
         <!-- Category Header -->
         <div class="px-4 py-6">
             <h1 class="text-[#0d141c] text-[32px] font-bold leading-tight tracking-[-0.015em] mb-2">

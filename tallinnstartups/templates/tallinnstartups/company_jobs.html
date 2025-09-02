@@ -1,10 +1,19 @@
 {% extends 'tallinnstartups/base.html' %}
 
-{% block title %}{{ company.name }} Jobs - Estonian Startup Jobs{% endblock %}
+{% block title %}{{ company.name }} Jobs - {{ total_results }} Open Positions at {{ company.name }}{% endblock %}
+
+{% block meta_description %}{% if total_results > 0 %}Explore {{ total_results }} job opportunities at {{ company.name }}. Join this innovative Estonian startup and advance your career in a dynamic environment. Apply now!{% else %}{{ company.name }} - Stay updated on future job opportunities at this Estonian startup. Check back for new openings and career possibilities.{% endif %}{% endblock %}
+
+{% block meta_keywords %}<meta name="keywords" content="{{ company.name }} jobs, {{ company.name }} careers, Estonian startup {{ company.name }}, jobs at {{ company.name }}">{% endblock %}
 
 {% block content %}
-<div class="px-4 sm:px-10 lg:px-40 flex flex-1 justify-center py-5">
+<div class="px-4 sm:px-8 lg:px-40 flex flex-1 justify-center py-5">
     <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+        <!-- Breadcrumbs -->
+        <div class="px-4">
+            {% include 'tallinnstartups/components/breadcrumbs.html' with breadcrumbs=company_breadcrumbs %}
+        </div>
+        
         <!-- Header with Company Info -->
         <div class="px-4 py-6">
             <div class="flex items-center mb-4">

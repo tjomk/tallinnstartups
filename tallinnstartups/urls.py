@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf import settings
+from django.views.generic import TemplateView
+from django.http import HttpResponse
+from django.conf.urls.static import static
 
 from . import views
 
@@ -34,4 +37,9 @@ urlpatterns = [
     path('job-submitted/', views.job_submission_success, name='job_submission_success'),
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
     path('terms-of-service/', views.terms_of_service, name='terms_of_service'),
+    path('sitemap.xml', views.sitemap_xml, name='sitemap'),
+    path('robots.txt', lambda r: HttpResponse(
+        open(settings.BASE_DIR / 'tallinnstartups' / 'static' / 'robots.txt', 'r').read(),
+        content_type='text/plain'
+    )),
 ]

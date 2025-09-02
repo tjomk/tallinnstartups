@@ -1,9 +1,13 @@
 {% extends 'tallinnstartups/base.html' %}
 
-{% block title %}Companies Actively Hiring - Estonian Startup Jobs{% endblock %}
+{% block title %}{{ total_results }} Estonian Startup Companies Hiring Now - Browse Top Employers{% endblock %}
+
+{% block meta_description %}Discover {{ total_results }} Estonian startup companies actively hiring talented professionals. Browse top employers in Tallinn, Tartu, and across Estonia. Find your dream company to work for.{% endblock %}
+
+{% block meta_keywords %}<meta name="keywords" content="Estonian startup companies, companies hiring Estonia, Tallinn startups, Estonian employers, startup jobs companies">{% endblock %}
 
 {% block content %}
-<div class="px-4 sm:px-10 lg:px-40 flex flex-1 justify-center py-5">
+<div class="px-4 sm:px-8 lg:px-40 flex flex-1 justify-center py-5">
     <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
         <!-- Page Header -->
         <div class="px-4 py-6">

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Homepage -->
+  <url>
+    <loc>{{ request.scheme }}://{{ request.get_host }}/</loc>
+    <lastmod>{{ last_modified }}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Jobs listing page -->
+  <url>
+    <loc>{{ request.scheme }}://{{ request.get_host }}/jobs/</loc>
+    <lastmod>{{ last_modified }}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Companies listing page -->
+  <url>
+    <loc>{{ request.scheme }}://{{ request.get_host }}/companies/</loc>
+    <lastmod>{{ last_modified }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Individual job postings -->
+  {% for job in jobs %}
+  <url>
+    <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'job_detail' slug=job.slug %}</loc>
+    <lastmod>{{ job.updated_at|date:'Y-m-d' }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>{% if job.is_featured %}0.9{% else %}0.7{% endif %}</priority>
+  </url>
+  {% endfor %}
+  
+  <!-- Company pages -->
+  {% for company in companies %}
+  <url>
+    <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'company_jobs' slug=company.slug %}</loc>
+    <lastmod>{{ last_modified }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  {% endfor %}
+  
+  <!-- Job category pages -->
+  {% for category in job_categories %}
+  <url>
+    <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'category_jobs' category=category %}</loc>
+    <lastmod>{{ last_modified }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  {% endfor %}
+  
+  <!-- Static pages -->
+  <url>
+    <loc>{{ request.scheme }}://{{ request.get_host }}/privacy-policy/</loc>
+    <lastmod>{{ last_modified }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <url>
+    <loc>{{ request.scheme }}://{{ request.get_host }}/terms-of-service/</loc>
+    <lastmod>{{ last_modified }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+</urlset>

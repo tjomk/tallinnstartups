@@ -1,9 +1,78 @@
 {% extends 'tallinnstartups/base.html' %}
 
-{% block title %}Estonian Startup Jobs - Find Your Dream Job{% endblock %}
+{% block title %}{% if is_search_results %}{{ search_query }} Jobs in Estonia - Estonian Startup Jobs{% else %}Estonian Startup Jobs - Find Your Dream Tech Job in Tallinn & Estonia{% endif %}{% endblock %}
+
+{% block meta_description %}{% if is_search_results %}Find {{ search_query }} jobs at top Estonian startups. {{ total_results }} opportunities available in Tallinn, Tartu, and across Estonia. Apply now!{% else %}Discover {{ total_results|default:"hundreds of" }} startup jobs in Estonia. From software engineering to marketing roles at innovative companies in Tallinn, Tartu, and nationwide. Your next career opportunity awaits.{% endif %}{% endblock %}
+
+{% block meta_keywords %}<meta name="keywords" content="{% if is_search_results %}{{ search_query }} jobs Estonia, {{ search_query }} startup jobs Tallinn{% else %}Estonia startup jobs, Tallinn tech jobs, Estonian companies, startup careers, software developer jobs Estonia, marketing jobs Tallinn{% endif %}">{% endblock %}
+
+{% block extra_head %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Estonian Startup Jobs",
+  "url": "{{ request.scheme }}://{{ request.get_host }}",
+  "description": "Estonia's premier job board for startup and tech positions. Find your dream job at innovative companies in Tallinn, Tartu, and nationwide.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "{{ request.scheme }}://{{ request.get_host }}/?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Estonian Startup Jobs",
+    "url": "{{ request.scheme }}://{{ request.get_host }}",
+    "sameAs": [
+      "{{ request.scheme }}://{{ request.get_host }}/companies/",
+      "{{ request.scheme }}://{{ request.get_host }}/jobs/"
+    ]
+  }
+}
+</script>
+{% if not is_search_results and featured_jobs %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Featured Startup Jobs in Estonia",
+  "description": "Top featured job opportunities at Estonian startups",
+  "itemListElement": [
+    {% for job in featured_jobs %}
+    {
+      "@type": "ListItem",
+      "position": {{ forloop.counter }},
+      "item": {
+        "@type": "JobPosting",
+        "title": "{{ job.title|escapejs }}",
+        "description": "{{ job.description|truncatewords:30|escapejs }}",
+        "url": "{{ request.scheme }}://{{ request.get_host }}{% url 'job_detail' slug=job.slug %}",
+        "hiringOrganization": {
+          "@type": "Organization",
+          "name": "{{ job.company.name|escapejs }}"
+        },
+        "jobLocation": {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "{{ job.location|escapejs }}",
+            "addressCountry": "EE"
+          }
+        }
+      }
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endif %}
+{% endblock %}
 
 {% block content %}
-<div class="px-40 flex flex-1 justify-center py-5">
+<div class="px-4 sm:px-8 lg:px-40 flex flex-1 justify-center py-5">
     <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
         <!-- Main Search Section -->
         <div class="px-4 py-3">

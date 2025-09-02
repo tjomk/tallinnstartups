@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.db import transaction
 from django.utils import timezone
-from django.http import Http404
+from django.http import Http404, HttpResponse
 import requests
 from django.conf import settings
 from datetime import timedelta
@@ -13,6 +13,8 @@ from django_ratelimit.decorators import ratelimit
 from jobs.services import HomePageService, CompanyService
 from jobs.forms import JobSubmissionForm, JobSearchForm
 from jobs.models import Job, Company, JobSubmissionLog
+from django.urls import reverse
+from django.template.loader import render_to_string
 
 # Initialize loggers
 security_logger = logging.getLogger('security')
@@ -295,8 +297,16 @@ def job_detail(request, slug):
         # For non-visible jobs, show 404 instead of revealing they exist
         raise Http404("Job not found")
     
+    # Build breadcrumbs
+    breadcrumbs = [
+        {'name': 'Home', 'url': reverse('home')},
+        {'name': f'{job.get_category_display()} Jobs', 'url': reverse('category_jobs', args=[job.category])},
+        {'name': f'{job.title} at {job.company.name}', 'url': None}
+    ]
+    
     return render(request, 'tallinnstartups/job_detail.html', {
-        'job': job
+        'job': job,
+        'job_breadcrumbs': breadcrumbs
     })
 
 
@@ -313,6 +323,15 @@ def category_jobs(request, category):
     
     home_service = HomePageService()
     context = home_service.get_category_page_data(category=category, page=int(page))
+    
+    # Add breadcrumbs
+    category_display_name = valid_categories[category]
+    breadcrumbs = [
+        {'name': 'Home', 'url': reverse('home')},
+        {'name': 'All Jobs', 'url': reverse('jobs')},
+        {'name': f'{category_display_name} Jobs', 'url': None}
+    ]
+    context['category_breadcrumbs'] = breadcrumbs
     
     return render(request, 'tallinnstartups/category_jobs.html', context)
 
@@ -349,11 +368,19 @@ def company_jobs(request, slug):
     paginator = Paginator(jobs, 10)
     page_obj = paginator.get_page(page)
     
+    # Build breadcrumbs
+    breadcrumbs = [
+        {'name': 'Home', 'url': reverse('home')},
+        {'name': 'Companies', 'url': reverse('companies')},
+        {'name': f'{company.name}', 'url': None}
+    ]
+    
     context = {
         'company': company,
         'jobs': page_obj.object_list,
         'page_obj': page_obj,
         'total_results': paginator.count,
+        'company_breadcrumbs': breadcrumbs,
     }
     
     return render(request, 'tallinnstartups/company_jobs.html', context)
@@ -371,3 +398,45 @@ def terms_of_service(request):
     Terms of service page view.
     """
     return render(request, 'tallinnstartups/terms_of_service.html')
+
+
+def sitemap_xml(request):
+    """
+    Generate XML sitemap for SEO
+    """
+    # Get all visible jobs (live, not expired, payment verified)
+    jobs = Job.objects.filter(
+        status='live',
+        payment_status='verified'
+    ).exclude(
+        expires_at__lte=timezone.now()
+    ).select_related('company')
+    
+    # Get all companies with at least one visible job
+    companies = Company.objects.filter(
+        jobs__status='live',
+        jobs__payment_status='verified'
+    ).exclude(
+        jobs__expires_at__lte=timezone.now()
+    ).distinct()
+    
+    # Get job categories with active jobs
+    job_categories = Job.objects.filter(
+        status='live',
+        payment_status='verified'
+    ).exclude(
+        expires_at__lte=timezone.now()
+    ).values_list('category', flat=True).distinct()
+    
+    # Build sitemap data
+    sitemap_data = {
+        'jobs': jobs,
+        'companies': companies,
+        'job_categories': job_categories,
+        'category_choices': dict(Job.CATEGORY_CHOICES),
+        'request': request,
+        'last_modified': timezone.now().strftime('%Y-%m-%d')
+    }
+    
+    xml_content = render_to_string('tallinnstartups/sitemap.xml', sitemap_data)
+    return HttpResponse(xml_content, content_type='application/xml')

@@ -4,14 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
-    <link
-      rel="stylesheet"
-      as="style"
-      onload="this.rel='stylesheet'"
-      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Sora%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
-    />
+    
+    <!-- DNS prefetch and preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    
+    <!-- Preload critical fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?display=swap&family=Sora:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Sora:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900"></noscript>
     <title>{% block title %}Estonian Startup Jobs{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Find your dream job at Estonia's most innovative startups. Browse hundreds of tech jobs in Tallinn, Tartu, and across Estonia. Apply directly to top employers.{% endblock %}">
+    {% block meta_keywords %}<meta name="keywords" content="Estonia jobs, Tallinn startup jobs, tech jobs Estonia, Estonian companies, startup careers">{% endblock %}
+    <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}Estonian Startup Jobs{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Find your dream job at Estonia's most innovative startups. Browse hundreds of tech jobs in Tallinn, Tartu, and across Estonia. Apply directly to top employers.{% endblock %}">
+    <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}">
+    <meta property="og:site_name" content="Estonian Startup Jobs">
+    <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% load static %}{% static 'images/og-default.png' %}{% endblock %}">
+    <meta property="og:image:alt" content="{% block og_image_alt %}Estonian Startup Jobs - Find your dream job{% endblock %}">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="{% block twitter_card %}summary_large_image{% endblock %}">
+    <meta name="twitter:title" content="{% block twitter_title %}Estonian Startup Jobs{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Find your dream job at Estonia's most innovative startups. Browse hundreds of tech jobs in Tallinn, Tartu, and across Estonia. Apply directly to top employers.{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{% load static %}{% static 'images/og-default.png' %}{% endblock %}">
+    <meta name="twitter:image:alt" content="{% block twitter_image_alt %}Estonian Startup Jobs - Find your dream job{% endblock %}">
+    
     <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link rel="stylesheet" href="{% static 'css/theme.css' %}">
