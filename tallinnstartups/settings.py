@@ -149,9 +149,19 @@ CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = 'Lax'
 
 # reCAPTCHA Settings
+RECAPTCHA_REQUIRED_SCORE = 0.85
 RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY', '')
 RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY', '')
-RECAPTCHA_REQUIRED_SCORE = 0.85
+
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.de.opalstack.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_USERNAME', 'robot@estonianstartupjobs.ee')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD', '')
+DEFAULT_FROM_EMAIL = 'robot@estonianstartupjobs.ee'
+ADMIN_EMAIL = 'hello@estonianstartupjobs.ee'
 
 # Logging Configuration
 LOGGING = {
