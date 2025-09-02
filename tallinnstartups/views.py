@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.db import transaction
 from django.utils import timezone
 from django.http import Http404
-from django.core.mail import send_mail
+import requests
 from django.conf import settings
 from datetime import timedelta
 import logging
@@ -19,56 +19,58 @@ security_logger = logging.getLogger('security')
 submissions_logger = logging.getLogger('job_submissions')
 
 
-def send_admin_notification_email(job, form_data):
-    """Send email notification to admin about new job submission"""
+def send_admin_notification_telegram(job, form_data):
+    """Send Telegram notification to admin about new job submission"""
     try:
-        subject = f'New Job Submission: {job.title} at {job.company.name}'
-        
+        # Format message for Telegram (using HTML formatting)
         message = f"""
-A new job has been submitted and is pending review.
+🆕 <b>New Job Submission</b>
 
-Job Details:
-- Title: {job.title}
-- Company: {job.company.name}
-- Category: {job.get_category_display()}
-- Location: {job.location}
-- Status: {job.status}
-- Payment Status: {job.payment_status}
-- Payment Amount: €{job.payment_amount}
-- Featured: {'Yes' if job.is_featured else 'No'}
-- Expires: {job.expires_at.strftime('%Y-%m-%d %H:%M UTC')}
+📋 <b>Job Details:</b>
+• Title: {job.title}
+• Company: {job.company.name}
+• Category: {job.get_category_display()}
+• Location: {job.location}
+• Status: {job.status}
+• Payment Status: {job.payment_status}
+• Payment Amount: €{job.payment_amount}
+• Featured: {'Yes' if job.is_featured else 'No'}
+• Expires: {job.expires_at.strftime('%Y-%m-%d %H:%M UTC')}
 
-Company Information:
-- Legal Name: {form_data.get('legal_company_name', 'N/A')}
-- Website: {form_data.get('company_website', 'N/A')}
-- Address: {form_data.get('company_address', 'N/A')}
-- VAT Number: {form_data.get('vat_number', 'N/A')}
-- Company Type: {form_data.get('company_type', 'N/A')}
+🏢 <b>Company Information:</b>
+• Legal Name: {form_data.get('legal_company_name', 'N/A')}
+• Website: {form_data.get('company_website', 'N/A')}
+• Address: {form_data.get('company_address', 'N/A')}
+• VAT Number: {form_data.get('vat_number', 'N/A')}
+• Company Type: {form_data.get('company_type', 'N/A')}
 
-Contact Information:
-- Invoice Email: {form_data.get('invoice_email', 'N/A')}
-- Application Contact: {job.application_contact}
+📧 <b>Contact Information:</b>
+• Invoice Email: {form_data.get('invoice_email', 'N/A')}
+• Application Contact: {job.application_contact}
 
-Job Description:
-{job.description}
+📝 <b>Job Description:</b>
+{job.description[:500]}{'...' if len(job.description) > 500 else ''}
 
-Job ID: {job.id}
-Admin URL: /admin/jobs/job/{job.id}/change/
+🆔 Job ID: <code>{job.id}</code>
+🔗 Admin URL: /admin/jobs/job/{job.id}/change/
 """
         
-        send_mail(
-            subject=subject,
-            message=message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[settings.ADMIN_EMAIL],
-            fail_silently=False,
-        )
+        # Send message to Telegram
+        telegram_url = f"https://api.telegram.org/bot{settings.TELEGRAM_BOT_TOKEN}/sendMessage"
+        payload = {
+            'chat_id': settings.TELEGRAM_CHAT_ID,
+            'text': message,
+            'parse_mode': 'HTML'
+        }
         
-        submissions_logger.info(f'Admin notification email sent for job {job.id}')
+        response = requests.post(telegram_url, data=payload, timeout=10)
+        response.raise_for_status()
+        
+        submissions_logger.info(f'Admin notification sent to Telegram for job {job.id}')
         return True
         
     except Exception as e:
-        submissions_logger.error(f'Failed to send admin notification email for job {job.id}: {str(e)}')
+        submissions_logger.error(f'Failed to send Telegram notification for job {job.id}: {str(e)}')
         return False
 
 
@@ -221,8 +223,8 @@ def post_job(request):
                         f'Title: {job.title}, IP: {client_ip}, Payment Status: {job.payment_status}'
                     )
                     
-                    # Send admin notification email about new job submission
-                    send_admin_notification_email(job, form.cleaned_data)
+                    # Send admin notification to Telegram about new job submission
+                    send_admin_notification_telegram(job, form.cleaned_data)
                     
                     return redirect('job_submission_success')
                     

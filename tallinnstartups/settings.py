@@ -154,15 +154,9 @@ RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY', '')
 RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY', '')
 SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']
 
-# Email Configuration
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.de.opalstack.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('EMAIL_USERNAME', 'robot@estonianstartupjobs.ee')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD', '')
-DEFAULT_FROM_EMAIL = 'robot@estonianstartupjobs.ee'
-ADMIN_EMAIL = 'hello@estonianstartupjobs.ee'
+# Telegram Configuration
+TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID', '')
 
 # Logging Configuration
 LOGGING = {
