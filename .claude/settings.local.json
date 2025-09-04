@@ -8,7 +8,9 @@
       "Bash(touch:*)",
       "Bash(rm:*)",
       "Bash(cp:*)",
-      "WebFetch(domain:en.wikipedia.org)"
+      "WebFetch(domain:en.wikipedia.org)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:github.com)"
     ],
     "deny": []
   }
