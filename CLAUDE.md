@@ -154,6 +154,11 @@ Available job categories: engineering, design, marketing, sales, product, operat
 
 ## Adding New Jobs and Companies
 
+**IMPORTANT**: Jobs must have `payment_status='verified'` to be visible on the website. The `is_visible` property requires:
+1. `status='live'`
+2. Non-expired `expires_at` date
+3. `payment_status='verified'`
+
 **Note**: Both Company and Job models automatically generate SEO-friendly slugs:
 - Company slugs are used for company pages: `/company/<slug>/` (e.g., `/company/bolt/`)
 - Job slugs are used for job detail pages: `/job/<slug>/` (e.g., `/job/senior-engineer-at-bolt-abc123/`)
@@ -171,7 +176,7 @@ company, created = Company.objects.get_or_create(
     defaults={'logo_url': 'https://example.com/logo.png'}
 )
 
-# Create job
+# Create job - ALWAYS set payment_status='verified' to make it visible
 job = Job.objects.create(
     title='Job Title',
     description='Job description with requirements and benefits...',
@@ -181,9 +186,11 @@ job = Job.objects.create(
     company=company,
     application_contact='https://careers.company.com/job-url',
     status='live',
+    payment_status='verified',  # REQUIRED for visibility
     expires_at=timezone.now() + timedelta(days=30)
 )
 print(f'Created: {job.title} at {company.name} (ID: {job.id})')
+print(f'Job is visible: {job.is_visible}')
 "
 ```
 
