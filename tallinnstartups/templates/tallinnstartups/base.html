@@ -34,7 +34,7 @@
     <meta property="og:description" content="{% block og_description %}Find your dream job at Estonia's most innovative startups. Browse hundreds of tech jobs in Tallinn, Tartu, and across Estonia. Apply directly to top employers.{% endblock %}">
     <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}">
     <meta property="og:site_name" content="Estonian Startup Jobs">
-    <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/og-default.svg' %}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/og.png' %}{% endblock %}">
     <meta property="og:image:alt" content="{% block og_image_alt %}Estonian Startup Jobs - Find your dream job{% endblock %}">
     <meta property="og:locale" content="en_US">
     
@@ -42,7 +42,7 @@
     <meta name="twitter:card" content="{% block twitter_card %}summary_large_image{% endblock %}">
     <meta name="twitter:title" content="{% block twitter_title %}Estonian Startup Jobs{% endblock %}">
     <meta name="twitter:description" content="{% block twitter_description %}Find your dream job at Estonia's most innovative startups. Browse hundreds of tech jobs in Tallinn, Tartu, and across Estonia. Apply directly to top employers.{% endblock %}">
-    <meta name="twitter:image" content="{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/og-default.svg' %}{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/og.png' %}{% endblock %}">
     <meta name="twitter:image:alt" content="{% block twitter_image_alt %}Estonian Startup Jobs - Find your dream job{% endblock %}">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link rel="stylesheet" href="{% static 'css/theme.css' %}">
