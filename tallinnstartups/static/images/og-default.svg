@@ -1,0 +1,27 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gradient background -->
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1980e6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#60a5fa;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#grad)" />
+  
+  <!-- Title -->
+  <text x="600" y="280" font-family="Arial, sans-serif" font-size="72" font-weight="bold" text-anchor="middle" fill="white" stroke="#1f2937" stroke-width="2">
+    Estonian Startup Jobs
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="600" y="380" font-family="Arial, sans-serif" font-size="28" text-anchor="middle" fill="white" stroke="#1f2937" stroke-width="1">
+    Find your dream job at Estonia's most innovative startups
+  </text>
+  
+  <!-- Location indicator -->
+  <text x="600" y="450" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="#e5e7eb">
+    Tallinn • Tartu • Remote
+  </text>
+</svg>

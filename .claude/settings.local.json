@@ -12,7 +12,12 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:helsing.ai)",
-      "WebFetch(domain:haut.ai)"
+      "WebFetch(domain:haut.ai)",
+      "WebFetch(domain:apply.workable.com)",
+      "WebFetch(domain:raiku.co)",
+      "WebFetch(domain:elcogen.jobs.personio.com)",
+      "WebFetch(domain:www.gscan.eu)",
+      "WebFetch(domain:farsightvision.com)"
     ],
     "deny": []
   }

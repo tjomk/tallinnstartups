@@ -1,0 +1,19 @@
+
+To create the Open Graph image manually:
+1. Create a 1200x630 px image
+2. Use a gradient background (blue to light blue)
+3. Add text: "Estonian Startup Jobs"
+4. Add subtitle: "Find your dream job at Estonia's most innovative startups"
+5. Save as og-default.png in this directory
+
+Recommended tools:
+- Canva (canva.com)
+- Figma (figma.com) 
+- Adobe Photoshop/Illustrator
+- GIMP (free alternative)
+
+Colors to use:
+- Primary blue: #1980e6
+- Light blue: #60a5fa
+- White text: #ffffff
+- Dark text: #1f2937
