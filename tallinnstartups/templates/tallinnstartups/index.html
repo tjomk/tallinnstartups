@@ -115,7 +115,7 @@
             {% if featured_jobs %}
             <div class="px-4">
             {% for job in featured_jobs %}
-                {% include 'tallinnstartups/components/job_card.html' %}
+                {% include 'tallinnstartups/components/job_card.html' with show_featured_tag=True %}
             {% endfor %}
             </div>
             {% endif %}
@@ -132,7 +132,7 @@
             {% if latest_jobs %}
             <div class="px-4">
             {% for job in latest_jobs %}
-                {% include 'tallinnstartups/components/job_card.html' %}
+                {% include 'tallinnstartups/components/job_card.html' with show_featured_tag=False %}
             {% endfor %}
             </div>
             {% endif %}

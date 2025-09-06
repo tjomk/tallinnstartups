@@ -23,7 +23,7 @@
                     {{ job.company_name }}
                 </p>
             </div>
-            {% if job.is_featured %}
+            {% if job.is_featured and show_featured_tag %}
                 <div class="flex items-center justify-center">
                     <span class="theme-featured-tag">
                         <span class="sm:hidden">⭐</span>
@@ -57,7 +57,7 @@
                 {{ job.company_name }}
             </p>
         </div>
-        {% if job.is_featured %}
+        {% if job.is_featured and show_featured_tag %}
             <div class="flex items-center justify-center">
                 <span class="theme-featured-tag">⭐ Featured</span>
             </div>
