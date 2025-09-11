@@ -17,7 +17,8 @@
       "WebFetch(domain:raiku.co)",
       "WebFetch(domain:elcogen.jobs.personio.com)",
       "WebFetch(domain:www.gscan.eu)",
-      "WebFetch(domain:farsightvision.com)"
+      "WebFetch(domain:farsightvision.com)",
+      "Bash(python3:*)"
     ],
     "deny": []
   }
