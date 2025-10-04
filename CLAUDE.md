@@ -126,7 +126,7 @@ Current URL patterns:
 - `/career-advice/` - Career resources
 - `/post-job/` - Job posting form
 - `/job-submitted/` - Job submission success page
-- `/admin/` - Django admin interface
+- `/_/admin/` - Django admin interface
 
 ## Database Models
 

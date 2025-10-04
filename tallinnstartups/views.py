@@ -426,6 +426,26 @@ def terms_of_service(request):
     return render(request, 'tallinnstartups/terms_of_service.html')
 
 
+def job_status(request, job_id):
+    """
+    Job status tracking page that shows submission progress.
+    Redirects to public job page if status is 'live'.
+    """
+    job = get_object_or_404(Job, id=job_id)
+
+    # If job is live, redirect to public job detail page
+    if job.status == 'live':
+        return redirect('job_detail', slug=job.slug)
+
+    # Prepare context for status tracking page
+    context = {
+        'job': job,
+        'company': job.company,
+    }
+
+    return render(request, 'tallinnstartups/job_status.html', context)
+
+
 def sitemap_xml(request):
     """
     Generate XML sitemap for SEO
@@ -437,7 +457,7 @@ def sitemap_xml(request):
     ).exclude(
         expires_at__lte=timezone.now()
     ).select_related('company')
-    
+
     # Get all companies with at least one visible job
     companies = Company.objects.filter(
         jobs__status='live',
@@ -445,7 +465,7 @@ def sitemap_xml(request):
     ).exclude(
         jobs__expires_at__lte=timezone.now()
     ).distinct()
-    
+
     # Get job categories with active jobs
     job_categories = Job.objects.filter(
         status='live',
@@ -453,7 +473,7 @@ def sitemap_xml(request):
     ).exclude(
         expires_at__lte=timezone.now()
     ).values_list('category', flat=True).distinct()
-    
+
     # Build sitemap data
     sitemap_data = {
         'jobs': jobs,
@@ -463,6 +483,6 @@ def sitemap_xml(request):
         'request': request,
         'last_modified': timezone.now().strftime('%Y-%m-%d')
     }
-    
+
     xml_content = render_to_string('tallinnstartups/sitemap.xml', sitemap_data)
     return HttpResponse(xml_content, content_type='application/xml')

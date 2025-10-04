@@ -47,6 +47,7 @@ class Job(models.Model):
     
     STATUS_CHOICES = [
         ('live', 'Live'),
+        ('approved', 'Approved'),
         ('in_review', 'In Review'),
     ]
     
