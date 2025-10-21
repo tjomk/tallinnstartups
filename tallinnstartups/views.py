@@ -34,8 +34,6 @@ def send_admin_notification_telegram(job, form_data):
 • Category: {job.get_category_display()}
 • Location: {job.location}
 • Status: {job.status}
-• Payment Status: {job.payment_status}
-• Payment Amount: €{job.payment_amount}
 • Featured: {'Yes' if job.is_featured else 'No'}
 • Expires: {job.expires_at.strftime('%Y-%m-%d %H:%M UTC')}
 
@@ -166,10 +164,9 @@ def post_job(request):
                         defaults={'logo_url': None}
                     )
                     
-                    # Determine if job should be featured and set payment amount
+                    # Determine if job should be featured
                     is_featured = form.cleaned_data['post_option'] == 'featured'
-                    payment_amount = 75.00 if is_featured else 35.00
-                    
+
                     # Set expiration date (90 days from now)
                     expires_at = timezone.now() + timedelta(days=90)
                     
@@ -188,9 +185,7 @@ def post_job(request):
                         application_contact=form.cleaned_data['application_contact'],
                         is_featured=is_featured,
                         expires_at=expires_at,
-                        status='in_review',  # All new jobs start in review
-                        payment_status='pending',  # Payment verification required
-                        payment_amount=payment_amount
+                        status='in_review'  # All new jobs start in review
                     )
                     
                     # Store additional submission data in session for thank you page
@@ -222,7 +217,7 @@ def post_job(request):
                     # Log successful submission
                     submissions_logger.info(
                         f'Job submission successful - ID: {job.id}, Company: {company.name}, '
-                        f'Title: {job.title}, IP: {client_ip}, Payment Status: {job.payment_status}'
+                        f'Title: {job.title}, IP: {client_ip}, Status: {job.status}'
                     )
                     
                     # Send admin notification to Telegram about new job submission
@@ -289,30 +284,29 @@ def job_submission_success(request):
 def job_detail(request, slug):
     """
     Job detail page view that displays a specific job by its slug.
+    Accessible jobs (live status) can be viewed via direct link even if expired.
     """
     job = get_object_or_404(Job, slug=slug)
-    
-    # Check if job is visible to public
-    if not job.is_visible:
-        # For non-visible jobs, show 404 instead of revealing they exist
+
+    # Check if job is accessible (live status, regardless of expiry)
+    if not job.is_accessible:
+        # For non-accessible jobs (not live), show 404 instead of revealing they exist
         raise Http404("Job not found")
     
     # Get related jobs at the same company (excluding current job)
     related_company_jobs = Job.objects.filter(
         company=job.company,
-        status='live',
-        payment_status='verified'
+        status='live'
     ).exclude(
         id=job.id
     ).exclude(
         expires_at__lte=timezone.now()
     ).select_related('company').order_by('-is_featured', '-created_at')[:3]
-    
+
     # Get related jobs in the same category (excluding current job and company jobs)
     related_category_jobs = Job.objects.filter(
         category=job.category,
-        status='live',
-        payment_status='verified'
+        status='live'
     ).exclude(
         id=job.id
     ).exclude(
@@ -450,26 +444,23 @@ def sitemap_xml(request):
     """
     Generate XML sitemap for SEO
     """
-    # Get all visible jobs (live, not expired, payment verified)
+    # Get all visible jobs (live, not expired)
     jobs = Job.objects.filter(
-        status='live',
-        payment_status='verified'
+        status='live'
     ).exclude(
         expires_at__lte=timezone.now()
     ).select_related('company')
 
     # Get all companies with at least one visible job
     companies = Company.objects.filter(
-        jobs__status='live',
-        jobs__payment_status='verified'
+        jobs__status='live'
     ).exclude(
         jobs__expires_at__lte=timezone.now()
     ).distinct()
 
     # Get job categories with active jobs
     job_categories = Job.objects.filter(
-        status='live',
-        payment_status='verified'
+        status='live'
     ).exclude(
         expires_at__lte=timezone.now()
     ).values_list('category', flat=True).distinct()

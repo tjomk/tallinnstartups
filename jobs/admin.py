@@ -32,17 +32,32 @@ class JobAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         return super().get_queryset(request).select_related('company')
     
-    actions = ['mark_as_live', 'mark_as_in_review', 'make_featured', 'remove_featured']
-    
+    actions = ['mark_as_live', 'mark_as_in_review', 'mark_as_rejected', 'mark_as_waiting_for_payment', 'mark_as_refunded', 'make_featured', 'remove_featured']
+
     def mark_as_live(self, request, queryset):
         updated = queryset.update(status='live')
         self.message_user(request, f'{updated} jobs marked as live.')
     mark_as_live.short_description = 'Mark selected jobs as live'
-    
+
     def mark_as_in_review(self, request, queryset):
         updated = queryset.update(status='in_review')
         self.message_user(request, f'{updated} jobs marked as in review.')
     mark_as_in_review.short_description = 'Mark selected jobs as in review'
+
+    def mark_as_rejected(self, request, queryset):
+        updated = queryset.update(status='rejected')
+        self.message_user(request, f'{updated} jobs marked as rejected.')
+    mark_as_rejected.short_description = 'Mark selected jobs as rejected'
+
+    def mark_as_waiting_for_payment(self, request, queryset):
+        updated = queryset.update(status='waiting_for_payment')
+        self.message_user(request, f'{updated} jobs marked as waiting for payment.')
+    mark_as_waiting_for_payment.short_description = 'Mark selected jobs as waiting for payment'
+
+    def mark_as_refunded(self, request, queryset):
+        updated = queryset.update(status='refunded')
+        self.message_user(request, f'{updated} jobs marked as refunded.')
+    mark_as_refunded.short_description = 'Mark selected jobs as refunded'
     
     def make_featured(self, request, queryset):
         updated = queryset.update(is_featured=True)

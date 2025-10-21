@@ -43,23 +43,21 @@
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
                                     In Review
                                 </span>
-                            {% elif job.status == 'approved' %}
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                                    Approved
+                            {% elif job.status == 'rejected' %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                                    Rejected
                                 </span>
-                            {% endif %}
-                        </p>
-                    </div>
-                    <div>
-                        <span class="text-[#49719c] text-sm font-medium">Payment Status:</span>
-                        <p class="text-[#0d151c] text-base font-normal">
-                            {% if job.payment_status == 'pending' %}
+                            {% elif job.status == 'waiting_for_payment' %}
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-orange-100 text-orange-800">
-                                    Payment Pending
+                                    Waiting for Payment
                                 </span>
-                            {% elif job.payment_status == 'verified' %}
+                            {% elif job.status == 'refunded' %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+                                    Refunded
+                                </span>
+                            {% elif job.status == 'live' %}
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                                    Payment Verified
+                                    Live
                                 </span>
                             {% endif %}
                         </p>
@@ -79,7 +77,6 @@
             <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
                 <h3 class="text-[#0d151c] text-[18px] font-bold leading-tight tracking-[-0.015em] mb-3">What happens next?</h3>
                 <div class="space-y-3">
-                    <!-- Step 1: Review Process -->
                     {% if job.status == 'in_review' %}
                         <!-- Currently in review -->
                         <div class="flex items-start gap-3">
@@ -106,11 +103,24 @@
                             </div>
                             <div>
                                 <p class="text-[#0d151c] text-sm font-medium">Go Live</p>
-                                <p class="text-[#49719c] text-sm">Once approved and paid, your job will be live for 90 days</p>
+                                <p class="text-[#49719c] text-sm">Once payment is confirmed, your job will be live for 90 days</p>
                             </div>
                         </div>
-                    {% elif job.status == 'approved' %}
-                        <!-- Review completed -->
+                    {% elif job.status == 'rejected' %}
+                        <!-- Job was rejected -->
+                        <div class="flex items-start gap-3">
+                            <div class="flex items-center justify-center w-6 h-6 bg-red-500 rounded-full mt-0.5">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-[#0d151c] text-sm font-medium">Submission Rejected</p>
+                                <p class="text-[#49719c] text-sm">Unfortunately, your job posting did not meet our requirements. Please contact support for more information.</p>
+                            </div>
+                        </div>
+                    {% elif job.status == 'waiting_for_payment' %}
+                        <!-- Waiting for payment -->
                         <div class="flex items-start gap-3">
                             <div class="flex items-center justify-center w-6 h-6 bg-green-500 rounded-full mt-0.5">
                                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -119,54 +129,40 @@
                             </div>
                             <div>
                                 <p class="text-[#0d151c] text-sm font-medium">Review Process (Completed)</p>
-                                <p class="text-[#49719c] text-sm">Your job posting has been approved by our team!</p>
+                                <p class="text-[#49719c] text-sm">Your job posting has been approved!</p>
                             </div>
                         </div>
-                        <!-- Step 2: Payment -->
-                        {% if job.payment_status == 'pending' %}
-                            <!-- Waiting for payment -->
-                            <div class="flex items-start gap-3">
-                                <div class="flex items-center justify-center w-6 h-6 bg-orange-500 rounded-full mt-0.5 animate-pulse">
-                                    <span class="text-white text-sm font-bold">2</span>
-                                </div>
-                                <div>
-                                    <p class="text-[#0d151c] text-sm font-medium">Invoice & Payment (Awaiting Payment)</p>
-                                    <p class="text-[#49719c] text-sm">An invoice has been sent to your email. We are awaiting payment confirmation.</p>
-                                    <p class="text-[#0d151c] text-sm font-semibold mt-2">Amount: €{{ job.payment_amount }}</p>
-                                </div>
+                        <div class="flex items-start gap-3">
+                            <div class="flex items-center justify-center w-6 h-6 bg-orange-500 rounded-full mt-0.5 animate-pulse">
+                                <span class="text-white text-sm font-bold">2</span>
                             </div>
-                            <div class="flex items-start gap-3 opacity-50">
-                                <div class="flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full mt-0.5">
-                                    <span class="text-blue-600 text-sm font-bold">3</span>
-                                </div>
-                                <div>
-                                    <p class="text-[#0d151c] text-sm font-medium">Go Live</p>
-                                    <p class="text-[#49719c] text-sm">Once payment is confirmed, your job will go live for 90 days</p>
-                                </div>
+                            <div>
+                                <p class="text-[#0d151c] text-sm font-medium">Invoice & Payment (Awaiting Payment)</p>
+                                <p class="text-[#49719c] text-sm">An invoice has been sent to your email. We are awaiting payment confirmation.</p>
                             </div>
-                        {% elif job.payment_status == 'verified' %}
-                            <!-- Payment completed -->
-                            <div class="flex items-start gap-3">
-                                <div class="flex items-center justify-center w-6 h-6 bg-green-500 rounded-full mt-0.5">
-                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-[#0d151c] text-sm font-medium">Invoice & Payment (Completed)</p>
-                                    <p class="text-[#49719c] text-sm">Payment has been verified. Thank you!</p>
-                                </div>
+                        </div>
+                        <div class="flex items-start gap-3 opacity-50">
+                            <div class="flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full mt-0.5">
+                                <span class="text-blue-600 text-sm font-bold">3</span>
                             </div>
-                            <div class="flex items-start gap-3">
-                                <div class="flex items-center justify-center w-6 h-6 bg-blue-500 rounded-full mt-0.5 animate-pulse">
-                                    <span class="text-white text-sm font-bold">3</span>
-                                </div>
-                                <div>
-                                    <p class="text-[#0d151c] text-sm font-medium">Go Live (Processing)</p>
-                                    <p class="text-[#49719c] text-sm">Your job is being prepared to go live. It will be published shortly.</p>
-                                </div>
+                            <div>
+                                <p class="text-[#0d151c] text-sm font-medium">Go Live</p>
+                                <p class="text-[#49719c] text-sm">Once payment is confirmed, your job will go live for 90 days</p>
                             </div>
-                        {% endif %}
+                        </div>
+                    {% elif job.status == 'refunded' %}
+                        <!-- Job was refunded -->
+                        <div class="flex items-start gap-3">
+                            <div class="flex items-center justify-center w-6 h-6 bg-gray-500 rounded-full mt-0.5">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-[#0d151c] text-sm font-medium">Payment Refunded</p>
+                                <p class="text-[#49719c] text-sm">Your payment has been refunded. Please contact support for more information.</p>
+                            </div>
+                        </div>
                     {% endif %}
                 </div>
             </div>

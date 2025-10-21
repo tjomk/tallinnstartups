@@ -46,16 +46,11 @@ class Job(models.Model):
     ]
     
     STATUS_CHOICES = [
-        ('live', 'Live'),
-        ('approved', 'Approved'),
         ('in_review', 'In Review'),
-    ]
-    
-    PAYMENT_STATUS_CHOICES = [
-        ('pending', 'Payment Pending'),
-        ('verified', 'Payment Verified'),
-        ('failed', 'Payment Failed'),
+        ('rejected', 'Rejected'),
+        ('waiting_for_payment', 'Waiting for Payment'),
         ('refunded', 'Refunded'),
+        ('live', 'Live'),
     ]
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -72,27 +67,6 @@ class Job(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='jobs')
     application_contact = models.CharField(max_length=255, default="", help_text="Email or URL for job applications")
     slug = models.SlugField(max_length=255, unique=True, blank=True, null=True, help_text="SEO-friendly URL slug")
-    
-    # Payment tracking fields
-    payment_status = models.CharField(
-        max_length=20, 
-        choices=PAYMENT_STATUS_CHOICES, 
-        default='pending',
-        help_text="Current payment status"
-    )
-    payment_reference = models.CharField(
-        max_length=100, 
-        blank=True, 
-        null=True,
-        help_text="Payment transaction reference"
-    )
-    payment_amount = models.DecimalField(
-        max_digits=6, 
-        decimal_places=2, 
-        null=True, 
-        blank=True,
-        help_text="Payment amount in EUR"
-    )
     
     def __str__(self):
         return f"{self.title} at {self.company.name}"
@@ -113,15 +87,23 @@ class Job(models.Model):
         super().save(*args, **kwargs)
     
     @property
+    def is_expired(self):
+        """Check if job has expired"""
+        return self.expires_at and self.expires_at <= timezone.now()
+
+    @property
     def is_visible(self):
-        """Check if job is visible to public (live status, not expired, and payment verified)"""
+        """Check if job is visible to public (live status and not expired)"""
         if self.status != 'live':
             return False
-        if self.expires_at and self.expires_at <= timezone.now():
-            return False
-        if self.payment_status != 'verified':
+        if self.is_expired:
             return False
         return True
+
+    @property
+    def is_accessible(self):
+        """Check if job can be accessed via direct link (live status, regardless of expiry)"""
+        return self.status == 'live'
     
     class Meta:
         ordering = ['-created_at']

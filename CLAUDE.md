@@ -144,7 +144,7 @@ Current URL patterns:
 - `location`: Job location (CharField, max_length=200)
 - `company`: Foreign key to Company model
 - `application_contact`: Application email/URL (CharField, max_length=255)
-- `status`: Job status ('live' or 'in_review')
+- `status`: Job status (CharField with choices: 'in_review', 'rejected', 'waiting_for_payment', 'refunded', 'live')
 - `is_featured`: Featured job flag (BooleanField, default=False)
 - `expires_at`: Job expiry date (DateTimeField, optional)
 - `slug`: SEO-friendly URL slug (auto-generated)
@@ -152,12 +152,13 @@ Current URL patterns:
 
 Available job categories: engineering, design, marketing, sales, product, operations, finance, hr, customer_support, other
 
+Available job statuses: in_review, rejected, waiting_for_payment, refunded, live
+
 ## Adding New Jobs and Companies
 
-**IMPORTANT**: Jobs must have `payment_status='verified'` to be visible on the website. The `is_visible` property requires:
+**IMPORTANT**: Jobs must have `status='live'` to be visible on the website. The `is_visible` property requires:
 1. `status='live'`
-2. Non-expired `expires_at` date
-3. `payment_status='verified'`
+2. Non-expired `expires_at` date (or null)
 
 **Note**: Both Company and Job models automatically generate SEO-friendly slugs:
 - Company slugs are used for company pages: `/company/<slug>/` (e.g., `/company/bolt/`)
@@ -176,7 +177,7 @@ company, created = Company.objects.get_or_create(
     defaults={'logo_url': 'https://example.com/logo.png'}
 )
 
-# Create job - ALWAYS set payment_status='verified' to make it visible
+# Create job - ALWAYS set status='live' to make it visible
 job = Job.objects.create(
     title='Job Title',
     description='Job description with requirements and benefits...',
@@ -185,8 +186,7 @@ job = Job.objects.create(
     location='City, Country',
     company=company,
     application_contact='https://careers.company.com/job-url',
-    status='live',
-    payment_status='verified',  # REQUIRED for visibility
+    status='live',  # REQUIRED for visibility
     expires_at=timezone.now() + timedelta(days=30)
 )
 print(f'Created: {job.title} at {company.name} (ID: {job.id})')
@@ -222,3 +222,4 @@ Then run: `poetry run python script_name.py`
 - Main view logic is in `tallinnstartups/views.py` with sample data for testing
 - Job slugs are auto-generated from title and company name with UUID suffix for uniqueness
 - Jobs with status='live' and non-expired dates are visible to public via `is_visible` property
+- Job status workflow: in_review → (rejected | waiting_for_payment) → (refunded | live)

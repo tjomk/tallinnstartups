@@ -12,38 +12,53 @@ class JobRepository:
     @staticmethod
     def get_category_counts() -> QuerySet:
         """Get job counts grouped by category for visible jobs only."""
+        now = timezone.now()
         return Job.objects.filter(
             status='live'
+        ).exclude(
+            expires_at__lte=now
         ).values('category').annotate(count=Count('id')).order_by('-count')
     
     @staticmethod
     def get_featured_jobs(limit: int = 2) -> QuerySet:
         """Get featured jobs with company information."""
+        now = timezone.now()
         return Job.objects.filter(
             status='live',
             is_featured=True
+        ).exclude(
+            expires_at__lte=now
         ).select_related('company')[:limit]
-    
+
     @staticmethod
     def get_latest_jobs(limit: int = 5) -> QuerySet:
         """Get latest jobs ordered by creation date."""
+        now = timezone.now()
         return Job.objects.filter(
             status='live'
+        ).exclude(
+            expires_at__lte=now
         ).select_related('company').order_by('-created_at')[:limit]
-    
+
     @staticmethod
     def get_all_jobs() -> QuerySet:
         """Get all live jobs ordered by creation date for pagination."""
+        now = timezone.now()
         return Job.objects.filter(
             status='live'
+        ).exclude(
+            expires_at__lte=now
         ).select_related('company').order_by('-created_at')
-    
+
     @staticmethod
     def get_jobs_by_category(category: str) -> QuerySet:
         """Get all live jobs in a specific category ordered by creation date."""
+        now = timezone.now()
         return Job.objects.filter(
             status='live',
             category=category
+        ).exclude(
+            expires_at__lte=now
         ).select_related('company').order_by('-created_at')
     
     @staticmethod
@@ -59,57 +74,66 @@ class JobRepository:
         """Search jobs by title and description using ILIKE."""
         if not query:
             return Job.objects.none()
-        
+
+        now = timezone.now()
         # Create case-insensitive search using ILIKE (PostgreSQL) or LIKE (SQLite)
         search_conditions = models.Q(
             title__icontains=query
         ) | models.Q(
             description__icontains=query
         )
-        
+
         queryset = Job.objects.filter(
             search_conditions,
             status='live'
+        ).exclude(
+            expires_at__lte=now
         ).select_related('company').order_by('-created_at')
-        
+
         if limit:
             queryset = queryset[:limit]
-        
+
         return queryset
-    
+
     @staticmethod
     def search_featured_jobs(query: str, limit: int = 2) -> QuerySet:
         """Search featured jobs by title and description."""
         if not query:
             return Job.objects.none()
-        
+
+        now = timezone.now()
         search_conditions = models.Q(
             title__icontains=query
         ) | models.Q(
             description__icontains=query
         )
-        
+
         return Job.objects.filter(
             search_conditions,
             status='live',
             is_featured=True
+        ).exclude(
+            expires_at__lte=now
         ).select_related('company').order_by('-created_at')[:limit]
-    
+
     @staticmethod
     def search_latest_jobs(query: str, limit: int = 5) -> QuerySet:
         """Search latest jobs by title and description."""
         if not query:
             return Job.objects.none()
-        
+
+        now = timezone.now()
         search_conditions = models.Q(
             title__icontains=query
         ) | models.Q(
             description__icontains=query
         )
-        
+
         return Job.objects.filter(
             search_conditions,
             status='live'
+        ).exclude(
+            expires_at__lte=now
         ).select_related('company').order_by('-created_at')[:limit]
 
 
