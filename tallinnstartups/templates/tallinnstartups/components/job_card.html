@@ -2,10 +2,10 @@
     <a href="{% url 'job_detail' slug=job.slug %}" class="block mb-2.5">
         <div class="theme-job-card category-{{ job.category_key }} flex items-center gap-4 relative">
             {% if job.company_logo %}
-                <img src="{{ job.company_logo }}" 
+                <img src="{{ job.company_logo }}"
                      alt="{{ job.company_name }} company logo"
                      loading="lazy"
-                     class="w-14 h-14 object-contain rounded-lg bg-white border border-gray-100"
+                     class="w-14 h-14 object-contain rounded-lg bg-gradient-to-br from-gray-50 to-white border border-gray-100 p-1"
                      onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <div class="company-logo-default aspect-square rounded-lg size-14" style="display: none;">
                 </div>
@@ -36,10 +36,10 @@
 {% else %}
     <div class="theme-job-card category-{{ job.category_key }} flex items-center gap-4 relative">
         {% if job.company_logo %}
-            <img src="{{ job.company_logo }}" 
+            <img src="{{ job.company_logo }}"
                  alt="{{ job.company_name }} company logo"
                  loading="lazy"
-                 class="w-14 h-14 object-contain rounded-lg bg-white border border-gray-100"
+                 class="w-14 h-14 object-contain rounded-lg bg-gradient-to-br from-gray-50 to-white border border-gray-100 p-1"
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
             <div class="company-logo-default aspect-square rounded-lg size-14" style="display: none;">
             </div>
