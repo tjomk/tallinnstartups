@@ -54,6 +54,16 @@
             content: "☆";
         }
     </style>
+    <!-- Theme initialization script - runs immediately to prevent FOUC -->
+    <script>
+        (function() {
+            const theme = localStorage.getItem('theme') || 'light';
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.documentElement.classList.add('dark-theme');
+            }
+        })();
+    </script>
     <script defer src="https://t.estonianstartupjobs.ee/script.js" data-website-id="b570bcf5-ebce-4e14-b833-dabdd598e200"></script>
     {% block extra_head %}{% endblock %}
 </head>

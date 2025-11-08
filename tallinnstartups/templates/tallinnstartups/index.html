@@ -105,28 +105,26 @@
         {% endif %}
 
         <!-- Featured Jobs Section -->
-        {% if featured_jobs or not is_search_results %}
+        {% if featured_jobs %}
             {% if is_search_results %}
-                <h2 class="text-[#0d141c] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 mb-3">Featured Results</h2>
+                <h2 class="theme-primary-text text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 mb-3">Featured Results</h2>
             {% else %}
-                <h2 class="text-[#0d141c] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 mb-3">Featured Jobs</h2>
+                <h2 class="theme-primary-text text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 mb-3">Featured Jobs</h2>
             {% endif %}
-            
-            {% if featured_jobs %}
+
             <div class="px-4">
             {% for job in featured_jobs %}
                 {% include 'tallinnstartups/components/job_card.html' with show_featured_tag=True %}
             {% endfor %}
             </div>
-            {% endif %}
         {% endif %}
 
         <!-- Latest Jobs Section -->
         {% if latest_jobs or not is_search_results %}
             {% if is_search_results %}
-                <h2 class="text-[#0d141c] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 mb-3">Latest Results</h2>
+                <h2 class="theme-primary-text text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 mb-3">Latest Results</h2>
             {% else %}
-                <h2 class="text-[#0d141c] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 mb-3">Latest Jobs</h2>
+                <h2 class="theme-primary-text text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 mb-3">Latest Jobs</h2>
             {% endif %}
             
             {% if latest_jobs %}

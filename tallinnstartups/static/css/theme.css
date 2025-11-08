@@ -84,6 +84,93 @@
   --category-other: #f8f9fa;
 }
 
+/* Dark Theme */
+[data-theme="dark"],
+.dark-theme {
+  /* Primary Colors */
+  --primary-blue: #3b82f6;
+  --primary-blue-dark: #2563eb;
+  --primary-blue-alt: #60a5fa;
+  --primary-blue-light: #3b82f6;
+  --primary-blue-lighter: #60a5fa;
+
+  /* Text Colors */
+  --text-primary: #f1f5f9;
+  --text-primary-alt: #e2e8f0;
+  --text-primary-dark: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-secondary-alt: #94a3b8;
+  --text-secondary-dark: #cbd5e1;
+  --text-warning: #fbbf24;
+
+  /* Background Colors */
+  --bg-light: #1e293b;
+  --bg-light-alt: #334155;
+  --bg-light-darker: #0f172a;
+  --bg-success: #059669;
+  --bg-warning: #f59e0b;
+
+  /* Border Colors */
+  --border-primary: #3b82f6;
+  --border-light: #334155;
+  --border-light-alt: #475569;
+  --border-secondary: #1e293b;
+
+  /* Semantic Colors */
+  --color-success: #10b981;
+  --color-warning: #fbbf24;
+  --color-info: #3b82f6;
+  --color-danger: #ef4444;
+
+  /* Neutral Colors */
+  --color-white: #0f172a;
+  --color-black: #ffffff;
+  --color-gray-50: #0f172a;
+  --color-gray-100: #1e293b;
+  --color-gray-200: #334155;
+  --color-gray-300: #475569;
+  --color-gray-400: #64748b;
+  --color-gray-500: #94a3b8;
+  --color-gray-600: #cbd5e1;
+  --color-gray-700: #e2e8f0;
+  --color-gray-800: #f1f5f9;
+  --color-gray-900: #f8fafc;
+
+  /* Slate Colors (commonly used in the app) */
+  --color-slate-50: #0f172a;
+  --color-slate-100: #1e293b;
+  --color-slate-200: #334155;
+  --color-slate-300: #475569;
+  --color-slate-400: #64748b;
+  --color-slate-500: #94a3b8;
+  --color-slate-600: #cbd5e1;
+  --color-slate-700: #e2e8f0;
+  --color-slate-800: #f1f5f9;
+  --color-slate-900: #f8fafc;
+
+  /* Nordic Warm Colors - Dark Theme Variants */
+  --nordic-cream: #0f172a;
+  --nordic-sage: #1a2e1a;
+  --nordic-lavender: #1a1a2e;
+  --nordic-peach: #2e1a1a;
+  --nordic-blue-gray: #1e293b;
+  --nordic-warm-gray: #1e293b;
+  --nordic-soft-blue: #1a2433;
+  --nordic-mint: #1a2e24;
+
+  /* Category Colors - Dark Theme */
+  --category-engineering: #1e1e3f;
+  --category-design: #1a2e1a;
+  --category-marketing: #2e1f1a;
+  --category-sales: #1a2433;
+  --category-product: #2b1e3f;
+  --category-operations: #1e293b;
+  --category-finance: #2e2419;
+  --category-hr: #1a2e24;
+  --category-support: #1a2e33;
+  --category-other: #1e293b;
+}
+
 /* Theme Utility Classes */
 .theme-primary {
   background-color: var(--primary-blue);
@@ -322,5 +409,59 @@
 /* Gradient background for main container */
 .theme-gradient-bg {
   background: linear-gradient(135deg, var(--nordic-cream) 0%, var(--nordic-warm-gray) 50%, var(--nordic-blue-gray) 100%);
+}
+
+[data-theme="dark"] .theme-gradient-bg,
+.dark-theme .theme-gradient-bg {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1a2433 100%);
+}
+
+/* Additional dark theme overrides for mobile menu */
+[data-theme="dark"] #mobile-menu,
+.dark-theme #mobile-menu {
+  background-color: var(--bg-light);
+  border-bottom-color: var(--border-secondary);
+}
+
+/* Theme toggle button hover effect */
+#theme-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] #theme-toggle:hover,
+.dark-theme #theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Footer styling */
+.theme-footer {
+  background-color: #ffffff;
+  border-top: 1px solid #e2e8f0;
+}
+
+[data-theme="dark"] .theme-footer,
+.dark-theme .theme-footer {
+  background-color: #0f172a;
+  border-top: 1px solid #334155;
+}
+
+/* Link styling */
+.theme-link {
+  color: #0c7ff2;
+  transition: color 0.2s;
+}
+
+.theme-link:hover {
+  color: #0056b3;
+}
+
+[data-theme="dark"] .theme-link,
+.dark-theme .theme-link {
+  color: #60a5fa;
+}
+
+[data-theme="dark"] .theme-link:hover,
+.dark-theme .theme-link:hover {
+  color: #93c5fd;
 }
 
