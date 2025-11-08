@@ -22,37 +22,27 @@
         <!-- Companies Grid -->
         {% if companies %}
             <div class="px-2 sm:px-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {% for company in companies %}
-                        <div class="theme-card">
+                        <a href="{% url 'company_jobs' slug=company.slug %}"
+                           class="group theme-card flex flex-col items-center justify-center p-8 transition-all duration-200 hover:shadow-lg hover:scale-105 cursor-pointer">
                             <!-- Company Logo -->
-                            <div class="flex items-center mb-4">
-                                {% if company.logo_url %}
-                                    <div class="bg-center bg-no-repeat aspect-square bg-contain rounded-lg size-16 mr-4"
-                                         style='background-image: url("{{ company.logo_url }}");'>
-                                    </div>
-                                {% else %}
-                                    <div class="company-logo-default aspect-square rounded-lg size-16 mr-4">
-                                    </div>
-                                {% endif %}
-                                <div class="flex-1 min-w-0">
-                                    <h3 class="theme-primary-text text-lg font-semibold leading-tight mb-1 break-words">
-                                        {{ company.name }}
-                                    </h3>
-                                    <p class="theme-secondary-text text-sm break-words">
-                                        {{ company.active_job_count }} active job{{ company.active_job_count|pluralize }}
-                                    </p>
+                            {% if company.logo_url %}
+                                <div class="bg-center bg-no-repeat aspect-square bg-contain w-24 h-24 mb-4 grayscale group-hover:grayscale-0 transition-all duration-200"
+                                     style='background-image: url("{{ company.logo_url }}");'>
                                 </div>
+                            {% else %}
+                                <div class="company-logo-default aspect-square w-24 h-24 mb-4">
+                                </div>
+                            {% endif %}
+
+                            <!-- Hover Text -->
+                            <div class="text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                <p class="theme-primary-text text-sm font-medium">
+                                    View {{ company.active_job_count }} Job{{ company.active_job_count|pluralize }}
+                                </p>
                             </div>
-                            
-                            <!-- Action Button -->
-                            <div class="mt-4">
-                                <a href="{% url 'company_jobs' slug=company.slug %}" 
-                                   class="theme-button-primary w-full">
-                                    <span class="truncate">View {{ company.active_job_count }} Job{{ company.active_job_count|pluralize }}</span>
-                                </a>
-                            </div>
-                        </div>
+                        </a>
                     {% endfor %}
                 </div>
             </div>

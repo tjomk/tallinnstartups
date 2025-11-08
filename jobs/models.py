@@ -7,6 +7,7 @@ import uuid
 class Company(models.Model):
     name = models.CharField(max_length=200)
     logo_url = models.URLField(blank=True, null=True)
+    website_url = models.URLField(blank=True, null=True, help_text="Company website URL")
     slug = models.SlugField(max_length=255, unique=True, blank=True, null=True, help_text="SEO-friendly URL slug")
     
     def __str__(self):
