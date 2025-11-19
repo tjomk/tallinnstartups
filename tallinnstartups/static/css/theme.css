@@ -433,6 +433,18 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+/* Logo container with background */
+.theme-logo-container {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+[data-theme="dark"] .theme-logo-container,
+.dark-theme .theme-logo-container {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+}
+
 /* Footer styling */
 .theme-footer {
   background-color: #ffffff;
