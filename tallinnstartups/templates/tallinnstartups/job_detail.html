@@ -1,5 +1,6 @@
 {% extends 'tallinnstartups/base.html' %}
 {% load currency_filters %}
+{% load markdown_extras %}
 
 {% block title %}{{ job.title }} at {{ job.company.name }} | {{ job.location }} | Estonian Startup Jobs{% endblock %}
 
@@ -180,7 +181,19 @@
         <!-- Job description -->
         <div class="bg-white rounded-lg shadow-sm border border-[#dde3e8] p-6 mb-6">
             <h2 class="text-xl font-bold text-[#0e141b] mb-4">Job Description</h2>
-            <div class="text-[#4e7297] leading-relaxed whitespace-pre-wrap">{{ job.description }}</div>
+            <div class="text-[#4e7297] leading-relaxed prose prose-sm max-w-none
+                prose-headings:text-[#0e141b] prose-headings:font-bold
+                prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg
+                prose-p:text-[#4e7297] prose-p:mb-4
+                prose-ul:list-disc prose-ul:ml-6 prose-ul:mb-4
+                prose-ol:list-decimal prose-ol:ml-6 prose-ol:mb-4
+                prose-li:text-[#4e7297] prose-li:mb-1
+                prose-strong:text-[#0e141b] prose-strong:font-semibold
+                prose-a:text-[#1980e6] prose-a:underline hover:prose-a:text-[#1668c7]
+                prose-code:text-[#0e141b] prose-code:bg-[#f0f2f4] prose-code:px-1 prose-code:py-0.5 prose-code:rounded
+                prose-pre:bg-[#0e141b] prose-pre:text-white prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto">
+                {{ job.description|markdown }}
+            </div>
         </div>
         
         <!-- Job details -->

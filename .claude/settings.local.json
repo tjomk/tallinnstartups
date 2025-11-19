@@ -19,7 +19,8 @@
       "WebFetch(domain:www.gscan.eu)",
       "WebFetch(domain:farsightvision.com)",
       "Bash(python3:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(poetry add:*)"
     ],
     "deny": []
   }
