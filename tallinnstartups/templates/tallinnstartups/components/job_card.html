@@ -1,5 +1,5 @@
 {% if job.slug %}
-    <a href="{% url 'job_detail' slug=job.slug %}" class="block mb-2.5">
+    <a href="{% url 'job_detail' slug=job.slug %}" class="block mb-4">
         <div class="theme-job-card category-{{ job.category_key }} flex items-center gap-4 relative">
             {% if job.company_logo %}
                 <img src="{{ job.company_logo }}"

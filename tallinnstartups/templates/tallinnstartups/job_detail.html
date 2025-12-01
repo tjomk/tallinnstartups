@@ -184,9 +184,9 @@
             <div class="text-[var(--text-secondary)] leading-relaxed prose prose-sm max-w-none
                 prose-headings:text-[var(--text-primary)] prose-headings:font-bold
                 prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg
-                prose-p:text-[var(--text-secondary)] prose-p:mb-4
-                prose-ul:list-disc prose-ul:ml-6 prose-ul:mb-4
-                prose-ol:list-decimal prose-ol:ml-6 prose-ol:mb-4
+                prose-p:text-[var(--text-secondary)] prose-p:mb-6
+                prose-ul:list-disc prose-ul:ml-6 prose-ul:mb-6
+                prose-ol:list-decimal prose-ol:ml-6 prose-ol:mb-6
                 prose-li:text-[var(--text-secondary)] prose-li:mb-1
                 prose-strong:text-[var(--text-primary)] prose-strong:font-semibold
                 prose-a:text-[#1980e6] prose-a:underline hover:prose-a:text-[#1668c7]
@@ -228,7 +228,7 @@
         </div>
         
         <!-- Apply button -->
-        <div class="bg-[var(--color-white)] rounded-lg shadow-sm border border-[var(--border-light-alt)] p-6 text-center">
+        <div class="bg-[var(--color-white)] rounded-lg shadow-sm border border-[var(--border-light-alt)] p-6 mb-6 text-center">
             <h2 class="text-xl font-bold text-[var(--text-primary)] mb-4">Ready to Apply?</h2>
             <p class="text-[var(--text-secondary)] mb-6">Interested in this position? Click the button below to apply.</p>
 
@@ -260,12 +260,12 @@
                 {% for related_job in related_company_jobs %}
                 <div class="flex items-center justify-between p-3 border border-[var(--border-secondary)] rounded-lg hover:bg-[var(--bg-light)] transition-colors">
                     <div class="flex-1">
-                        <h3 class="font-medium text-[var(--text-primary)] hover:text-[#1980e6]">
+                        <h3 class="text-sm font-medium text-[var(--text-primary)] hover:text-[#1980e6]">
                             <a href="{% url 'job_detail' slug=related_job.slug %}">{{ related_job.title }}</a>
                         </h3>
                         <p class="text-sm text-[var(--text-secondary)]">{{ related_job.location }}</p>
                     </div>
-                    <span class="text-xs bg-[var(--bg-light)] px-2 py-1 rounded-sm text-[var(--text-primary)]">{{ related_job.get_category_display }}</span>
+                    <span class="text-sm font-medium bg-[var(--bg-light)] px-2 py-1 rounded-sm text-[var(--text-primary)]">{{ related_job.get_category_display }}</span>
                 </div>
                 {% endfor %}
             </div>
@@ -285,13 +285,13 @@
                 {% for related_job in related_category_jobs %}
                 <div class="flex items-center justify-between p-3 border border-[var(--border-secondary)] rounded-lg hover:bg-[var(--bg-light)] transition-colors">
                     <div class="flex-1">
-                        <h3 class="font-medium text-[var(--text-primary)] hover:text-[#1980e6]">
+                        <h3 class="text-sm font-medium text-[var(--text-primary)] hover:text-[#1980e6]">
                             <a href="{% url 'job_detail' slug=related_job.slug %}">{{ related_job.title }}</a>
                         </h3>
                         <p class="text-sm text-[var(--text-secondary)]">{{ related_job.company.name }} • {{ related_job.location }}</p>
                     </div>
                     {% if related_job.is_featured %}
-                    <span class="text-xs bg-[#f76969] text-white px-2 py-1 rounded-sm">Featured</span>
+                    <span class="text-sm font-medium bg-[#f76969] text-white px-2 py-1 rounded-sm">Featured</span>
                     {% endif %}
                 </div>
                 {% endfor %}
