@@ -1,18 +1,22 @@
 {% extends 'tallinnstartups/base.html' %}
 
-{% block title %}Post a Job - Hire Top Talent at Estonian Startups{% endblock %}
+{% block title %}Find a Co-founder - Estonian Startup Co-founder Matching{% endblock %}
 
-{% block meta_description %}Post your startup job on Estonia's premier job board. Reach qualified candidates in Tallinn, Tartu, and nationwide. Featured listings available. Start hiring today!{% endblock %}
+{% block meta_description %}Looking for a co-founder in Estonia? Post your co-founder search for free on Estonia's premier startup job board. Connect with talented entrepreneurs in Tallinn, Tartu, and nationwide.{% endblock %}
 
-{% block meta_keywords %}<meta name="keywords" content="post job Estonia, hire talent Estonia, Estonian startup hiring, job posting Estonia, recruitment Estonia">{% endblock %}
+{% block meta_keywords %}<meta name="keywords" content="find co-founder Estonia, co-founder search Tallinn, Estonian startup co-founder, tech co-founder Estonia, business co-founder Estonia">{% endblock %}
 
 {% block content %}
 <div class="px-4 sm:px-8 lg:px-40 flex flex-1 justify-center py-5">
     <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
         <div class="flex flex-wrap justify-between gap-3 p-4">
             <div class="flex min-w-72 flex-col gap-3">
-                <p class="text-[#0d151c] tracking-light text-[32px] font-bold leading-tight">Post a New Job</p>
-                <p class="text-[#49719c] text-sm font-normal leading-normal">Fill out the form below to post your job opening</p>
+                <p class="text-[#0d151c] tracking-light text-[32px] font-bold leading-tight">Find a Co-founder</p>
+                <p class="text-[#49719c] text-sm font-normal leading-normal">Fill out the form below to post your co-founder search</p>
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4 mt-2">
+                    <p class="text-green-800 text-sm font-medium">✓ Co-founder ads are completely free!</p>
+                    <p class="text-green-700 text-sm mt-1">Your submission will be reviewed and published within 24-48 hours.</p>
+                </div>
             </div>
         </div>
 
@@ -29,7 +33,7 @@
 
         <form method="post" class="flex flex-col gap-8 p-4">
             {% csrf_token %}
-            
+
             <!-- Step 1: Company Type -->
             <div class="flex flex-col gap-4">
                 <h2 class="text-[#0d151c] text-[22px] font-bold leading-tight tracking-[-0.015em]">Step 1 - Company Type</h2>
@@ -42,10 +46,6 @@
                         <input type="radio" name="company_type" value="estonia_startup" required class="h-5 w-5 text-[#1980e6]" {% if form.company_type.value == 'estonia_startup' %}checked{% endif %}>
                         <span class="text-[#0d151c] text-sm font-medium">Estonia-based startup</span>
                     </label>
-                    <label class="flex items-center gap-3">
-                        <input type="radio" name="company_type" value="incubator_accelerator_vc" required class="h-5 w-5 text-[#1980e6]" {% if form.company_type.value == 'incubator_accelerator_vc' %}checked{% endif %}>
-                        <span class="text-[#0d151c] text-sm font-medium">Startup Incubator, Accelerator, or VC</span>
-                    </label>
                 </div>
                 {% if form.company_type.errors %}
                     <div class="text-red-600 text-sm mt-1">
@@ -56,35 +56,13 @@
                 {% endif %}
             </div>
 
-            <!-- Step 2: Post Option -->
+            <!-- Step 2: Requirements -->
             <div class="flex flex-col gap-4">
-                <h2 class="text-[#0d151c] text-[22px] font-bold leading-tight tracking-[-0.015em]">Step 2 - Post Option</h2>
-                <div class="flex flex-col gap-3">
-                    <label class="flex items-center gap-3">
-                        <input type="radio" name="post_option" value="featured" required class="h-5 w-5 text-[#1980e6]" {% if form.post_option.value == 'featured' %}checked{% endif %}>
-                        <span class="text-[#0d151c] text-sm font-medium">Featured job post: 75€/90 days</span>
-                    </label>
-                    <label class="flex items-center gap-3">
-                        <input type="radio" name="post_option" value="standard" required class="h-5 w-5 text-[#1980e6]" {% if form.post_option.value == 'standard' %}checked{% endif %}>
-                        <span class="text-[#0d151c] text-sm font-medium">Standard job post: 35€/90 days</span>
-                    </label>
-                </div>
-                {% if form.post_option.errors %}
-                    <div class="text-red-600 text-sm mt-1">
-                        {% for error in form.post_option.errors %}
-                            <p>{{ error }}</p>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            </div>
-
-            <!-- Step 3: Job Description -->
-            <div class="flex flex-col gap-4">
-                <h2 class="text-[#0d151c] text-[22px] font-bold leading-tight tracking-[-0.015em]">Step 3 - Job Description</h2>
+                <h2 class="text-[#0d151c] text-[22px] font-bold leading-tight tracking-[-0.015em]">Step 2 - Requirements</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="flex flex-col gap-2">
-                        <label class="text-[#0d151c] text-sm font-medium">Job Title</label>
-                        <input type="text" name="job_title" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-sm text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] h-14 placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal" value="{{ form.job_title.value|default:'' }}">
+                        <label class="text-[#0d151c] text-sm font-medium">Title</label>
+                        <input type="text" name="job_title" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-sm text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] h-14 placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal" placeholder="e.g., Looking for Technical Co-founder" value="{{ form.job_title.value|default:'' }}">
                         {% if form.job_title.errors %}
                             <div class="text-red-600 text-sm mt-1">
                                 {% for error in form.job_title.errors %}
@@ -105,7 +83,7 @@
                         {% endif %}
                     </div>
                     <div class="flex flex-col gap-2">
-                        <label class="text-[#0d151c] text-sm font-medium">Job Category</label>
+                        <label class="text-[#0d151c] text-sm font-medium">Category</label>
                         <select name="job_category" required class="form-select flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-sm text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] h-14 placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal">
                             <option value="">Select a category</option>
                             <option value="engineering" {% if form.job_category.value == 'engineering' %}selected{% endif %}>Engineering</option>
@@ -139,8 +117,8 @@
                     </div>
                 </div>
                 <div class="flex flex-col gap-2">
-                    <label class="text-[#0d151c] text-sm font-medium">Job Description</label>
-                    <textarea name="job_description" required rows="6" class="form-textarea flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-sm text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal" placeholder="Describe the role, responsibilities, requirements, and benefits...">{{ form.job_description.value|default:'' }}</textarea>
+                    <label class="text-[#0d151c] text-sm font-medium">Description</label>
+                    <textarea name="job_description" required rows="6" class="form-textarea flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-sm text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal" placeholder="Describe what you're building, what skills/experience you're looking for in a co-founder, equity offered, etc.">{{ form.job_description.value|default:'' }}</textarea>
                     {% if form.job_description.errors %}
                         <div class="text-red-600 text-sm mt-1">
                             {% for error in form.job_description.errors %}
@@ -151,61 +129,10 @@
                 </div>
                 <div class="flex flex-col gap-2">
                     <label class="text-[#0d151c] text-sm font-medium">Email/Link for applications</label>
-                    <input type="text" name="application_contact" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-sm text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] h-14 placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal" placeholder="careers@company.com or https://company.com/apply" value="{{ form.application_contact.value|default:'' }}">
+                    <input type="text" name="application_contact" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-sm text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] h-14 placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal" placeholder="your@email.com or https://yourwebsite.com/contact" value="{{ form.application_contact.value|default:'' }}">
                     {% if form.application_contact.errors %}
                         <div class="text-red-600 text-sm mt-1">
                             {% for error in form.application_contact.errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-
-            <!-- Step 4: Payment Details -->
-            <div class="flex flex-col gap-4">
-                <h2 class="text-[#0d151c] text-[22px] font-bold leading-tight tracking-[-0.015em]">Step 4 - Payment Details</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="flex flex-col gap-2">
-                        <label class="text-[#0d151c] text-sm font-medium">Legal Company Name</label>
-                        <input type="text" name="legal_company_name" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-sm text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] h-14 placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal" value="{{ form.legal_company_name.value|default:'' }}">
-                        {% if form.legal_company_name.errors %}
-                            <div class="text-red-600 text-sm mt-1">
-                                {% for error in form.legal_company_name.errors %}
-                                    <p>{{ error }}</p>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <label class="text-[#0d151c] text-sm font-medium">Invoice Email</label>
-                        <input type="email" name="invoice_email" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-sm text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] h-14 placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal" value="{{ form.invoice_email.value|default:'' }}">
-                        {% if form.invoice_email.errors %}
-                            <div class="text-red-600 text-sm mt-1">
-                                {% for error in form.invoice_email.errors %}
-                                    <p>{{ error }}</p>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="flex flex-col gap-2">
-                    <label class="text-[#0d151c] text-sm font-medium">Company Address</label>
-                    <textarea name="company_address" required rows="3" class="form-textarea flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-sm text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal" placeholder="Street address, city, postal code, country">{{ form.company_address.value|default:'' }}</textarea>
-                    {% if form.company_address.errors %}
-                        <div class="text-red-600 text-sm mt-1">
-                            {% for error in form.company_address.errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="flex flex-col gap-2">
-                    <label class="text-[#0d151c] text-sm font-medium">VAT (Optional)</label>
-                    <input type="text" name="vat_number" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-sm text-[#0d151c] focus:outline-0 focus:ring-2 focus:ring-[#1980e6] border border-[#cedbe8] bg-slate-50 focus:border-[#1980e6] h-14 placeholder:text-[#49719c] p-[15px] text-base font-normal leading-normal" placeholder="EE123456789" value="{{ form.vat_number.value|default:'' }}">
-                    {% if form.vat_number.errors %}
-                        <div class="text-red-600 text-sm mt-1">
-                            {% for error in form.vat_number.errors %}
                                 <p>{{ error }}</p>
                             {% endfor %}
                         </div>
@@ -226,7 +153,7 @@
                         {% endfor %}
                     </div>
                 {% endif %}
-                
+
                 <!-- reCAPTCHA -->
                 <div class="flex flex-col gap-2">
                     {{ form.captcha }}
@@ -238,10 +165,10 @@
                         </div>
                     {% endif %}
                 </div>
-                
+
                 <!-- Honeypot field (hidden) -->
                 {{ form.website_url }}
-                
+
                 <button type="submit" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-sm h-12 px-5 bg-[#1980e6] text-slate-50 text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#1668c7] transition-colors">
                     <span class="truncate">Submit for Review</span>
                 </button>

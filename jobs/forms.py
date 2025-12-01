@@ -254,3 +254,165 @@ class JobSubmissionForm(forms.Form):
             except ValidationError:
                 raise ValidationError('Please enter a valid company website URL.')
         return website
+
+
+class CofounderSubmissionForm(forms.Form):
+    """Simplified form for co-founder matching submissions - free and no payment details"""
+
+    COMPANY_TYPE_CHOICES = [
+        ('tallinn_startup', 'Tallinn-based startup'),
+        ('estonia_startup', 'Estonia-based startup'),
+    ]
+
+    # Step 1: Company Type
+    company_type = forms.ChoiceField(
+        choices=COMPANY_TYPE_CHOICES,
+        required=True,
+        error_messages={'required': 'Please select a company type.'}
+    )
+
+    # Step 2: Requirements
+    job_title = forms.CharField(
+        max_length=200,
+        required=True,
+        strip=True,
+        error_messages={'required': 'Title is required.', 'max_length': 'Title must be 200 characters or less.'}
+    )
+
+    company_name = forms.CharField(
+        max_length=200,
+        required=True,
+        strip=True,
+        error_messages={'required': 'Company name is required.', 'max_length': 'Company name must be 200 characters or less.'}
+    )
+
+    job_category = forms.ChoiceField(
+        choices=Job.CATEGORY_CHOICES,
+        required=True,
+        error_messages={'required': 'Please select a category.'}
+    )
+
+    company_website = forms.URLField(
+        required=True,
+        validators=[URLValidator()],
+        error_messages={'required': 'Company website is required.', 'invalid': 'Please enter a valid URL.'}
+    )
+
+    job_description = forms.CharField(
+        widget=forms.Textarea,
+        required=True,
+        strip=True,
+        min_length=50,
+        max_length=5000,
+        error_messages={
+            'required': 'Description is required.',
+            'min_length': 'Description must be at least 50 characters.',
+            'max_length': 'Description must be 5000 characters or less.'
+        }
+    )
+
+    application_contact = forms.CharField(
+        max_length=255,
+        required=True,
+        strip=True,
+        error_messages={'required': 'Application contact is required.', 'max_length': 'Application contact must be 255 characters or less.'}
+    )
+
+    # Terms and Conditions
+    terms_accepted = forms.BooleanField(
+        required=True,
+        error_messages={'required': 'You must accept the Terms and Conditions.'}
+    )
+
+    # Security Fields
+    captcha = ReCaptchaField(
+        widget=ReCaptchaV2Invisible,
+        error_messages={'required': 'Please complete the CAPTCHA verification.'}
+    )
+
+    # Honeypot field (hidden, should remain empty)
+    website_url = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(),
+        initial=''
+    )
+
+    # Reuse validation methods from JobSubmissionForm
+    def clean_job_title(self):
+        job_title = self.cleaned_data.get('job_title')
+        if job_title:
+            job_title = re.sub(r'<[^>]*>', '', job_title)
+            if any(char in job_title for char in ['<', '>', '"', "'"]):
+                raise ValidationError('Title contains invalid characters.')
+        return job_title
+
+    def clean_company_name(self):
+        company_name = self.cleaned_data.get('company_name')
+        if company_name:
+            company_name = re.sub(r'<[^>]*>', '', company_name)
+            if any(char in company_name for char in ['<', '>', '"', "'"]):
+                raise ValidationError('Company name contains invalid characters.')
+        return company_name
+
+    def clean_job_description(self):
+        job_description = self.cleaned_data.get('job_description')
+        if job_description:
+            allowed_tags = ['p', 'br', 'strong', 'em', 'u', 'ul', 'ol', 'li', 'h3', 'h4']
+            allowed_attributes = {
+                '*': ['class'],
+                'li': ['type'],
+            }
+            job_description = bleach.clean(
+                job_description,
+                tags=allowed_tags,
+                attributes=allowed_attributes,
+                strip=True
+            )
+        return job_description
+
+    def clean_application_contact(self):
+        application_contact = self.cleaned_data.get('application_contact')
+        if application_contact:
+            if '@' in application_contact:
+                try:
+                    EmailValidator()(application_contact)
+                except ValidationError:
+                    raise ValidationError('Please enter a valid email address.')
+            elif application_contact.startswith(('http://', 'https://')):
+                try:
+                    URLValidator()(application_contact)
+                except ValidationError:
+                    raise ValidationError('Please enter a valid URL.')
+            else:
+                raise ValidationError('Application contact must be a valid email address or URL.')
+
+            application_contact = re.sub(r'<[^>]*>', '', application_contact)
+        return application_contact
+
+    def clean_website_url(self):
+        """Honeypot field validation - should be empty"""
+        website_url = self.cleaned_data.get('website_url')
+        if website_url:
+            raise ValidationError('Automated submissions are not allowed.')
+        return website_url
+
+    def clean_company_website(self):
+        website = self.cleaned_data.get('company_website')
+        if website:
+            try:
+                URLValidator()(website)
+                domain = urlparse(website).netloc.lower()
+                suspicious_domains = [
+                    'bit.ly', 'tinyurl.com', 'goo.gl', 't.co', 'short.link',
+                    'suspicious.com', 'malware.com', 'phishing.com'
+                ]
+
+                if any(sus_domain in domain for sus_domain in suspicious_domains):
+                    raise ValidationError('This domain is not allowed.')
+
+                if not domain or '.' not in domain:
+                    raise ValidationError('Please enter a valid company website.')
+
+            except ValidationError:
+                raise ValidationError('Please enter a valid company website URL.')
+        return website

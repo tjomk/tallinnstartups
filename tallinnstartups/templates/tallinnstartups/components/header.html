@@ -16,6 +16,7 @@
         <nav class="hidden md:flex items-center gap-9">
             <a class="theme-primary-text text-sm font-medium leading-normal" href="{% url 'jobs' %}">Jobs</a>
             <a class="theme-primary-text text-sm font-medium leading-normal" href="{% url 'companies' %}">Companies</a>
+            <a class="theme-primary-text text-sm font-medium leading-normal" href="{% url 'post_cofounder' %}">Co-founder matching</a>
         </nav>
     </div>
     
@@ -52,7 +53,8 @@
     <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-white border-b shadow-lg md:hidden" style="border-bottom-color: var(--border-secondary);">
         <nav class="flex flex-col px-4 py-2">
             <a class="theme-primary-text text-sm font-medium leading-normal py-3 border-b" style="border-bottom-color: var(--border-secondary);" href="{% url 'jobs' %}">Jobs</a>
-            <a class="theme-primary-text text-sm font-medium leading-normal py-3" href="{% url 'companies' %}">Companies</a>
+            <a class="theme-primary-text text-sm font-medium leading-normal py-3 border-b" style="border-bottom-color: var(--border-secondary);" href="{% url 'companies' %}">Companies</a>
+            <a class="theme-primary-text text-sm font-medium leading-normal py-3" href="{% url 'post_cofounder' %}">Co-founder matching</a>
         </nav>
     </div>
 </header>

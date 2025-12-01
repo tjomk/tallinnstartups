@@ -11,7 +11,7 @@ import hashlib
 import json
 from django_ratelimit.decorators import ratelimit
 from jobs.services import HomePageService, CompanyService
-from jobs.forms import JobSubmissionForm, JobSearchForm
+from jobs.forms import JobSubmissionForm, JobSearchForm, CofounderSubmissionForm
 from jobs.models import Job, Company, JobSubmissionLog
 from django.urls import reverse
 from django.template.loader import render_to_string
@@ -22,10 +22,40 @@ submissions_logger = logging.getLogger('job_submissions')
 
 
 def send_admin_notification_telegram(job, form_data):
-    """Send Telegram notification to admin about new job submission"""
+    """Send Telegram notification to admin about new job/co-founder submission"""
     try:
+        # Determine if this is a co-founder search
+        is_cofounder = job.job_type == 'cofounder'
+
         # Format message for Telegram (using HTML formatting)
-        message = f"""
+        if is_cofounder:
+            message = f"""
+🤝 <b>New Co-founder Search</b>
+
+📋 <b>Details:</b>
+• Title: {job.title}
+• Company: {job.company.name}
+• Category: {job.get_category_display()}
+• Status: {job.status}
+• Expires: {job.expires_at.strftime('%Y-%m-%d %H:%M UTC') if job.expires_at else 'N/A'}
+
+🏢 <b>Company Information:</b>
+• Website: {form_data.get('company_website', 'N/A')}
+• Company Type: {form_data.get('company_type', 'N/A')}
+
+📧 <b>Contact Information:</b>
+• Application Contact: {job.application_contact}
+
+📝 <b>Description:</b>
+{job.description[:500]}{'...' if len(job.description) > 500 else ''}
+
+💡 <b>Note:</b> Co-founder ads are FREE
+
+🆔 Job ID: <code>{job.id}</code>
+🔗 Admin URL: /admin/jobs/job/{job.id}/change/
+"""
+        else:
+            message = f"""
 🆕 <b>New Job Submission</b>
 
 📋 <b>Job Details:</b>
@@ -54,7 +84,7 @@ def send_admin_notification_telegram(job, form_data):
 🆔 Job ID: <code>{job.id}</code>
 🔗 Admin URL: /admin/jobs/job/{job.id}/change/
 """
-        
+
         # Send message to Telegram
         telegram_url = f"https://api.telegram.org/bot{settings.TELEGRAM_BOT_TOKEN}/sendMessage"
         payload = {
@@ -62,13 +92,13 @@ def send_admin_notification_telegram(job, form_data):
             'text': message,
             'parse_mode': 'HTML'
         }
-        
+
         response = requests.post(telegram_url, data=payload, timeout=10)
         response.raise_for_status()
-        
+
         submissions_logger.info(f'Admin notification sent to Telegram for job {job.id}')
         return True
-        
+
     except Exception as e:
         submissions_logger.error(f'Failed to send Telegram notification for job {job.id}: {str(e)}')
         return False
@@ -261,6 +291,131 @@ def post_job(request):
         form = JobSubmissionForm()
     
     return render(request, 'tallinnstartups/post_job.html', {'form': form})
+
+
+@ratelimit(key='ip', rate='3/h', method='POST', block=True)
+def post_cofounder(request):
+    """
+    Co-founder matching form view with form handling.
+    Co-founder ads are free and don't require payment details.
+    """
+    # Get client IP for logging
+    client_ip = request.META.get('HTTP_X_FORWARDED_FOR')
+    if client_ip:
+        client_ip = client_ip.split(',')[0]
+    else:
+        client_ip = request.META.get('REMOTE_ADDR')
+
+    user_agent = request.META.get('HTTP_USER_AGENT', 'Unknown')
+
+    if request.method == 'POST':
+        # Log submission attempt
+        submissions_logger.info(f'Co-founder submission attempt from IP: {client_ip}, User-Agent: {user_agent}')
+        form = CofounderSubmissionForm(request.POST)
+        if form.is_valid():
+            try:
+                with transaction.atomic():
+                    # Create or get company
+                    company, created = Company.objects.get_or_create(
+                        name=form.cleaned_data['company_name'],
+                        defaults={'logo_url': None, 'website_url': form.cleaned_data['company_website']}
+                    )
+
+                    # Update website if company exists but website is not set
+                    if not created and not company.website_url:
+                        company.website_url = form.cleaned_data['company_website']
+                        company.save()
+
+                    # Set expiration date (90 days from now)
+                    expires_at = timezone.now() + timedelta(days=90)
+
+                    # For co-founder ads, location is typically Estonia-based
+                    location = form.cleaned_data['company_type'].replace('_', ' ').title()
+
+                    # Create job instance with job_type='cofounder'
+                    job = Job.objects.create(
+                        title=form.cleaned_data['job_title'],
+                        description=form.cleaned_data['job_description'],
+                        salary_range='Equity-based',  # Co-founder positions typically offer equity
+                        category=form.cleaned_data['job_category'],
+                        location=location,
+                        company=company,
+                        application_contact=form.cleaned_data['application_contact'],
+                        is_featured=False,  # Co-founder ads are not featured
+                        expires_at=expires_at,
+                        status='in_review',  # All new submissions start in review
+                        job_type='cofounder'  # Mark as co-founder search
+                    )
+
+                    # Store submission data in session for thank you page
+                    request.session['job_submission'] = {
+                        'job_id': str(job.id),
+                        'job_title': job.title,
+                        'company_name': company.name,
+                        'company_website': form.cleaned_data['company_website'],
+                        'application_contact': form.cleaned_data['application_contact'],
+                        'company_type': form.cleaned_data['company_type'],
+                        'is_cofounder': True
+                    }
+
+                    # Create audit log for successful submission
+                    create_audit_log(
+                        ip_address=client_ip,
+                        user_agent=user_agent,
+                        result='success',
+                        job=job,
+                        company_name=company.name,
+                        job_title=job.title,
+                        form_data=form.cleaned_data
+                    )
+
+                    # Log successful submission
+                    submissions_logger.info(
+                        f'Co-founder submission successful - ID: {job.id}, Company: {company.name}, '
+                        f'Title: {job.title}, IP: {client_ip}, Status: {job.status}'
+                    )
+
+                    # Send admin notification to Telegram about new co-founder submission
+                    send_admin_notification_telegram(job, form.cleaned_data)
+
+                    return redirect('job_submission_success')
+
+            except Exception as e:
+                # Create audit log for system error
+                create_audit_log(
+                    ip_address=client_ip,
+                    user_agent=user_agent,
+                    result='system_error',
+                    error_details=str(e),
+                    form_data=form.cleaned_data if form.is_valid() else None
+                )
+
+                messages.error(request, 'An error occurred while submitting your co-founder search. Please try again.')
+                # Log the error
+                security_logger.error(
+                    f'Co-founder submission error from IP: {client_ip}, Error: {str(e)}, '
+                    f'User-Agent: {user_agent}'
+                )
+        else:
+            # Create audit log for validation error
+            create_audit_log(
+                ip_address=client_ip,
+                user_agent=user_agent,
+                result='validation_error',
+                error_details=str(form.errors),
+                form_data=request.POST.dict()
+            )
+
+            # Log form validation errors
+            security_logger.warning(
+                f'Co-founder submission failed validation from IP: {client_ip}, '
+                f'Errors: {form.errors}, User-Agent: {user_agent}'
+            )
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = CofounderSubmissionForm()
+
+    return render(request, 'tallinnstartups/post_cofounder.html', {'form': form})
 
 
 def job_submission_success(request):

@@ -33,6 +33,11 @@ class Company(models.Model):
 
 
 class Job(models.Model):
+    JOB_TYPE_CHOICES = [
+        ('job', 'Job'),
+        ('cofounder', 'Co-founder'),
+    ]
+
     CATEGORY_CHOICES = [
         ('engineering', 'Engineering'),
         ('design', 'Design'),
@@ -45,7 +50,7 @@ class Job(models.Model):
         ('customer_support', 'Customer Support'),
         ('other', 'Other'),
     ]
-    
+
     STATUS_CHOICES = [
         ('in_review', 'In Review'),
         ('rejected', 'Rejected'),
@@ -53,8 +58,9 @@ class Job(models.Model):
         ('refunded', 'Refunded'),
         ('live', 'Live'),
     ]
-    
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    job_type = models.CharField(max_length=20, choices=JOB_TYPE_CHOICES, default='job', help_text="Type of posting: regular job or co-founder search")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     expires_at = models.DateTimeField(null=True, blank=True, help_text="When this job ad expires and is no longer visible")

@@ -36,6 +36,7 @@ urlpatterns = [
     path('salaries/', views.home, name='salaries'),
     path('career-advice/', views.home, name='career_advice'),
     path('post-job/', views.post_job, name='post_job'),
+    path('find-cofounder/', views.post_cofounder, name='post_cofounder'),
     path('job-submitted/', views.job_submission_success, name='job_submission_success'),
     path('status/<uuid:job_id>/', views.job_status, name='job_status'),
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),

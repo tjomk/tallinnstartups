@@ -10,15 +10,15 @@ class CompanyAdmin(admin.ModelAdmin):
 
 @admin.register(Job)
 class JobAdmin(admin.ModelAdmin):
-    list_display = ['title', 'company', 'category', 'location', 'status', 'is_featured', 'expires_at', 'created_at', 'slug']
-    list_filter = ['status', 'category', 'is_featured', 'created_at', 'company']
+    list_display = ['title', 'company', 'job_type', 'category', 'location', 'status', 'is_featured', 'expires_at', 'created_at', 'slug']
+    list_filter = ['status', 'job_type', 'category', 'is_featured', 'created_at', 'company']
     search_fields = ['title', 'description', 'category', 'company__name']
     list_select_related = ['company']
     date_hierarchy = 'created_at'
-    
+
     fieldsets = (
         ('Basic Information', {
-            'fields': ('title', 'company', 'category', 'location', 'status', 'slug')
+            'fields': ('job_type', 'title', 'company', 'category', 'location', 'status', 'slug')
         }),
         ('Job Details', {
             'fields': ('description', 'salary_range')
