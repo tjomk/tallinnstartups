@@ -20,7 +20,8 @@
       "WebFetch(domain:farsightvision.com)",
       "Bash(python3:*)",
       "WebSearch",
-      "Bash(poetry add:*)"
+      "Bash(poetry add:*)",
+      "WebFetch(domain:bidrento.com)"
     ],
     "deny": []
   }

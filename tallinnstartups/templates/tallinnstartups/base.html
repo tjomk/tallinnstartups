@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- DNS prefetch and preconnect for performance -->
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
     <link rel="preconnect" href="https://cdn.tailwindcss.com" />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-    
+
     <!-- Preload critical fonts -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?display=swap&family=Sora:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Sora:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900"></noscript>
@@ -17,7 +17,7 @@
     <meta name="description" content="{% block meta_description %}Find your dream job at Estonia's most innovative startups. Browse hundreds of tech jobs in Tallinn, Tartu, and across Estonia. Apply directly to top employers.{% endblock %}">
     {% block meta_keywords %}<meta name="keywords" content="Estonia jobs, Tallinn startup jobs, tech jobs Estonia, Estonian companies, startup careers">{% endblock %}
     <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
-    
+
     <!-- Favicon and App Icons -->
     <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
@@ -27,7 +27,7 @@
     <meta name="theme-color" content="#1980e6">
     <meta name="msapplication-TileColor" content="#1980e6">
     <meta name="msapplication-config" content="{% static 'browserconfig.xml' %}">
-    
+
     <!-- Open Graph Meta Tags -->
     <meta property="og:type" content="{% block og_type %}website{% endblock %}">
     <meta property="og:title" content="{% block og_title %}Estonian Startup Jobs{% endblock %}">
@@ -37,7 +37,7 @@
     <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/og.png' %}?version=2025-12-02{% endblock %}">
     <meta property="og:image:alt" content="{% block og_image_alt %}Estonian Startup Jobs - Find your dream job{% endblock %}">
     <meta property="og:locale" content="en_US">
-    
+
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="{% block twitter_card %}summary_large_image{% endblock %}">
     <meta name="twitter:title" content="{% block twitter_title %}Estonian Startup Jobs{% endblock %}">
@@ -65,18 +65,19 @@
         })();
     </script>
     <script defer src="{% static 'js/theme.js' %}"></script>
-    <script defer src="https://t.estonianstartupjobs.ee/script.js" data-website-id="b570bcf5-ebce-4e14-b833-dabdd598e200"></script>
+    <script data-site="WNOJJJZ" src="https://l.estonianstartupjobs.ee/script.js" defer></script>
+    <!-- <script defer src="https://t.estonianstartupjobs.ee/script.js" data-website-id="b570bcf5-ebce-4e14-b833-dabdd598e200"></script> -->
     {% block extra_head %}{% endblock %}
 </head>
 <body>
     <div class="relative flex size-full min-h-screen flex-col theme-gradient-bg group/design-root overflow-x-hidden" style='font-family: Sora, "Noto Sans", sans-serif;'>
         <div class="layout-container flex h-full grow flex-col">
             {% include 'tallinnstartups/components/header.html' %}
-            
+
             <main>
                 {% block content %}{% endblock %}
             </main>
-            
+
             {% include 'tallinnstartups/components/footer.html' %}
         </div>
     </div>
