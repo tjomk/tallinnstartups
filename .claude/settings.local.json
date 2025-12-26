@@ -11,17 +11,13 @@
       "WebFetch(domain:en.wikipedia.org)",
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:github.com)",
-      "WebFetch(domain:helsing.ai)",
-      "WebFetch(domain:haut.ai)",
-      "WebFetch(domain:apply.workable.com)",
-      "WebFetch(domain:raiku.co)",
-      "WebFetch(domain:elcogen.jobs.personio.com)",
-      "WebFetch(domain:www.gscan.eu)",
-      "WebFetch(domain:farsightvision.com)",
       "Bash(python3:*)",
       "WebSearch",
       "Bash(poetry add:*)",
-      "WebFetch(domain:bidrento.com)"
+      "mcp__browsermcp__browser_navigate",
+      "mcp__browsermcp__browser_click",
+      "mcp__browsermcp__browser_screenshot",
+      "mcp__browsermcp__browser_wait"
     ],
     "deny": []
   }
