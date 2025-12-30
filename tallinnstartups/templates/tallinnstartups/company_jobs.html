@@ -7,8 +7,8 @@
 {% block meta_keywords %}<meta name="keywords" content="{{ company.name }} jobs, {{ company.name }} careers, Estonian startup {{ company.name }}, jobs at {{ company.name }}">{% endblock %}
 
 {% block content %}
-<div class="flex flex-1 justify-center py-5">
-    <div class="container flex flex-col flex-1">
+<div class="px-4 sm:px-8 lg:px-40 flex flex-1 justify-center py-5">
+    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
         <!-- Breadcrumbs -->
         <div class="px-4">
             {% include 'tallinnstartups/components/breadcrumbs.html' with breadcrumbs=company_breadcrumbs %}

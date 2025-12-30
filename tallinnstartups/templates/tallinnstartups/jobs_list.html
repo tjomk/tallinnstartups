@@ -7,8 +7,8 @@
 {% block meta_keywords %}<meta name="keywords" content="{% if is_search_results %}{{ search_query }} jobs Estonia, startup {{ search_query }} roles{% else %}all jobs Estonia, startup jobs Tallinn, Estonian job listings, career opportunities Estonia{% endif %}">{% endblock %}
 
 {% block content %}
-<div class="flex flex-1 justify-center py-5">
-    <div class="container flex flex-col flex-1">
+<div class="px-4 sm:px-8 lg:px-40 flex flex-1 justify-center py-5">
+    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
         <!-- Header -->
         <div class="px-4 py-3">
             <h1 class="theme-primary-text text-[32px] font-bold leading-tight tracking-[-0.015em] mb-2">All Jobs</h1>
@@ -16,17 +16,9 @@
         </div>
 
         <!-- Search Section -->
-        <section class="search-hero">
-            <div class="container">
-                <h1>Find your next startup role in Estonia.</h1>
-                {% include 'tallinnstartups/components/search_bar.html' with placeholder="Search by title, company, or keyword..." large=True %}
-                <div class="quick-filters" style="margin-top: 16px; display: flex; gap: 10px; align-items: center;">
-                    <span class="text-muted" style="font-size: 0.85rem; display: flex; align-items: center;">Popular:</span>
-                    <a href="?q=Remote" class="tag">Remote</a>
-                    <a href="?q=Engineing" class="tag">Engineering</a>
-                </div>
-            </div>
-        </section>
+        <div class="px-4 py-3">
+            {% include 'tallinnstartups/components/search_bar.html' with placeholder="Search jobs or companies" large=True %}
+        </div>
 
         <!-- Search Results Header -->
         {% if is_search_results %}

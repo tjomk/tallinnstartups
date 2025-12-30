@@ -1,63 +1,41 @@
-/* Estonian Startup Jobs Theme Colors - Modern Professional Design */
+/* Estonian Startup Jobs Theme Colors */
 :root {
-  /* Light Theme - Modern High-Contrast Palette */
-  --bg-body: #f8fafc;
-  --bg-card: #ffffff;
-  --border-color: #e2e8f0;
-  --text-main: #0f172a;
-  --text-muted: #64748b;
-  --primary: #2563eb; /* Modern Blue */
-  --primary-hover: #1d4ed8;
-  --accent: #f1f5f9;
-
-  /* Layout Variables */
-  --max-width: 1100px;
-  --reading-width: 720px;
-  --radius: 8px;
-  --primary-soft: rgba(37, 99, 235, 0.1);
-
-  /* Header Specifics */
-  --header-height: 72px;
-  --header-bg: rgba(255, 255, 255, 0.8);
-  --nav-link: #475569;
-  --nav-link-active: var(--primary);
-  --header-border: var(--border-color);
-
-  /* Typography */
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --line-height: 1.6;
-
-  /* Legacy color variables for backward compatibility */
-  --primary-blue: #2563eb;
-  --primary-blue-dark: #1d4ed8;
-  --primary-blue-alt: #3b82f6;
-  --primary-blue-light: #2563eb;
-  --primary-blue-lighter: #3b82f6;
+  /* Primary Colors */
+  --primary-blue: #0c7ff2;
+  --primary-blue-dark: #0056b3;
+  --primary-blue-alt: #007bff;
+  --primary-blue-light: #1668c7;
+  --primary-blue-lighter: #1980e6;
   
-  --text-primary: #0f172a;
-  --text-primary-alt: #1e293b;
-  --text-primary-dark: #0f172a;
-  --text-secondary: #64748b;
-  --text-secondary-alt: #64748b;
-  --text-secondary-dark: #475569;
-  --text-warning: #f59e0b;
+  /* Text Colors */
+  --text-primary: #0d141c;
+  --text-primary-alt: #0d151c;
+  --text-primary-dark: #0e141b;
+  --text-secondary: #49719c;
+  --text-secondary-alt: #49739c;
+  --text-secondary-dark: #4e7297;
+  --text-warning: #8b6914;
   
-  --bg-light: #f1f5f9;
-  --bg-light-alt: #e2e8f0;
-  --bg-light-darker: #cbd5e1;
-  --bg-success: #10b981;
-  --bg-warning: #fbbf24;
+  /* Background Colors */
+  --bg-light: #e7edf4;
+  --bg-light-alt: #cedbe8;
+  --bg-light-darker: #dde3e8;
+  --bg-success: #0d7847;
+  --bg-warning: #ffd700;
   
-  --border-primary: #2563eb;
-  --border-light: #e2e8f0;
-  --border-light-alt: #cbd5e1;
-  --border-secondary: #f1f5f9;
+  /* Border Colors */
+  --border-primary: #1980e6;
+  --border-light: #cedbe8;
+  --border-light-alt: #dde3e8;
+  --border-secondary: #e7edf4;
   
-  --color-success: #10b981;
-  --color-warning: #fbbf24;
-  --color-info: #2563eb;
-  --color-danger: #ef4444;
+  /* Semantic Colors */
+  --color-success: #0d7847;
+  --color-warning: #ffd700;
+  --color-info: #1980e6;
+  --color-danger: #dc3545;
   
+  /* Neutral Colors */
   --color-white: #ffffff;
   --color-black: #000000;
   --color-gray-50: #f8fafc;
@@ -71,6 +49,7 @@
   --color-gray-800: #1e293b;
   --color-gray-900: #0f172a;
   
+  /* Slate Colors (commonly used in the app) */
   --color-slate-50: #f8fafc;
   --color-slate-100: #f1f5f9;
   --color-slate-200: #e2e8f0;
@@ -82,6 +61,7 @@
   --color-slate-800: #1e293b;
   --color-slate-900: #0f172a;
   
+  /* Nordic Warm Colors */
   --nordic-cream: #faf9f7;
   --nordic-sage: #e8f2e8;
   --nordic-lavender: #f0f0f8;
@@ -91,6 +71,7 @@
   --nordic-soft-blue: #f4f7fa;
   --nordic-mint: #f0f8f4;
   
+  /* Category Colors */
   --category-engineering: #f0f0f8;
   --category-design: #e8f2e8;
   --category-marketing: #fef7f4;
@@ -106,25 +87,14 @@
 /* Dark Theme */
 [data-theme="dark"],
 .dark-theme {
-  /* Dark Theme Variables */
-  --bg-body: #020617;
-  --bg-card: #0f172a;
-  --border-color: #1e293b;
-  --text-main: #f1f5f9;
-  --text-muted: #94a3b8;
-  --primary: #3b82f6;
-  --primary-hover: #60a5fa;
-  --accent: #1e293b;
-  --header-bg: rgba(2, 6, 23, 0.8);
-  --nav-link: #94a3b8;
-
-  /* Legacy color variables for backward compatibility */
+  /* Primary Colors */
   --primary-blue: #3b82f6;
   --primary-blue-dark: #2563eb;
   --primary-blue-alt: #60a5fa;
   --primary-blue-light: #3b82f6;
   --primary-blue-lighter: #60a5fa;
 
+  /* Text Colors */
   --text-primary: #f1f5f9;
   --text-primary-alt: #e2e8f0;
   --text-primary-dark: #f8fafc;
@@ -133,22 +103,26 @@
   --text-secondary-dark: #cbd5e1;
   --text-warning: #fbbf24;
 
+  /* Background Colors */
   --bg-light: #1e293b;
   --bg-light-alt: #334155;
   --bg-light-darker: #0f172a;
   --bg-success: #059669;
   --bg-warning: #f59e0b;
 
+  /* Border Colors */
   --border-primary: #3b82f6;
   --border-light: #334155;
   --border-light-alt: #475569;
   --border-secondary: #1e293b;
 
+  /* Semantic Colors */
   --color-success: #10b981;
   --color-warning: #fbbf24;
   --color-info: #3b82f6;
   --color-danger: #ef4444;
 
+  /* Neutral Colors */
   --color-white: #0f172a;
   --color-black: #ffffff;
   --color-gray-50: #0f172a;
@@ -162,6 +136,7 @@
   --color-gray-800: #f1f5f9;
   --color-gray-900: #f8fafc;
 
+  /* Slate Colors (commonly used in the app) */
   --color-slate-50: #0f172a;
   --color-slate-100: #1e293b;
   --color-slate-200: #334155;
@@ -173,6 +148,7 @@
   --color-slate-800: #f1f5f9;
   --color-slate-900: #f8fafc;
 
+  /* Nordic Warm Colors - Dark Theme Variants */
   --nordic-cream: #0f172a;
   --nordic-sage: #1a2e1a;
   --nordic-lavender: #1a1a2e;
@@ -182,6 +158,7 @@
   --nordic-soft-blue: #1a2433;
   --nordic-mint: #1a2e24;
 
+  /* Category Colors - Dark Theme */
   --category-engineering: #1e1e3f;
   --category-design: #1a2e1a;
   --category-marketing: #2e1f1a;
@@ -194,34 +171,9 @@
   --category-other: #1e293b;
 }
 
-/* Base Body Styles */
-body {
-    background-color: var(--bg-body);
-    color: var(--text-main);
-    font-family: var(--font-family);
-    line-height: var(--line-height);
-    margin: 0;
-    transition: background 0.3s ease;
-}
-
-/* Layout Container System - Professional Grid */
-.container {
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 0 20px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.reading-container {
-    max-width: var(--reading-width);
-    margin: 0 auto;
-    padding: 40px 20px;
-}
-
 /* Theme Utility Classes */
 .theme-primary {
-  background-color: var(--primary);
+  background-color: var(--primary-blue);
   color: var(--color-white);
 }
 
@@ -276,19 +228,13 @@ body {
 }
 
 .theme-input {
-  background-color: transparent;
+  background-color: var(--nordic-cream);
   border: none;
-  border-radius: 0;
+  border-radius: 0.125rem;
   padding: 0.75rem 1rem;
   font-size: 1rem;
   line-height: 1.5;
   color: var(--text-primary);
-}
-
-.search-input-field {
-  flex: 1;
-  background-color: var(--bg-card);
-  border-radius: 8px 0 0 8px;
 }
 
 .theme-input::placeholder {
@@ -297,6 +243,8 @@ body {
 
 .theme-input:focus {
   outline: none;
+  ring: 0;
+  border: none;
 }
 
 .theme-category-badge {
@@ -389,86 +337,6 @@ body {
   border-radius: 9999px;
 }
 
-/* Job Row Style - Berlin Startup Jobs Inspired (Tight List Style) */
-.job-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
-    background: var(--bg-card);
-    border: none;
-    border-bottom: 1px solid var(--border-color);
-    transition: background-color 0.15s ease;
-    text-decoration: none;
-    color: inherit;
-    margin-bottom: 0;
-}
-
-.job-row:hover {
-    background-color: var(--accent);
-    transform: none;
-    box-shadow: none;
-}
-
-.job-info-main {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    flex: 1;
-}
-
-.job-logo {
-    width: 48px;
-    height: 48px;
-    border-radius: var(--radius);
-    background: #eee;
-}
-
-.job-title {
-    font-weight: 600;
-    font-size: 1.05rem;
-    margin: 0;
-    color: var(--primary);
-    margin-bottom: 2px;
-}
-
-.job-meta {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-}
-
-/* Category indicator - small dot instead of thick border */
-.category-indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    margin-right: 12px;
-}
-
-.job-main-info {
-    display: flex;
-    flex-direction: column;
-}
-
-/* Tighter job card styling */
-.theme-job-card {
-    display: flex;
-    align-items: center;
-    background-color: var(--bg-card);
-    border: none;
-    border-bottom: 1px solid var(--border-color);
-    padding: 16px 20px;
-    margin-bottom: 0;
-    transition: background-color 0.15s ease;
-    border-left: 0;
-}
-
-.theme-job-card:hover {
-    background-color: var(--accent);
-    transform: none;
-    box-shadow: none;
-}
-
 /* Category-specific job card colors */
 .theme-job-card.category-engineering {
   border-left-color: #6366f1;
@@ -538,212 +406,14 @@ body {
   margin: 0;
 }
 
-
-
-/* Header & Navigation CSS */
-.site-header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    height: var(--header-height);
-    background-color: var(--header-bg);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--header-border);
-    display: flex;
-    align-items: center;
+/* Gradient background for main container */
+.theme-gradient-bg {
+  background: linear-gradient(135deg, var(--nordic-cream) 0%, var(--nordic-warm-gray) 50%, var(--nordic-blue-gray) 100%);
 }
 
-.header-inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
-.nav-group {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-}
-
-.nav-link {
-    text-decoration: none;
-    color: var(--nav-link);
-    font-weight: 500;
-    font-size: 0.9375rem;
-    transition: color 0.2s ease;
-}
-
-.nav-link:hover, .nav-link.active {
-    color: var(--nav-link-active);
-}
-
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-/* Theme Toggle Customization */
-#theme-toggle {
-    padding: 8px;
-    border-radius: 50%;
-    border: 1px solid var(--border-color);
-    background: var(--bg-card);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-}
-
-#theme-toggle:hover {
-    background-color: var(--accent);
-    border-color: var(--border-color);
-}
-
-/* Mobile Menu Styles */
-#mobile-menu {
-    background: var(--bg-card);
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-#mobile-menu-button {
-    padding: 8px;
-    border-radius: 50%;
-    border: 1px solid var(--border-color);
-    background: var(--bg-card);
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-#mobile-menu-button:hover {
-    background-color: var(--accent);
-}
-
-/* Search Section Styles */
-.search-section {
-    padding: 40px 0;
-    background-color: var(--bg-body);
-}
-
-.search-container {
-    max-width: var(--max-width);
-    margin: 40px auto;
-    padding: 0 20px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.search-hero {
-    background-color: var(--bg-body);
-    padding: 60px 0;
-    border-bottom: 1px solid var(--border-color);
-    text-align: left;
-}
-
-.search-hero h1 {
-    font-size: 2rem;
-    font-weight: 800;
-    margin-bottom: 24px;
-    letter-spacing: -0.02em;
-}
-
-.theme-input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    background: transparent;
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-    transition: all 0.2s ease;
-    padding-right: 8px;
-}
-
-.theme-input-wrapper:focus-within {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px var(--primary-soft);
-}
-
-/* Search Icon Positioning */
-.search-icon {
-    position: absolute;
-    left: 18px;
-    color: var(--text-muted);
-    pointer-events: none;
-    font-size: 1.2rem;
-}
-
-/* Site Logo Styling */
-.site-logo {
-    color: var(--text-main);
-    text-decoration: none;
-    font-weight: 700;
-    transition: color 0.2s;
-}
-
-.site-logo:hover {
-    color: var(--primary);
-}
-
-.site-logo svg {
-    color: var(--primary);
-}
-
-/* Article Layout with Sticky Sidebar */
-.article-layout {
-    display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: 60px;
-    margin-top: 40px;
-}
-
-@media (max-width: 900px) {
-    .article-layout {
-        grid-template-columns: 1fr;
-    }
-    .sidebar { display: none; }
-}
-
-.article-content h1 {
-    font-size: 2.5rem;
-    line-height: 1.2;
-    margin-bottom: 20px;
-}
-
-.sidebar-card {
-    position: sticky;
-    top: 20px;
-    padding: 24px;
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-}
-
-/* Article Page Wrapper - Constrained Reading Column */
-.article-page-wrapper {
-    display: grid;
-    grid-template-columns: 1fr min(720px, 90%) 1fr;
-    padding-top: 60px;
-}
-
-.article-page-wrapper > * {
-    grid-column: 2;
-}
-
-.article-full-width-element {
-    grid-column: 1 / -1;
-    width: 100%;
-}
-
-.article-content p {
-    font-size: 1.2rem;
-    line-height: 1.8;
-    color: var(--text-main);
-    margin-bottom: 1.5rem;
+[data-theme="dark"] .theme-gradient-bg,
+.dark-theme .theme-gradient-bg {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1a2433 100%);
 }
 
 /* Additional dark theme overrides for mobile menu */
@@ -751,70 +421,6 @@ body {
 .dark-theme #mobile-menu {
   background-color: var(--bg-light);
   border-bottom-color: var(--border-secondary);
-}
-
-/* Professional Button Styles */
-.btn-primary {
-    background: var(--primary);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.btn-primary:hover {
-    background: var(--primary-hover);
-}
-
-/* Professional Card Styles - Subtle Borders */
-.theme-card {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    transition: box-shadow 0.2s;
-}
-
-.theme-card:hover {
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-}
-
-/* Improved Input Styles */
-.theme-input {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: var(--text-main);
-    width: 100%;
-    transition: border-color 0.2s;
-}
-
-.theme-input:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
-}
-
-/* Section Headers with Professional Styling */
-.theme-section-header {
-    background: var(--bg-card);
-    padding: 0.75rem 1rem;
-    border-radius: var(--radius);
-    border-left: 4px solid var(--primary);
-    margin-bottom: 1rem;
-}
-
-.theme-section-header h2 {
-    margin: 0;
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-main);
 }
 
 /* Theme toggle button hover effect */
@@ -853,122 +459,12 @@ body {
 
 /* Link styling */
 .theme-link {
-  color: var(--primary);
+  color: #0c7ff2;
   transition: color 0.2s;
-  text-decoration: none;
 }
 
 .theme-link:hover {
-  color: var(--primary-hover);
-  text-decoration: underline;
-}
-
-/* Typography Improvements */
-h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-family);
-    font-weight: 700;
-    line-height: 1.2;
-    color: var(--text-main);
-    margin-top: 0;
-    margin-bottom: 1rem;
-}
-
-/* Quick filters tag styling */
-.tag {
-    display: inline-block;
-    padding: 4px 12px;
-    background-color: var(--bg-light);
-    color: var(--text-main);
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
-
-.tag:hover {
-    background-color: var(--primary);
-    color: white;
-}
-
-.text-muted {
-    color: var(--text-muted);
-}
-
-h1 { font-size: 2.25rem; }
-h2 { font-size: 1.875rem; }
-h3 { font-size: 1.5rem; }
-h4 { font-size: 1.25rem; }
-h5 { font-size: 1.125rem; }
-h6 { font-size: 1rem; }
-
-/* Paragraph and text styling */
-p {
-    margin-top: 0;
-    margin-bottom: 1rem;
-    line-height: var(--line-height);
-    color: var(--text-main);
-}
-
-/* Improved whitespace and spacing */
-main {
-    padding-top: 2rem;
-    padding-bottom: 4rem;
-}
-
-/* Responsive improvements */
-@media (min-width: 768px) {
-    .container {
-        padding: 0 24px;
-    }
-    
-    .reading-container {
-        padding: 48px 24px;
-    }
-}
-
-@media (min-width: 1024px) {
-    .container {
-        padding: 0 32px;
-    }
-}
-
-/* Mobile responsive search bar */
-@media (max-width: 767px) {
-    .theme-input-wrapper {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .theme-input-wrapper input {
-        padding-left: 18px;
-        margin-bottom: 8px;
-        border: 1px solid var(--border-color);
-        border-radius: var(--radius);
-        background-color: var(--bg-card);
-    }
-    
-    .search-icon {
-        position: static;
-        margin-bottom: 8px;
-    }
-    
-    .theme-input-wrapper button {
-        width: 100%;
-        margin-right: 0;
-        margin-left: 0;
-    }
-}
-
-/* Animation and transition improvements */
-* {
-    transition: all 0.2s ease;
-}
-
-/* Focus states for accessibility */
-:focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: 2px;
+  color: #0056b3;
 }
 
 [data-theme="dark"] .theme-link,
