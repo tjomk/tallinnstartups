@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_recaptcha',
     'jobs',
     'tallinnstartups',
+    'blog',
 ]
 
 MIDDLEWARE = [

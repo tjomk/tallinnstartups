@@ -1,0 +1,104 @@
+{% extends "tallinnstartups/base.html" %}
+{% load static %}
+{% load markdown_extras %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block meta_description %}
+<meta name="description" content="{{ meta_description }}">
+{% endblock %}
+
+{% block meta_keywords %}
+<meta name="keywords" content="{{ category.name }}, Estonia {{ category.name }} guides, {{ category.name }} career advice, Estonia startup {{ category.name }}">
+{% endblock %}
+
+{% block og_type %}article{% endblock %}
+{% block og_title %}{{ page_title }}{% endblock %}
+{% block og_description %}{{ meta_description }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+    <link rel="stylesheet" href="{% static 'blog/css/blog.css' %}">
+    <!-- Breadcrumbs -->
+    <nav class="mb-6">
+        <ul class="flex items-center gap-2 text-sm breadcrumbs-no-bullets">
+            <li><a href="{% url 'blog:article_list' %}" class="theme-secondary-text hover:underline">Guides</a></li>
+            <li class="theme-secondary-text">></li>
+            <li class="theme-primary-text font-medium">{{ category.name }}</li>
+        </ul>
+    </nav>
+    
+    <h1 class="theme-primary-text text-3xl font-bold mb-4">{{ category.name }} Guides</h1>
+    {% if category.description %}
+        <p class="theme-secondary-text text-lg mb-8">{{ category.description }}</p>
+    {% endif %}
+    
+    {% if articles %}
+        <div class="space-y-8">
+            {% for article in articles %}
+                <article class="article-card border-b pb-6 last:border-b-0 last:pb-0">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        {% if article.featured_image %}
+                            <div class="w-full md:w-1/3">
+                                <img src="{{ article.featured_image }}" alt="{{ article.featured_image_alt|default:'Article image' }}" class="w-full h-48 object-cover rounded-lg">
+                            </div>
+                        {% endif %}
+                        <div class="w-full md:w-2/3">
+                            <div class="flex items-center gap-2 mb-2 article-meta">
+                                <span class="category-link text-sm font-medium">{{ category.name }}</span>
+                                <span class="text-sm">{{ article.published_at|date:"M d, Y" }}</span>
+                            </div>
+                            <h2 class="theme-primary-text text-xl font-semibold mb-2">
+                                <a href="{% url 'blog:article_detail' article.slug %}" class="hover:underline">{{ article.title }}</a>
+                            </h2>
+                            <p class="theme-secondary-text text-base mb-3">{{ article.excerpt }}</p>
+                            <a href="{% url 'blog:article_detail' article.slug %}" class="read-more-button text-sm px-4 py-2 rounded">
+                                Read More
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if articles.paginator.num_pages > 1 %}
+            <nav class="mt-12 flex justify-center">
+                <ul class="flex items-center gap-2">
+                    {% if articles.has_previous %}
+                        <li>
+                            <a href="?page={{ articles.previous_page_number }}" class="pagination-link px-3 py-2 rounded">
+                                &laquo; Previous
+                            </a>
+                        </li>
+                    {% endif %}
+                    
+                    {% for page_num in articles.paginator.page_range %}
+                        {% if page_num == articles.number %}
+                            <li>
+                                <span class="pagination-link-active px-3 py-2 rounded">{{ page_num }}</span>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="?page={{ page_num }}" class="pagination-link px-3 py-2 rounded">{{ page_num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if articles.has_next %}
+                        <li>
+                            <a href="?page={{ articles.next_page_number }}" class="pagination-link px-3 py-2 rounded">
+                                Next &raquo;
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    {% else %}
+        <div class="text-center py-12">
+            <p class="theme-secondary-text text-lg">No articles in this category yet. Check back soon!</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

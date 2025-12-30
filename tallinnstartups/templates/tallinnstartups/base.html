@@ -14,7 +14,7 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?display=swap&family=Sora:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Sora:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900"></noscript>
     <title>{% block title %}Estonian Startup Jobs{% endblock %}</title>
-    <meta name="description" content="{% block meta_description %}Find your dream job at Estonia's most innovative startups. Browse hundreds of tech jobs in Tallinn, Tartu, and across Estonia. Apply directly to top employers.{% endblock %}">
+    {% block meta_description %}<meta name="description" content="Find your dream job at Estonia's most innovative startups. Browse hundreds of tech jobs in Tallinn, Tartu, and across Estonia. Apply directly to top employers.">{% endblock %}
     {% block meta_keywords %}<meta name="keywords" content="Estonia jobs, Tallinn startup jobs, tech jobs Estonia, Estonian companies, startup careers">{% endblock %}
     <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
 

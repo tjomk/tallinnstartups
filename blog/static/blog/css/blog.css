@@ -1,0 +1,103 @@
+/* Blog-specific styles with theme compatibility */
+
+/* Fix breadcrumbs bullet points */
+.breadcrumbs-no-bullets {
+    list-style-type: none !important;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}
+
+/* Article cards with theme compatibility */
+.article-card {
+    border-color: var(--border-secondary) !important;
+}
+
+.article-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Metadata styling */
+.article-meta {
+    color: var(--text-secondary) !important;
+}
+
+/* Pagination links with theme compatibility */
+.pagination-link {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-secondary) !important;
+}
+
+.pagination-link:hover {
+    background-color: var(--bg-tertiary) !important;
+}
+
+.pagination-link-active {
+    background-color: var(--primary-color) !important;
+    color: var(--text-on-primary) !important;
+}
+
+/* Read more buttons with theme compatibility */
+.read-more-button {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-secondary) !important;
+}
+
+.read-more-button:hover {
+    background-color: var(--bg-tertiary) !important;
+}
+
+/* Category links with theme compatibility */
+.category-link {
+    color: var(--text-secondary) !important;
+}
+
+.category-link:hover {
+    color: var(--text-primary) !important;
+}
+
+/* Keyword tags */
+.keyword-tag {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-secondary) !important;
+    border: 1px solid var(--border-secondary) !important;
+}
+
+/* Article content styling */
+.article-content {
+    color: var(--text-primary) !important;
+}
+
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4,
+.article-content h5,
+.article-content h6 {
+    color: var(--text-primary) !important;
+}
+
+.article-content a {
+    color: var(--text-secondary) !important;
+    text-decoration: underline;
+}
+
+.article-content a:hover {
+    color: var(--text-primary) !important;
+}
+
+.article-content code {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+}
+
+.article-content pre {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    padding: 1em;
+    border-radius: 5px;
+    overflow-x: auto;
+}
