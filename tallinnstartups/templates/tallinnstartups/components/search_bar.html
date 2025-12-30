@@ -1,20 +1,19 @@
-<form method="GET" action="{% url 'home' %}" class="flex flex-col min-w-40 {% if large %}h-12 w-full{% else %}!h-10 max-w-64{% endif %}">
-    <div class="flex w-full flex-1 items-stretch rounded-sm h-full">
-        <div class="theme-secondary-text flex border-none items-center justify-center pl-4 rounded-l-sm border-r-0" style="background-color: var(--bg-light);"
-             data-icon="MagnifyingGlass"
-             data-size="24px"
-             data-weight="regular">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                <path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path>
+<form method="GET" action="{% url 'home' %}" class="relative w-full">
+    <div class="relative flex items-center text-gray-400 focus-within:text-gray-600">
+        <span class="absolute left-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
             </svg>
-        </div>
+        </span>
         <input
-            placeholder="{{ placeholder|default:'Search' }}"
+            placeholder="{{ placeholder|default:'Search by title, company, or keyword...' }}"
             name="q"
-            type="text"
-            class="flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-sm rounded-l-none border-l-0 pl-2 h-full border-none focus:outline-0 focus:ring-0 focus:border-none text-base font-normal leading-normal placeholder:text-[var(--text-secondary)]" style="background-color: var(--bg-light); color: var(--text-primary);"
+            type="search"
+            class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             value="{{ request.GET.q|default:'' }}"
-            onkeypress="if(event.key==='Enter'){this.form.submit();}"
         />
+        <button type="submit" class="absolute right-2.5 top-1/2 -translate-y-1/2 btn-primary flex items-center justify-center px-4 py-2 text-sm font-medium">
+            Search
+        </button>
     </div>
 </form>
