@@ -2,7 +2,7 @@
 
 {% block title %}Post a Job - Hire Top Talent at Estonian Startups{% endblock %}
 
-{% block meta_description %}Post your startup job on Estonia's premier job board. Reach qualified candidates in Tallinn, Tartu, and nationwide. Featured listings available. Start hiring today!{% endblock %}
+{% block meta_description %}<meta name="description" content="Post your startup job on Estonia's premier job board. Reach qualified candidates in Tallinn, Tartu, and nationwide. Featured listings available. Start hiring today!">{% endblock %}
 
 {% block meta_keywords %}<meta name="keywords" content="post job Estonia, hire talent Estonia, Estonian startup hiring, job posting Estonia, recruitment Estonia">{% endblock %}
 
@@ -29,7 +29,7 @@
 
         <form method="post" class="flex flex-col gap-8 p-4">
             {% csrf_token %}
-            
+
             <!-- Step 1: Company Type -->
             <div class="flex flex-col gap-4">
                 <h2 class="text-[#0d151c] text-[22px] font-bold leading-tight tracking-[-0.015em]">Step 1 - Company Type</h2>
@@ -226,7 +226,7 @@
                         {% endfor %}
                     </div>
                 {% endif %}
-                
+
                 <!-- reCAPTCHA -->
                 <div class="flex flex-col gap-2">
                     {{ form.captcha }}
@@ -238,10 +238,10 @@
                         </div>
                     {% endif %}
                 </div>
-                
+
                 <!-- Honeypot field (hidden) -->
                 {{ form.website_url }}
-                
+
                 <button type="submit" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-sm h-12 px-5 bg-[#1980e6] text-slate-50 text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#1668c7] transition-colors">
                     <span class="truncate">Submit for Review</span>
                 </button>
