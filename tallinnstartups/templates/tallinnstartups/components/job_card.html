@@ -1,11 +1,12 @@
 {% if job.slug %}
-    <a href="{% url 'job_detail' slug=job.slug %}" class="block mb-4">
-        <div class="theme-job-card category-{{ job.category_key }} flex items-center gap-4 relative">
+    <a href="{% url 'job_detail' slug=job.slug %}" class="job-row mb-4">
+        <div class="category-indicator" style="background-color: {% if job.category_key == 'engineering' %}#6366f1{% elif job.category_key == 'design' %}#10b981{% elif job.category_key == 'marketing' %}#f59e0b{% elif job.category_key == 'sales' %}#3b82f6{% elif job.category_key == 'product' %}#8b5cf6{% elif job.category_key == 'operations' %}#6b7280{% elif job.category_key == 'finance' %}#059669{% elif job.category_key == 'hr' %}#84cc16{% elif job.category_key == 'customer_support' %}#06b6d4{% else %}var(--text-muted){% endif %}"></div>
+        <div class="job-info-main flex-1">
             {% if job.company_logo %}
                 <img src="{{ job.company_logo }}"
                      alt="{{ job.company_name }} company logo"
                      loading="lazy"
-                     class="w-14 h-14 object-contain rounded-lg theme-logo-container p-1"
+                     class="job-logo theme-logo-container p-1"
                      onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <div class="company-logo-default aspect-square rounded-lg size-14" style="display: none;">
                 </div>
@@ -15,26 +16,27 @@
                      aria-label="{{ job.company_name }} default logo">
                 </div>
             {% endif %}
-            <div class="flex flex-col justify-center flex-1">
-                <p class="theme-primary-text text-[18px] font-medium leading-normal line-clamp-1">
+            <div class="job-main-info">
+                <p class="job-title">
                     {{ job.title }}
                 </p>
-                <p class="theme-secondary-text text-[15px] font-normal leading-normal line-clamp-2 mt-1">
+                <p class="job-meta">
                     {{ job.company_name }}
                 </p>
             </div>
-            {% if job.is_featured and show_featured_tag %}
-                <div class="flex items-center justify-center">
-                    <span class="theme-featured-tag">
-                        <span class="sm:hidden">⭐</span>
-                        <span class="hidden sm:inline">⭐ Featured</span>
-                    </span>
-                </div>
-            {% endif %}
         </div>
+        {% if job.is_featured and show_featured_tag %}
+            <div class="flex items-center justify-center">
+                <span class="theme-featured-tag">
+                    <span class="sm:hidden">⭐</span>
+                    <span class="hidden sm:inline">⭐ Featured</span>
+                </span>
+            </div>
+        {% endif %}
     </a>
 {% else %}
     <div class="theme-job-card category-{{ job.category_key }} flex items-center gap-4 relative">
+        <div class="category-indicator" style="background-color: {% if job.category_key == 'engineering' %}#6366f1{% elif job.category_key == 'design' %}#10b981{% elif job.category_key == 'marketing' %}#f59e0b{% elif job.category_key == 'sales' %}#3b82f6{% elif job.category_key == 'product' %}#8b5cf6{% elif job.category_key == 'operations' %}#6b7280{% elif job.category_key == 'finance' %}#059669{% elif job.category_key == 'hr' %}#84cc16{% elif job.category_key == 'customer_support' %}#06b6d4{% else %}var(--text-muted){% endif %}"></div>
         {% if job.company_logo %}
             <img src="{{ job.company_logo }}"
                  alt="{{ job.company_name }} company logo"
@@ -49,7 +51,7 @@
                  aria-label="{{ job.company_name }} default logo">
             </div>
         {% endif %}
-        <div class="flex flex-col justify-center flex-1">
+        <div class="job-main-info flex-1">
             <p class="theme-primary-text text-[18px] font-medium leading-normal line-clamp-1">
                 {{ job.title }}
             </p>

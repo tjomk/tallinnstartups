@@ -72,12 +72,20 @@
 {% endblock %}
 
 {% block content %}
-<div class="px-4 sm:px-8 lg:px-40 flex flex-1 justify-center py-5">
-    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+<div class="flex flex-1 justify-center py-5">
+    <div class="container flex flex-col flex-1">
         <!-- Main Search Section -->
-        <div class="px-4 py-3">
-            {% include 'tallinnstartups/components/search_bar.html' with placeholder="Search jobs or companies" large=True %}
-        </div>
+        <section class="search-hero">
+            <div class="container">
+                <h1>Find your next startup role in Estonia.</h1>
+                {% include 'tallinnstartups/components/search_bar.html' with placeholder="Search by title, company, or keyword..." large=True %}
+                <div class="quick-filters" style="margin-top: 16px; display: flex; gap: 10px; align-items: center;">
+                    <span class="text-muted" style="font-size: 0.85rem; display: flex; align-items: center;">Popular:</span>
+                    <a href="?q=Remote" class="tag">Remote</a>
+                    <a href="?q=Engineing" class="tag">Engineering</a>
+                </div>
+            </div>
+        </section>
 
         <!-- Search Results Header -->
         {% if is_search_results %}
