@@ -1,28 +1,35 @@
-<footer class="theme-footer mt-auto">
-    <div class="max-w-7xl mx-auto px-4 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-                <h3 class="text-lg font-semibold theme-primary-text mb-4">About</h3>
-                <p class="theme-secondary-text mb-3">Connecting talent with opportunity in Estonia's vibrant startup ecosystem.</p>
-                <p class="theme-secondary-text mb-3">We help professionals find their next career move and companies discover great talent.</p>
-                <p class="theme-secondary-text">Join thousands of job seekers and employers building the future together.</p>
-            </div>
-            <div>
-                <h3 class="text-lg font-semibold theme-primary-text mb-4">Legal</h3>
-                <p class="theme-secondary-text mb-3">Your privacy is our priority. We protect your data with industry-standard security.</p>
-                <p class="theme-secondary-text mb-3">Clear terms of service that respect both job seekers and employers.</p>
-                <p class="theme-secondary-text mb-3">Transparent policies designed to build trust and ensure fair use.</p>
-                <p class="theme-secondary-text">
-                    <a href="{% url 'privacy_policy' %}" class="theme-link underline">Privacy Policy</a> |
-                    <a href="{% url 'terms_of_service' %}" class="theme-link underline">Terms of Service</a>
-                </p>
-            </div>
-            <div>
-                <h3 class="text-lg font-semibold theme-primary-text mb-4">Company</h3>
-                <p class="theme-secondary-text mb-3">© {% now "Y" %} Too Sober To Work OÜ. All rights reserved.</p>
-                <p class="theme-secondary-text mb-3">Built with ☕, 🍩, and 🤖 in Tallinn for the Estonian startup community.</p>
-                <p class="theme-secondary-text">Questions? Contact us at hello@estonianstartupjobs.ee</p>
-            </div>
-        </div>
+<footer class="theme-footer">
+  <div class="container footer-grid">
+    <div>
+      <div style="font-weight: 900; font-size: 1.25rem; margin-bottom: 1rem;">Estonian Startup Jobs</div>
+      <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6;">
+        Connecting talent with opportunity in Estonia's vibrant startup ecosystem. Built in Tallinn. 🇪🇪
+      </p>
     </div>
+
+    <div>
+      <div class="footer-heading">For Talent</div>
+      <a href="/jobs/" class="footer-link">Find Jobs</a>
+      <a href="/companies/" class="footer-link">Startup Directory</a>
+      <a href="/guides/" class="footer-link">Career Guides</a>
+    </div>
+
+    <div>
+      <div class="footer-heading">For Startups</div>
+      <a href="/post-a-job/" class="footer-link">Post a Job</a>
+      <a href="/pricing/" class="footer-link">Pricing Plans</a>
+      <a href="/hiring-guide/" class="footer-link">Hiring Tips</a>
+    </div>
+
+    <div>
+      <div class="footer-heading">Legal & Contact</div>
+      <a href="/privacy/" class="footer-link">Privacy Policy</a>
+      <a href="/terms/" class="footer-link">Terms of Service</a>
+      <a href="mailto:hello@estonianstartupjobs.ee" class="footer-link">Contact Support</a>
+    </div>
+  </div>
+
+  <div class="container" style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-slate-100); text-align: center; color: var(--text-secondary); font-size: 0.8125rem;">
+    © 2025 Too Sober To Work OÜ. All rights reserved.
+  </div>
 </footer>
