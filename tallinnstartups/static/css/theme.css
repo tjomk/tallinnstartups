@@ -33,7 +33,7 @@
   --primary-blue-alt: #3b82f6;
   --primary-blue-light: #2563eb;
   --primary-blue-lighter: #3b82f6;
-  
+
   --text-primary: #0f172a;
   --text-primary-alt: #1e293b;
   --text-primary-dark: #0f172a;
@@ -41,23 +41,23 @@
   --text-secondary-alt: #64748b;
   --text-secondary-dark: #475569;
   --text-warning: #f59e0b;
-  
+
   --bg-light: #f1f5f9;
   --bg-light-alt: #e2e8f0;
   --bg-light-darker: #cbd5e1;
   --bg-success: #10b981;
   --bg-warning: #fbbf24;
-  
+
   --border-primary: #2563eb;
   --border-light: #e2e8f0;
   --border-light-alt: #cbd5e1;
   --border-secondary: #f1f5f9;
-  
+
   --color-success: #10b981;
   --color-warning: #fbbf24;
   --color-info: #2563eb;
   --color-danger: #ef4444;
-  
+
   --color-white: #ffffff;
   --color-black: #000000;
   --color-gray-50: #f8fafc;
@@ -70,7 +70,7 @@
   --color-gray-700: #334155;
   --color-gray-800: #1e293b;
   --color-gray-900: #0f172a;
-  
+
   --color-slate-50: #f8fafc;
   --color-slate-100: #f1f5f9;
   --color-slate-200: #e2e8f0;
@@ -81,7 +81,7 @@
   --color-slate-700: #334155;
   --color-slate-800: #1e293b;
   --color-slate-900: #0f172a;
-  
+
   --nordic-cream: #faf9f7;
   --nordic-sage: #e8f2e8;
   --nordic-lavender: #f0f0f8;
@@ -90,7 +90,7 @@
   --nordic-warm-gray: #f8f9fa;
   --nordic-soft-blue: #f4f7fa;
   --nordic-mint: #f0f8f4;
-  
+
   --category-engineering: #f0f0f8;
   --category-design: #e8f2e8;
   --category-marketing: #fef7f4;
@@ -308,24 +308,6 @@ body {
   background-color: var(--color-slate-100);
 }
 
-.theme-job-card {
-  background-color: var(--nordic-warm-gray);
-  border: 1px solid var(--color-slate-200);
-  border-radius: 0.125rem;
-  padding: 1rem 1rem;
-  min-height: 4.5rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin-bottom: 0.625rem;
-  border-left: 3px solid var(--color-slate-300);
-}
-
-.theme-job-card:hover {
-  background-color: var(--color-white);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
 .theme-pagination-button {
   color: var(--text-primary);
   border-radius: 9999px;
@@ -381,27 +363,6 @@ body {
   font-weight: 500;
   padding: 0.25rem 0.5rem;
   border-radius: 9999px;
-}
-
-/* Job Row Style - Berlin Startup Jobs Inspired (Tight List Style) */
-.job-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
-    background: var(--bg-card);
-    border: none;
-    border-bottom: 1px solid var(--border-color);
-    transition: background-color 0.15s ease;
-    text-decoration: none;
-    color: inherit;
-    margin-bottom: 0;
-}
-
-.job-row:hover {
-    background-color: var(--accent);
-    transform: none;
-    box-shadow: none;
 }
 
 .job-info-main {
@@ -614,34 +575,6 @@ body {
 
 #mobile-menu-button:hover {
     background-color: var(--accent);
-}
-
-/* Search Section Styles */
-.search-section {
-    padding: 40px 0;
-    background-color: var(--bg-body);
-}
-
-.search-container {
-    max-width: var(--max-width);
-    margin: 40px auto;
-    padding: 0 20px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.search-hero {
-    background-color: var(--bg-body);
-    padding: 60px 0;
-    border-bottom: 1px solid var(--border-color);
-    text-align: left;
-}
-
-.search-hero h1 {
-    font-size: 2rem;
-    font-weight: 800;
-    margin-bottom: 24px;
-    letter-spacing: -0.02em;
 }
 
 /* Site Logo Styling */
@@ -888,7 +821,7 @@ main {
     .container {
         padding: 0 24px;
     }
-    
+
     .reading-container {
         padding: 48px 24px;
     }
@@ -919,4 +852,75 @@ main {
 [data-theme="dark"] .theme-link:hover,
 .dark-theme .theme-link:hover {
   color: #93c5fd;
+}
+
+/* Search Bar Styling */
+.search-container {
+    padding: 0 20px;
+}
+
+.search-wrapper {
+    max-width: var(--max-width, 1100px);
+    margin: 20px auto;
+    width: 100%;
+}
+
+.search-hero {
+    background-color: var(--bg-body);
+    padding: 40px 0 10px 0;
+    text-align: left;
+}
+
+.search-hero h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+}
+
+.theme-input-wrapper {
+  display: flex;
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  position: relative;
+  min-height: 56px;
+}
+
+.theme-input-wrapper .theme-input {
+  flex-grow: 1;
+  padding: 16px 20px;
+  border: none !important;
+  font-size: 1.1rem;
+  padding-left: 45px;
+}
+
+.theme-input-wrapper .btn-primary {
+  border-radius: 0 11px 11px 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  border: none;
+}
+
+.theme-input-wrapper span {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+/* Article Reading Container */
+.article-reading-container {
+  max-width: 720px;
+  margin: 0 auto; /* This centers the article perfectly */
+  padding: 40px 20px;
+  line-height: 1.8; /* Improves readability significantly */
+  font-size: 1.15rem;
+  color: var(--text-primary);
 }

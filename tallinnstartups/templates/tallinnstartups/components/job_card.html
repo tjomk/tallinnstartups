@@ -1,25 +1,25 @@
 {% if job.slug %}
-    <a href="{% url 'job_detail' slug=job.slug %}" class="block mb-4">
-        <div class="theme-job-card category-{{ job.category_key }} flex items-center gap-4 relative">
+    <a href="{% url 'job_detail' slug=job.slug %}" class="block">
+        <div class="theme-job-card category-{{ job.category_key }}">
             {% if job.company_logo %}
                 <img src="{{ job.company_logo }}"
                      alt="{{ job.company_name }} company logo"
                      loading="lazy"
-                     class="w-14 h-14 object-contain rounded-lg theme-logo-container p-1"
+                     class="w-12 h-12 object-contain rounded-lg theme-logo-container"
                      onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="company-logo-default aspect-square rounded-lg size-14" style="display: none;">
+                <div class="company-logo-default aspect-square rounded-lg size-12" style="display: none;">
                 </div>
             {% else %}
-                <div class="company-logo-default aspect-square rounded-lg size-14"
+                <div class="company-logo-default aspect-square rounded-lg size-12"
                      role="img"
                      aria-label="{{ job.company_name }} default logo">
                 </div>
             {% endif %}
-            <div class="flex flex-col justify-center flex-1">
-                <p class="theme-primary-text text-[18px] font-medium leading-normal line-clamp-1">
+            <div class="flex flex-col justify-center flex-1 ml-4">
+                <p class="theme-primary-text text-base font-medium leading-normal line-clamp-1">
                     {{ job.title }}
                 </p>
-                <p class="theme-secondary-text text-[15px] font-normal leading-normal line-clamp-2 mt-1">
+                <p class="theme-secondary-text text-sm font-normal leading-normal line-clamp-2 mt-1">
                     {{ job.company_name }}
                 </p>
             </div>
@@ -34,26 +34,28 @@
         </div>
     </a>
 {% else %}
-    <div class="theme-job-card category-{{ job.category_key }} flex items-center gap-4 relative">
+    <div class="theme-job-card category-{{ job.category_key }}">
         {% if job.company_logo %}
             <img src="{{ job.company_logo }}"
                  alt="{{ job.company_name }} company logo"
                  loading="lazy"
-                 class="w-14 h-14 object-contain rounded-lg theme-logo-container p-1"
+                 class="w-12 h-12 object-contain rounded-lg theme-logo-container"
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="company-logo-default aspect-square rounded-lg size-14" style="display: none;">
+            <div class="company-logo-default aspect-square rounded-lg size-12"
+                 role="img"
+                 aria-label="{{ job.company_name }} default logo">
             </div>
         {% else %}
-            <div class="company-logo-default aspect-square rounded-lg size-14"
+            <div class="company-logo-default aspect-square rounded-lg size-12"
                  role="img"
                  aria-label="{{ job.company_name }} default logo">
             </div>
         {% endif %}
-        <div class="flex flex-col justify-center flex-1">
-            <p class="theme-primary-text text-[18px] font-medium leading-normal line-clamp-1">
+        <div class="flex flex-col justify-center flex-1 ml-4">
+            <p class="theme-primary-text text-base font-medium leading-normal line-clamp-1">
                 {{ job.title }}
             </p>
-            <p class="text-[#49739c] text-[15px] font-normal leading-normal line-clamp-2">
+            <p class="theme-secondary-text text-sm font-normal leading-normal line-clamp-2">
                 {{ job.company_name }}
             </p>
         </div>

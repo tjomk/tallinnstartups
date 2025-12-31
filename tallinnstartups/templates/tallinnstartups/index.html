@@ -75,8 +75,12 @@
 <div class="px-4 sm:px-8 lg:px-40 flex flex-1 justify-center py-5">
     <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
         <!-- Main Search Section -->
-        <div class="px-4 py-3">
-            {% include 'tallinnstartups/components/search_bar.html' with placeholder="Search jobs or companies" large=True %}
+        <div class="search-hero">
+            <div class="search-container">
+                <h1>Find Your Dream Startup Job</h1>
+                <p class="text-muted">The best place to find startup and tech jobs in Estonia.</p>
+                {% include 'tallinnstartups/components/search_bar.html' with placeholder="Search jobs or companies" large=True %}
+            </div>
         </div>
 
         <!-- Search Results Header -->

@@ -4,7 +4,7 @@
 
 {% block title %}{{ job.title }} at {{ job.company.name }} | {{ job.location }} | Estonian Startup Jobs{% endblock %}
 
-{% block meta_description %}{{ job.title }} position at {{ job.company.name }} in {{ job.location }}. {{ job.get_category_display }} role with competitive salary. {{ job.description|truncatewords:25|striptags }} Apply now!{% endblock %}
+{% block meta_description %}<meta name="description" content="{{ job.title }} position at {{ job.company.name }} in {{ job.location }}. {{ job.get_category_display }} role with competitive salary. {{ job.description|truncatewords:25|striptags }} Apply now!">{% endblock %}
 
 {% block meta_keywords %}<meta name="keywords" content="{{ job.title }}, {{ job.company.name }} jobs, {{ job.get_category_display }} jobs Estonia, {{ job.location }} jobs, Estonian startup careers">{% endblock %}
 
@@ -113,7 +113,7 @@
                             <span class="text-white font-bold text-sm">{{ job.company.name|first }}</span>
                         </div>
                     {% endif %}
-                    
+
                     <div class="flex-1 min-w-0">
                         <h1 class="text-xl font-bold text-[var(--text-primary)] leading-tight">{{ job.title }}</h1>
                         <p class="text-base text-[var(--text-secondary)] mt-1">
@@ -121,7 +121,7 @@
                         </p>
                     </div>
                 </div>
-                
+
                 <!-- Mobile: Job details in rows -->
                 <div class="space-y-2">
                     <div class="flex items-center">
@@ -135,7 +135,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Desktop layout: Original horizontal layout -->
             <div class="hidden sm:flex items-start gap-4 px-4">
                 {% if job.company.logo_url %}
@@ -154,7 +154,7 @@
                         <span class="text-white font-bold text-lg">{{ job.company.name|first }}</span>
                     </div>
                 {% endif %}
-                
+
                 <div class="flex-1">
                     <h1 class="text-2xl font-bold text-[var(--text-primary)] leading-tight">{{ job.title }}</h1>
                     <p class="text-lg text-[var(--text-secondary)] mt-1">
@@ -167,7 +167,7 @@
                     </div>
                 </div>
             </div>
-            
+
             {% if job.is_featured %}
                 <div class="flex items-center gap-2 mt-2 px-4">
                     <span class="theme-featured-tag">
@@ -177,7 +177,7 @@
                 </div>
             {% endif %}
         </div>
-        
+
         <!-- Job description -->
         <div class="bg-[var(--color-white)] rounded-lg shadow-sm border border-[var(--border-light-alt)] p-6 mb-6">
             <h2 class="text-xl font-bold text-[var(--text-primary)] mb-4">Job Description</h2>
@@ -195,7 +195,7 @@
                 {{ job.description|markdown }}
             </div>
         </div>
-        
+
         <!-- Job details -->
         <div class="bg-[var(--color-white)] rounded-lg shadow-sm border border-[var(--border-light-alt)] p-6 mb-6">
             <h2 class="text-xl font-bold text-[var(--text-primary)] mb-4">Job Details</h2>
@@ -226,7 +226,7 @@
                 {% endif %}
             </div>
         </div>
-        
+
         <!-- Apply button -->
         <div class="bg-[var(--color-white)] rounded-lg shadow-sm border border-[var(--border-light-alt)] p-6 mb-6 text-center">
             <h2 class="text-xl font-bold text-[var(--text-primary)] mb-4">Ready to Apply?</h2>
@@ -251,7 +251,7 @@
                 </div>
             {% endif %}
         </div>
-        
+
         <!-- Related Jobs at Same Company -->
         {% if related_company_jobs %}
         <div class="bg-[var(--color-white)] rounded-lg shadow-sm border border-[var(--border-light-alt)] p-6 mb-6">
@@ -276,7 +276,7 @@
             </div>
         </div>
         {% endif %}
-        
+
         <!-- Related Jobs in Same Category -->
         {% if related_category_jobs %}
         <div class="bg-[var(--color-white)] rounded-lg shadow-sm border border-[var(--border-light-alt)] p-6 mb-6">
