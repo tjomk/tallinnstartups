@@ -883,11 +883,10 @@ main {
   width: 100%;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   position: relative;
-  min-height: 56px;
+  max-height: 42px;
 }
 
 .theme-input-wrapper .theme-input {
@@ -899,12 +898,12 @@ main {
 }
 
 .theme-input-wrapper .btn-primary {
-  border-radius: 0 11px 11px 0;
   position: absolute;
   right: 0;
   top: 0;
   height: 100%;
   border: none;
+  border-radius: 0;
 }
 
 .theme-input-wrapper span {
