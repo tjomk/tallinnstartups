@@ -101,60 +101,74 @@
   --category-hr: #f0f8f4;
   --category-support: #f4f8ff;
   --category-other: #f8f9fa;
+
+  /* Alert Colors - Light Theme */
+  --bg-success-light: #ecfdf5; /* Tailwind green-50 */
+  --border-success: #a7f3d0; /* Tailwind green-200 */
+  --text-success-dark: #065f46; /* Tailwind green-800 */
+  --text-success-medium: #047857; /* Tailwind green-700 */
+
+  --bg-danger-light: #fee2e2; /* Tailwind red-50 */
+  --border-danger: #fca5a5; /* Tailwind red-200 */
+  --text-danger-dark: #991b1b; /* Tailwind red-700 */
+
+  --bg-info-light: #eff6ff; /* Tailwind blue-50 */
+  --border-info: #bfdbfe; /* Tailwind blue-200 */
+  --text-info-dark: #1e40af; /* Tailwind blue-700 */
 }
 
 /* Dark Theme */
 [data-theme="dark"],
 .dark-theme {
   /* Dark Theme Variables */
-  --bg-body: #020617;
-  --bg-card: #0f172a;
-  --border-color: #1e293b;
-  --text-main: #f1f5f9;
+  --bg-body: #0f172a;
+  --bg-card: #1e293b;
+  --border-color: #334155;
+  --text-main: #e2e8f0;
   --text-muted: #94a3b8;
-  --primary: #3b82f6;
-  --primary-hover: #60a5fa;
+  --primary: #60a5fa;
+  --primary-hover: #3b82f6;
   --accent: #1e293b;
-  --header-bg: rgba(2, 6, 23, 0.8);
-  --nav-link: #94a3b8;
+  --header-bg: rgba(15, 23, 42, 0.8);
+  --nav-link: #cbd5e1;
 
-  /* Legacy color variables for backward compatibility */
-  --primary-blue: #3b82f6;
-  --primary-blue-dark: #2563eb;
-  --primary-blue-alt: #60a5fa;
-  --primary-blue-light: #3b82f6;
-  --primary-blue-lighter: #60a5fa;
+  /* Legacy color variables for backward compatibility (mapped to new variables) */
+  --primary-blue: var(--primary);
+  --primary-blue-dark: var(--primary-hover);
+  --primary-blue-alt: var(--primary);
+  --primary-blue-light: var(--primary);
+  --primary-blue-lighter: var(--primary);
 
-  --text-primary: #f1f5f9;
-  --text-primary-alt: #e2e8f0;
-  --text-primary-dark: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-secondary-alt: #94a3b8;
-  --text-secondary-dark: #cbd5e1;
+  --text-primary: var(--text-main);
+  --text-primary-alt: var(--text-main);
+  --text-primary-dark: var(--text-main);
+  --text-secondary: var(--text-muted);
+  --text-secondary-alt: var(--text-muted);
+  --text-secondary-dark: var(--nav-link);
   --text-warning: #fbbf24;
 
-  --bg-light: #1e293b;
-  --bg-light-alt: #334155;
-  --bg-light-darker: #0f172a;
+  --bg-light: var(--accent);
+  --bg-light-alt: var(--border-color);
+  --bg-light-darker: var(--bg-card);
   --bg-success: #059669;
   --bg-warning: #f59e0b;
 
-  --border-primary: #3b82f6;
-  --border-light: #334155;
-  --border-light-alt: #475569;
-  --border-secondary: #1e293b;
+  --border-primary: var(--primary);
+  --border-light: var(--border-color);
+  --border-light-alt: var(--border-color);
+  --border-secondary: var(--accent);
 
   --color-success: #10b981;
   --color-warning: #fbbf24;
-  --color-info: #3b82f6;
+  --color-info: var(--primary);
   --color-danger: #ef4444;
 
-  --color-white: #0f172a;
-  --color-black: #ffffff;
-  --color-gray-50: #0f172a;
-  --color-gray-100: #1e293b;
-  --color-gray-200: #334155;
-  --color-gray-300: #475569;
+  --color-white: #e2e8f0;
+  --color-black: #0f172a;
+  --color-gray-50: var(--bg-body);
+  --color-gray-100: var(--bg-card);
+  --color-gray-200: var(--accent);
+  --color-gray-300: var(--border-color);
   --color-gray-400: #64748b;
   --color-gray-500: #94a3b8;
   --color-gray-600: #cbd5e1;
@@ -162,10 +176,10 @@
   --color-gray-800: #f1f5f9;
   --color-gray-900: #f8fafc;
 
-  --color-slate-50: #0f172a;
-  --color-slate-100: #1e293b;
-  --color-slate-200: #334155;
-  --color-slate-300: #475569;
+  --color-slate-50: var(--bg-body);
+  --color-slate-100: var(--bg-card);
+  --color-slate-200: var(--accent);
+  --color-slate-300: var(--border-color);
   --color-slate-400: #64748b;
   --color-slate-500: #94a3b8;
   --color-slate-600: #cbd5e1;
@@ -173,25 +187,39 @@
   --color-slate-800: #f1f5f9;
   --color-slate-900: #f8fafc;
 
-  --nordic-cream: #0f172a;
+  --nordic-cream: var(--bg-card);
   --nordic-sage: #1a2e1a;
   --nordic-lavender: #1a1a2e;
   --nordic-peach: #2e1a1a;
-  --nordic-blue-gray: #1e293b;
-  --nordic-warm-gray: #1e293b;
+  --nordic-blue-gray: var(--bg-card);
+  --nordic-warm-gray: var(--bg-card);
   --nordic-soft-blue: #1a2433;
   --nordic-mint: #1a2e24;
 
-  --category-engineering: #1e1e3f;
-  --category-design: #1a2e1a;
-  --category-marketing: #2e1f1a;
-  --category-sales: #1a2433;
-  --category-product: #2b1e3f;
-  --category-operations: #1e293b;
-  --category-finance: #2e2419;
-  --category-hr: #1a2e24;
-  --category-support: #1a2e33;
-  --category-other: #1e293b;
+  --category-engineering: #4a559e; /* Updated */
+  --category-design: #1a7a53; /* Updated */
+  --category-marketing: #9e6b1a; /* Updated */
+  --category-sales: #296a9e; /* Updated */
+  --category-product: #6a469e; /* Updated */
+  --category-operations: #565656; /* Updated */
+  --category-finance: #046a42; /* Updated */
+  --category-hr: #6a8a1a; /* Updated */
+  --category-support: #066a7e; /* Updated */
+  --category-other: #333333; /* Updated */
+
+  /* Alert Colors - Dark Theme */
+  --bg-success-light: #14532d; /* Darker green for dark theme */
+  --border-success: #22c55e; /* Brighter green for dark theme border */
+  --text-success-dark: #a7f3d0; /* Lighter text for dark theme */
+  --text-success-medium: #4ade80; /* Lighter text for dark theme */
+
+  --bg-danger-light: #7f1d1d; /* Darker red for dark theme */
+  --border-danger: #f87171; /* Brighter red for dark theme border */
+  --text-danger-dark: #fca5a5; /* Lighter text for dark theme */
+
+  --bg-info-light: #1e3a8a; /* Darker blue for dark theme */
+  --border-info: #93c5fd; /* Brighter blue for dark theme border */
+  --text-info-dark: #bfdbfe; /* Lighter text for dark theme */
 }
 
 /* Base Body Styles */
@@ -219,7 +247,75 @@ body {
     padding: 40px 20px;
 }
 
-/* Theme Utility Classes */
+/* Theme Utility Classes for alerts */
+.theme-success-box {
+  background-color: var(--bg-success-light);
+  border: 1px solid var(--border-success);
+  color: var(--text-success-dark);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+.theme-error-box {
+  background-color: var(--bg-danger-light);
+  border: 1px solid var(--border-danger);
+  color: var(--text-danger-dark);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+.theme-info-box {
+  background-color: var(--bg-info-light);
+  border: 1px solid var(--border-info);
+  color: var(--text-info-dark);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+/* Custom text color classes for direct use */
+.text-main {
+  color: var(--text-main);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+/* Custom width container */
+.max-w-reading-container {
+  max-width: var(--reading-width);
+}
+
+/* Custom radius utility */
+.rounded-var-radius {
+  border-radius: var(--radius);
+}
+
+/* Custom radio button styling */
+.theme-radio-primary {
+  accent-color: var(--primary);
+}
+
+/* Custom danger text color class */
+.text-danger-color {
+  color: var(--text-danger-dark);
+}
+
+/* Custom focus ring using primary soft color */
+.focus\:ring-primary-soft:focus {
+  box-shadow: 0 0 0 2px var(--primary-soft);
+}
+
+/* Custom focus border using primary color */
+.focus\:border-primary:focus {
+  border-color: var(--primary);
+}
+
+/* Custom input background color */
+.theme-input-bg {
+  background-color: var(--bg-card);
+}
+
 .theme-primary {
   background-color: var(--primary);
   color: var(--color-white);
@@ -426,53 +522,53 @@ body {
 
 /* Category-specific job card colors */
 .theme-job-card.category-engineering {
-  border-left-color: #6366f1;
-  background-color: var(--category-engineering);
+  border-left-color: var(--category-engineering);
+  background-color: var(--bg-card);
 }
 
 .theme-job-card.category-design {
-  border-left-color: #10b981;
-  background-color: var(--category-design);
+  border-left-color: var(--category-design);
+  background-color: var(--bg-card);
 }
 
 .theme-job-card.category-marketing {
-  border-left-color: #f59e0b;
-  background-color: var(--category-marketing);
+  border-left-color: var(--category-marketing);
+  background-color: var(--bg-card);
 }
 
 .theme-job-card.category-sales {
-  border-left-color: #3b82f6;
-  background-color: var(--category-sales);
+  border-left-color: var(--category-sales);
+  background-color: var(--bg-card);
 }
 
 .theme-job-card.category-product {
-  border-left-color: #8b5cf6;
-  background-color: var(--category-product);
+  border-left-color: var(--category-product);
+  background-color: var(--bg-card);
 }
 
 .theme-job-card.category-operations {
-  border-left-color: #6b7280;
-  background-color: var(--category-operations);
+  border-left-color: var(--category-operations);
+  background-color: var(--bg-card);
 }
 
 .theme-job-card.category-finance {
-  border-left-color: #059669;
-  background-color: var(--category-finance);
+  border-left-color: var(--category-finance);
+  background-color: var(--bg-card);
 }
 
 .theme-job-card.category-hr {
-  border-left-color: #84cc16;
-  background-color: var(--category-hr);
+  border-left-color: var(--category-hr);
+  background-color: var(--bg-card);
 }
 
 .theme-job-card.category-customer_support {
-  border-left-color: #06b6d4;
-  background-color: var(--category-support);
+  border-left-color: var(--category-support);
+  background-color: var(--bg-card);
 }
 
 .theme-job-card.category-other {
-  border-left-color: var(--color-slate-400);
-  background-color: var(--category-other);
+  border-left-color: var(--category-other);
+  background-color: var(--bg-card);
 }
 
 /* Section headers with subtle backgrounds */
@@ -487,6 +583,12 @@ body {
 .theme-section-header.featured {
   background: linear-gradient(135deg, var(--nordic-peach) 0%, var(--nordic-cream) 100%);
   border-left-color: #f59e0b;
+}
+
+[data-theme="dark"] .theme-section-header.featured,
+.dark-theme .theme-section-header.featured {
+  background: linear-gradient(135deg, rgba(46, 30, 26, 0.5) 0%, rgba(15, 23, 42, 0.5) 100%); /* New dark theme specific gradient */
+  border-left-color: var(--primary-hover); /* Use primary hover for consistency */
 }
 
 .theme-section-header h2 {
@@ -509,7 +611,7 @@ body {
 }
 
 [data-theme="dark"] .site-header {
-  background-color: rgba(15, 23, 42, 0.85);
+  background-color: var(--header-bg); /* Updated to use variable */
   border-bottom-color: var(--color-slate-800);
 }
 
@@ -539,11 +641,12 @@ body {
 
 .nav-link:hover {
   background-color: var(--color-slate-100);
-  color: var(--primary-blue);
+  color: var(--primary); /* Changed to use var(--primary) */
 }
 
 [data-theme="dark"] .nav-link:hover {
   background-color: var(--color-slate-800);
+  color: var(--primary); /* Added color for dark theme hover */
 }
 
 .header-actions {
@@ -970,12 +1073,12 @@ main {
 
 [data-theme="dark"] .theme-link,
 .dark-theme .theme-link {
-  color: #60a5fa;
+  color: var(--primary); /* Use primary variable for consistency */
 }
 
 [data-theme="dark"] .theme-link:hover,
 .dark-theme .theme-link:hover {
-  color: #93c5fd;
+  color: #93c5fd; /* Updated to suggested hover color */
 }
 
 /* Search Bar Styling */
