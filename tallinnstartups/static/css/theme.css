@@ -360,15 +360,15 @@ body {
 }
 
 .theme-card {
-  background-color: var(--color-white);
-  border: 1px solid var(--color-slate-200);
-  border-radius: 0.5rem;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
   padding: 1.5rem;
   transition: box-shadow 0.2s;
 }
 
 .theme-card:hover {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
 }
 
 .theme-input {
@@ -1149,4 +1149,75 @@ main {
   line-height: 1.8; /* Improves readability significantly */
   font-size: 1.15rem;
   color: var(--text-primary);
+}
+/* Container specifically for article content */
+.article-container {
+  max-width: 800px; /* Limits width for optimal readability */
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Adjust the individual article preview card */
+.article-preview {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  align-items: flex-start;
+}
+
+@media (max-width: 768px) {
+  .article-preview {
+    flex-direction: column; /* Stack image on top for mobile */
+    gap: 1rem;
+  }
+}
+
+/* Dark Theme readability for article previews */
+[data-theme="dark"] .article-preview p {
+  color: var(--text-secondary); /* Use the muted slate from your theme */
+  line-height: 1.6;
+}
+
+[data-theme="dark"] .article-preview h2 {
+  color: var(--text-primary); /* Ensure titles stay bright */
+}
+
+/* Responsive Image Handling */
+.article-image-wrapper {
+  flex-shrink: 0;
+  width: 280px; /* Fixed size on desktop */
+  height: 180px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.article-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Prevents stretching */
+}
+
+@media (max-width: 768px) {
+  .article-image-wrapper {
+    width: 100%; /* Full width on mobile */
+    height: 200px;
+  }
+}
+
+/* Improving the "Read More" Button */
+.btn-read-more {
+  display: inline-flex;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  color: var(--primary-blue);
+  border: 1px solid var(--primary-blue);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.btn-read-more:hover {
+  background-color: var(--primary-blue);
+  color: white;
 }
