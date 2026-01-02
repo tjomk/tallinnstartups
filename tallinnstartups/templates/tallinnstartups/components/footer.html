@@ -16,15 +16,15 @@
 
     <div>
       <div class="footer-heading">For Startups</div>
-      <a href="/post-a-job/" class="footer-link">Post a Job</a>
+      <a href="{% url 'post_job' %}" class="footer-link">Post a Job</a>
       <a href="/pricing/" class="footer-link">Pricing Plans</a>
       <a href="/hiring-guide/" class="footer-link">Hiring Tips</a>
     </div>
 
     <div>
       <div class="footer-heading">Legal & Contact</div>
-      <a href="/privacy/" class="footer-link">Privacy Policy</a>
-      <a href="/terms/" class="footer-link">Terms of Service</a>
+      <a href="{% url 'privacy_policy' %}" class="footer-link">Privacy Policy</a>
+      <a href="{% url 'terms_of_service' %}" class="footer-link">Terms of Service</a>
       <a href="mailto:hello@estonianstartupjobs.ee" class="footer-link">Contact Support</a>
     </div>
   </div>
