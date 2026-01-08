@@ -1230,3 +1230,97 @@ main {
 [data-theme="dark"] .article-content p {
   color: var(--text-secondary); /* High legibility */
 }
+
+/* --- Article Content Typography --- */
+.article-body {
+  max-width: 760px;
+  margin: 0 auto;
+  font-size: 1.125rem; /* Slightly larger for reading */
+  line-height: 1.75;
+  color: var(--text-primary-alt); /* #0d151c */
+}
+
+/* Fix for those "off" headings */
+.article-body h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-top: 3rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.2;
+  color: var(--text-primary); /* */
+}
+
+.article-body h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-secondary); /* #49719c */
+}
+
+.article-body p {
+  margin-bottom: 1.5rem;
+}
+
+/* --- Dark Theme Adjustments --- */
+[data-theme="dark"] .article-body {
+  color: var(--text-primary-alt); /* #e2e8f0 */
+}
+
+[data-theme="dark"] .article-body h3 {
+  color: var(--primary-blue-alt); /* #60a5fa */
+}
+
+/* --- Image Captions --- */
+.article-body figure {
+  margin: 2.5rem 0;
+}
+
+.article-body figcaption {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-top: 0.75rem;
+  font-style: italic;
+}
+
+/* --- Article Breadcrumbs --- */
+.article-breadcrumbs {
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.article-breadcrumbs a {
+  color: var(--text-secondary);
+}
+
+.article-breadcrumbs a:hover {
+  color: var(--primary);
+}
+
+/* --- Read Time Badge --- */
+.read-time-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--bg-light);
+  color: var(--text-secondary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.read-time-badge::before {
+  content: '';
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z' clip-rule='evenodd' /%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
