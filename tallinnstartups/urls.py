@@ -17,10 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
-from django.views.generic import TemplateView
 from django.http import HttpResponse
-from django.conf.urls.static import static
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from . import views
 from jobs.api import CompaniesWithoutJobsView
@@ -46,9 +43,7 @@ urlpatterns = [
         open(settings.BASE_DIR / 'tallinnstartups' / 'static' / 'robots.txt', 'r').read(),
         content_type='text/plain'
     )),
-    # API endpoints
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/companies/no-jobs/', CompaniesWithoutJobsView.as_view(), name='companies_without_jobs'),
     path('guides/', include('blog.urls')),
+    # API endpoints
+    path('api/companies/no-jobs/', CompaniesWithoutJobsView.as_view(), name='companies_without_jobs'),
 ]

@@ -21,17 +21,17 @@ class JobAdmin(admin.ModelAdmin):
             'fields': ('job_type', 'title', 'company', 'category', 'location', 'status', 'slug')
         }),
         ('Job Details', {
-            'fields': ('description', 'salary_range')
+            'fields': ('description', 'salary_range', 'application_contact')
         }),
         ('Visibility & Features', {
             'fields': ('is_featured', 'expires_at'),
             'description': 'Control job visibility and featured status'
         }),
     )
-    
+
     def get_queryset(self, request):
         return super().get_queryset(request).select_related('company')
-    
+
     actions = ['mark_as_live', 'mark_as_in_review', 'mark_as_rejected', 'mark_as_waiting_for_payment', 'mark_as_refunded', 'make_featured', 'remove_featured']
 
     def mark_as_live(self, request, queryset):
@@ -58,12 +58,12 @@ class JobAdmin(admin.ModelAdmin):
         updated = queryset.update(status='refunded')
         self.message_user(request, f'{updated} jobs marked as refunded.')
     mark_as_refunded.short_description = 'Mark selected jobs as refunded'
-    
+
     def make_featured(self, request, queryset):
         updated = queryset.update(is_featured=True)
         self.message_user(request, f'{updated} jobs marked as featured.')
     make_featured.short_description = 'Make selected jobs featured'
-    
+
     def remove_featured(self, request, queryset):
         updated = queryset.update(is_featured=False)
         self.message_user(request, f'{updated} jobs removed from featured.')
@@ -75,12 +75,12 @@ class JobSubmissionLogAdmin(admin.ModelAdmin):
     list_display = ['ip_address', 'result', 'company_name', 'job_title', 'submitted_at']
     list_filter = ['result', 'submitted_at']
     search_fields = ['ip_address', 'company_name', 'job_title', 'user_agent']
-    readonly_fields = ['ip_address', 'submitted_at', 'user_agent', 'result', 'job', 'company_name', 
+    readonly_fields = ['ip_address', 'submitted_at', 'user_agent', 'result', 'job', 'company_name',
                       'job_title', 'error_details', 'form_data_hash']
     date_hierarchy = 'submitted_at'
-    
+
     def has_add_permission(self, request):
         return False  # Prevent manual creation of logs
-    
+
     def has_delete_permission(self, request, obj=None):
         return False  # Prevent deletion of audit logs
