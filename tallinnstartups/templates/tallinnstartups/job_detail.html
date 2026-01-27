@@ -74,7 +74,7 @@
 
         <!-- Expired Job Notice -->
         {% if job.is_expired %}
-        <div class="mb-4 bg-orange-50 border-l-4 border-orange-400 p-4 rounded-r-lg">
+        <div class="mb-4 bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-lg">
             <div class="flex items-start">
                 <div class="flex-shrink-0">
                     <svg class="h-5 w-5 text-orange-400" viewBox="0 0 20 20" fill="currentColor">
@@ -82,8 +82,8 @@
                     </svg>
                 </div>
                 <div class="ml-3">
-                    <h3 class="text-sm font-medium text-orange-800">This job posting has expired</h3>
-                    <p class="mt-1 text-sm text-orange-700">
+                    <h3 class="text-sm font-medium text-amber-800">This job posting has expired</h3>
+                    <p class="mt-1 text-sm text-amber-700">
                         This position was posted on {{ job.created_at|date:"F j, Y" }} and expired on {{ job.expires_at|date:"F j, Y" }}.
                         The company may no longer be accepting applications for this role.
                     </p>
@@ -93,7 +93,7 @@
         {% endif %}
 
         <!-- Job header -->
-        <div class="flex flex-col gap-4 py-6 bg-[var(--color-white)] rounded-lg shadow-sm border border-[var(--border-light-alt)] mb-6">
+        <div class="flex flex-col gap-4 py-6 mb-6 theme-card">
             <!-- Mobile layout: Logo and basic info -->
             <div class="block sm:hidden px-4">
                 <div class="flex items-start gap-3 mb-3">
@@ -103,21 +103,21 @@
                              loading="lazy"
                              class="w-12 h-12 object-contain rounded-lg flex-shrink-0 theme-logo-container p-1"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="w-12 h-12 bg-[#0d7847] rounded-lg flex items-center justify-center flex-shrink-0" style="display: none;">
-                            <span class="text-white font-bold text-sm" aria-label="{{ job.company.name }} logo">{{ job.company.name|first }}</span>
+                        <div class="w-12 h-12 bg-[var(--bg-success)] rounded-lg flex items-center justify-center flex-shrink-0" style="display: none;">
+                            <span class="text-[var(--color-white)] font-bold text-sm" aria-label="{{ job.company.name }} logo">{{ job.company.name|first }}</span>
                         </div>
                     {% else %}
-                        <div class="w-12 h-12 bg-[#0d7847] rounded-lg flex items-center justify-center flex-shrink-0"
+                        <div class="w-12 h-12 bg-[var(--bg-success)] rounded-lg flex items-center justify-center flex-shrink-0"
                              role="img"
                              aria-label="{{ job.company.name }} company logo">
-                            <span class="text-white font-bold text-sm">{{ job.company.name|first }}</span>
+                            <span class="text-[var(--color-white)] font-bold text-sm">{{ job.company.name|first }}</span>
                         </div>
                     {% endif %}
 
                     <div class="flex-1 min-w-0">
                         <h1 class="text-xl font-bold text-[var(--text-primary)] leading-tight">{{ job.title }}</h1>
                         <p class="text-base text-[var(--text-secondary)] mt-1">
-                            <a href="{% url 'company_jobs' slug=job.company.slug %}" class="hover:text-[#1980e6] transition-colors">{{ job.company.name }}</a>
+                            <a href="{% url 'company_jobs' slug=job.company.slug %}" class="theme-link">{{ job.company.name }}</a>
                         </p>
                     </div>
                 </div>
@@ -144,21 +144,21 @@
                          loading="lazy"
                          class="w-16 h-16 object-contain rounded-lg theme-logo-container p-1.5"
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="w-16 h-16 bg-[#0d7847] rounded-lg flex items-center justify-center" style="display: none;">
-                        <span class="text-white font-bold text-lg" aria-label="{{ job.company.name }} logo">{{ job.company.name|first }}</span>
+                    <div class="w-16 h-16 bg-[var(--bg-success)] rounded-lg flex items-center justify-center" style="display: none;">
+                        <span class="text-[var(--color-white)] font-bold text-lg" aria-label="{{ job.company.name }} logo">{{ job.company.name|first }}</span>
                     </div>
                 {% else %}
-                    <div class="w-16 h-16 bg-[#0d7847] rounded-lg flex items-center justify-center"
+                    <div class="w-16 h-16 bg-[var(--bg-success)] rounded-lg flex items-center justify-center"
                          role="img"
                          aria-label="{{ job.company.name }} company logo">
-                        <span class="text-white font-bold text-lg">{{ job.company.name|first }}</span>
+                        <span class="text-[var(--color-white)] font-bold text-lg">{{ job.company.name|first }}</span>
                     </div>
                 {% endif %}
 
                 <div class="flex-1">
                     <h1 class="text-2xl font-bold text-[var(--text-primary)] leading-tight">{{ job.title }}</h1>
                     <p class="text-lg text-[var(--text-secondary)] mt-1">
-                        <a href="{% url 'company_jobs' slug=job.company.slug %}" class="hover:text-[#1980e6] transition-colors">{{ job.company.name }}</a>
+                        <a href="{% url 'company_jobs' slug=job.company.slug %}" class="theme-link">{{ job.company.name }}</a>
                     </p>
                     <div class="flex items-center gap-4 mt-2">
                         <span class="text-sm text-[var(--text-secondary)]">📍 {{ job.location }}</span>
@@ -179,8 +179,7 @@
         </div>
 
         <!-- Job description -->
-        <div class="bg-[var(--color-white)] rounded-lg shadow-sm border border-[var(--border-light-alt)] p-6 mb-6">
-            <h2 class="text-xl font-bold text-[var(--text-primary)] mb-4">Job Description</h2>
+        <div class="p-6 mb-6 theme-card">
             <div class="text-[var(--text-secondary)] leading-relaxed prose prose-sm max-w-none
                 prose-headings:text-[var(--text-primary)] prose-headings:font-bold
                 prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg
@@ -189,7 +188,7 @@
                 prose-ol:list-decimal prose-ol:ml-6 prose-ol:mb-6
                 prose-li:text-[var(--text-secondary)] prose-li:mb-1
                 prose-strong:text-[var(--text-primary)] prose-strong:font-semibold
-                prose-a:text-[#1980e6] prose-a:underline hover:prose-a:text-[#1668c7]
+                prose-a:text-[var(--primary)] prose-a:underline hover:prose-a:text-[var(--primary-hover)]
                 prose-code:text-[var(--text-primary)] prose-code:bg-[var(--bg-light)] prose-code:px-1 prose-code:py-0.5 prose-code:rounded
                 prose-pre:bg-[var(--text-primary)] prose-pre:text-[var(--color-white)] prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto">
                 {{ job.description|markdown }}
@@ -197,7 +196,7 @@
         </div>
 
         <!-- Job details -->
-        <div class="bg-[var(--color-white)] rounded-lg shadow-sm border border-[var(--border-light-alt)] p-6 mb-6">
+        <div class="p-6 mb-6 theme-card">
             <h2 class="text-xl font-bold text-[var(--text-primary)] mb-4">Job Details</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -211,7 +210,7 @@
                 <div>
                     <h3 class="font-medium text-[var(--text-primary)] mb-1">Category</h3>
                     <p class="text-[var(--text-secondary)]">
-                        <a href="{% url 'category_jobs' category=job.category %}" class="hover:text-[#1980e6] transition-colors">{{ job.get_category_display }}</a>
+                        <a href="{% url 'category_jobs' category=job.category %}" class="theme-link">{{ job.get_category_display }}</a>
                     </p>
                 </div>
                 <div>
@@ -228,19 +227,19 @@
         </div>
 
         <!-- Apply button -->
-        <div class="bg-[var(--color-white)] rounded-lg shadow-sm border border-[var(--border-light-alt)] p-6 mb-6 text-center">
+        <div class="p-6 mb-6 text-center theme-card">
             <h2 class="text-xl font-bold text-[var(--text-primary)] mb-4">Ready to Apply?</h2>
             <p class="text-[var(--text-secondary)] mb-6">Interested in this position? Click the button below to apply.</p>
 
             {% if job.application_contact %}
                 {% if '@' in job.application_contact %}
                     <a href="mailto:{{ job.application_contact }}?subject=Application for {{ job.title }} at {{ job.company.name }}"
-                       class="bg-[#1980e6] text-white px-8 py-3 rounded-sm font-medium hover:bg-[#1668c7] transition-colors inline-block">
+                       class="btn-primary inline-block">
                         Apply via Email
                     </a>
                 {% else %}
                     <a href="{{ job.application_contact }}" target="_blank" rel="noopener noreferrer"
-                       class="bg-[#1980e6] text-white px-8 py-3 rounded-sm font-medium hover:bg-[#1668c7] transition-colors inline-block">
+                       class="btn-primary inline-block">
                         Apply Now
                     </a>
                 {% endif %}
@@ -254,7 +253,7 @@
 
         <!-- Related Jobs at Same Company -->
         {% if related_company_jobs %}
-        <div class="bg-[var(--color-white)] rounded-lg shadow-sm border border-[var(--border-light-alt)] p-6 mb-6">
+        <div class="p-6 mb-6 theme-card">
             <h2 class="text-xl font-bold text-[var(--text-primary)] mb-4">More Jobs at {{ job.company.name }}</h2>
             <div class="space-y-3">
                 {% for related_job in related_company_jobs %}
@@ -270,7 +269,7 @@
                 {% endfor %}
             </div>
             <div class="mt-4">
-                <a href="{% url 'company_jobs' slug=job.company.slug %}" class="text-[#1980e6] hover:text-[#1668c7] font-medium text-sm">
+                <a href="{% url 'company_jobs' slug=job.company.slug %}" class="theme-link font-medium text-sm">
                     View all {{ job.company.name }} jobs →
                 </a>
             </div>
@@ -279,7 +278,7 @@
 
         <!-- Related Jobs in Same Category -->
         {% if related_category_jobs %}
-        <div class="bg-[var(--color-white)] rounded-lg shadow-sm border border-[var(--border-light-alt)] p-6 mb-6">
+        <div class="p-6 mb-6 theme-card">
             <h2 class="text-xl font-bold text-[var(--text-primary)] mb-4">Similar {{ job.get_category_display }} Jobs</h2>
             <div class="space-y-3">
                 {% for related_job in related_category_jobs %}
@@ -291,13 +290,13 @@
                         <p class="text-sm text-[var(--text-secondary)]">{{ related_job.company.name }} • {{ related_job.location }}</p>
                     </div>
                     {% if related_job.is_featured %}
-                    <span class="text-sm font-medium bg-[#f76969] text-white px-2 py-1 rounded-sm">Featured</span>
+                    <span class="theme-featured-tag px-2 py-1 rounded-sm">Featured</span>
                     {% endif %}
                 </div>
                 {% endfor %}
             </div>
             <div class="mt-4">
-                <a href="{% url 'category_jobs' category=job.category %}" class="text-[#1980e6] hover:text-[#1668c7] font-medium text-sm">
+                <a href="{% url 'category_jobs' category=job.category %}" class="theme-link font-medium text-sm">
                     View all {{ job.get_category_display }} jobs →
                 </a>
             </div>
