@@ -1,5 +1,5 @@
 <div class="search-wrapper">
-    <form method="GET" action="{% url 'home' %}" class="relative w-full">
+    <form method="GET" action="{{ search_url|default:'/' }}" class="relative w-full">
         <div class="theme-input-wrapper">
             <span class="absolute left-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

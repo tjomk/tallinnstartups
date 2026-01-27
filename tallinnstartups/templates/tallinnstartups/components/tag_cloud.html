@@ -1,13 +1,13 @@
 <div class="flex gap-3 px-4 py-3 flex-wrap">
-    {% for category in categories %}
+    {% for tag in tags %}
         <div class="theme-category-badge flex h-8 shrink-0 items-center justify-center gap-x-2">
             <p class="theme-primary-text text-sm font-medium leading-normal">
-                {% if category.url %}
-                    <a href="{{ category.url }}" class="hover:underline">
-                        {{ category.name }} ({{ category.count }})
+                {% if tag.url %}
+                    <a href="{{ tag.url }}" class="hover:underline">
+                        {{ tag.name }} ({{ tag.count }})
                     </a>
                 {% else %}
-                    {{ category.name }} ({{ category.count }})
+                    {{ tag.name }} ({{ tag.count }})
                 {% endif %}
             </p>
         </div>

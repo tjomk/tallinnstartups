@@ -638,10 +638,19 @@ def hire_me_list(request, tag_slug=None):
     """
     Hire Me posts listing page with pagination and optional tag filtering.
     """
+    search_form = JobSearchForm(request.GET)
+    search_query = None
     page = request.GET.get('page', 1)
 
+    if search_form.is_valid() and search_form.cleaned_data.get('q'):
+        search_query = search_form.cleaned_data['q']
+
     hire_me_service = HireMeService()
-    context = hire_me_service.get_hire_me_posts(page=int(page), tag_slug=tag_slug)
+    context = hire_me_service.get_hire_me_posts(
+        page=int(page), 
+        tag_slug=tag_slug, 
+        search_query=search_query
+    )
 
     # Add breadcrumbs
     breadcrumbs = [
@@ -658,6 +667,7 @@ def hire_me_list(request, tag_slug=None):
         context['current_tag'] = tag
 
     context['hire_me_breadcrumbs'] = breadcrumbs
+    context['search_form'] = search_form
 
     return render(request, 'tallinnstartups/hire_me_list.html', context)
 

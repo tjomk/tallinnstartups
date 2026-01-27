@@ -79,7 +79,7 @@
             <div class="search-container">
                 <h1>Find Your Dream Startup Job</h1>
                 <p class="text-muted">The best place to find startup and tech jobs in Estonia.</p>
-                {% include 'tallinnstartups/components/search_bar.html' with placeholder="Search jobs or companies" large=True %}
+                {% include 'tallinnstartups/components/search_bar.html' with placeholder="Search jobs or companies" large=True search_url=request.path %}
             </div>
         </div>
 
@@ -105,7 +105,7 @@
 
         <!-- Job Categories -->
         {% if not is_search_results %}
-            {% include 'tallinnstartups/components/job_categories.html' %}
+            {% include 'tallinnstartups/components/tag_cloud.html' with tags=categories %}
         {% endif %}
 
         <!-- Featured Jobs Section -->

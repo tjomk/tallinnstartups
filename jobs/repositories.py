@@ -214,3 +214,25 @@ class HireMeRepository:
             return HireMePost.objects.prefetch_related('tags').get(slug=slug)
         except HireMePost.DoesNotExist:
             return None
+
+    @staticmethod
+    def search_posts(query: str) -> QuerySet:
+        """Search posts by title, description, and tags."""
+        if not query:
+            return HireMePost.objects.none()
+
+        now = timezone.now()
+        search_conditions = models.Q(
+            title__icontains=query
+        ) | models.Q(
+            description__icontains=query
+        ) | models.Q(
+            tags__tag__name__icontains=query
+        )
+
+        return HireMePost.objects.filter(
+            search_conditions,
+            status='live'
+        ).exclude(
+            expires_at__lte=now
+        ).prefetch_related('tags').order_by('-created_at').distinct()

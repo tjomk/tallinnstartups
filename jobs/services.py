@@ -230,9 +230,11 @@ class HireMeService:
     def __init__(self):
         self.hire_me_repository = HireMeRepository()
 
-    def get_hire_me_posts(self, page: int = 1, posts_per_page: int = 10, tag_slug: str = None) -> Dict[str, Any]:
-        """Get paginated Hire Me posts, optionally filtered by tag."""
-        if tag_slug:
+    def get_hire_me_posts(self, page: int = 1, posts_per_page: int = 10, tag_slug: str = None, search_query: str = None) -> Dict[str, Any]:
+        """Get paginated Hire Me posts, optionally filtered by tag or search query."""
+        if search_query:
+            posts = self.hire_me_repository.search_posts(search_query)
+        elif tag_slug:
             posts = self.hire_me_repository.get_posts_by_tag(tag_slug)
         else:
             posts = self.hire_me_repository.get_all_posts()
@@ -246,7 +248,9 @@ class HireMeService:
             'posts': formatted_posts,
             'total_results': paginator.count,
             'page_obj': page_obj,
-            'tags': self._get_popular_tags()
+            'tags': self._get_popular_tags(),
+            'is_search_results': bool(search_query),
+            'search_query': search_query,
         }
 
     def _format_post_data(self, post) -> Dict[str, Any]:
