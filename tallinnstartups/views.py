@@ -10,9 +10,9 @@ import logging
 import hashlib
 import json
 from django_ratelimit.decorators import ratelimit
-from jobs.services import HomePageService, CompanyService
-from jobs.forms import JobSubmissionForm, JobSearchForm, CofounderSubmissionForm
-from jobs.models import Job, Company, JobSubmissionLog
+from jobs.services import HomePageService, CompanyService, HireMeService
+from jobs.forms import JobSubmissionForm, JobSearchForm, CofounderSubmissionForm, HireMeSubmissionForm
+from jobs.models import Job, Company, JobSubmissionLog, HireMePost, HireMeTag, HireMePostTag
 from django.urls import reverse
 from django.template.loader import render_to_string
 
@@ -632,3 +632,193 @@ def sitemap_xml(request):
 
     xml_content = render_to_string('tallinnstartups/sitemap.xml', sitemap_data)
     return HttpResponse(xml_content, content_type='application/xml')
+
+
+def hire_me_list(request, tag_slug=None):
+    """
+    Hire Me posts listing page with pagination and optional tag filtering.
+    """
+    page = request.GET.get('page', 1)
+
+    hire_me_service = HireMeService()
+    context = hire_me_service.get_hire_me_posts(page=int(page), tag_slug=tag_slug)
+
+    # Add breadcrumbs
+    breadcrumbs = [
+        {'name': 'Home', 'url': reverse('home')},
+        {'name': 'Hire Me', 'url': reverse('hire_me_list')}
+    ]
+
+    if tag_slug:
+        tag = get_object_or_404(HireMeTag, slug=tag_slug)
+        breadcrumbs.append({
+            'name': f'Tag: {tag.name}',
+            'url': None
+        })
+        context['current_tag'] = tag
+
+    context['hire_me_breadcrumbs'] = breadcrumbs
+
+    return render(request, 'tallinnstartups/hire_me_list.html', context)
+
+
+@ratelimit(key='ip', rate='3/h', method='POST', block=True)
+def post_hire_me(request):
+    """
+    Hire Me posting form view with form handling.
+    """
+    # Get client IP for logging
+    client_ip = request.META.get('HTTP_X_FORWARDED_FOR')
+    if client_ip:
+        client_ip = client_ip.split(',')[0]
+    else:
+        client_ip = request.META.get('REMOTE_ADDR')
+
+    user_agent = request.META.get('HTTP_USER_AGENT', 'Unknown')
+
+    if request.method == 'POST':
+        # Log submission attempt
+        submissions_logger.info(f'Hire Me submission attempt from IP: {client_ip}, User-Agent: {user_agent}')
+        form = HireMeSubmissionForm(request.POST)
+        if form.is_valid():
+            try:
+                with transaction.atomic():
+                    # Set expiration date (7 days from now by default)
+                    expires_at = timezone.now() + timedelta(days=7)
+
+                    # Create Hire Me post
+                    post = HireMePost.objects.create(
+                        title=form.cleaned_data['title'],
+                        description=form.cleaned_data['description'],
+                        contact_info=form.cleaned_data['contact_info'],
+                        name=form.cleaned_data['name'] or None,
+                        location=form.cleaned_data['location'] or None,
+                        expires_at=expires_at,
+                        status='in_review'  # All new posts start in review
+                    )
+
+                    # Process tags
+                    tags_input = form.cleaned_data['tags']
+                    if tags_input:
+                        _process_hire_me_tags(post, tags_input)
+
+                    # Store submission data in session for thank you page
+                    request.session['hire_me_submission'] = {
+                        'post_id': str(post.id),
+                        'title': post.title,
+                        'name': post.name,
+                        'contact_info': post.contact_info,
+                        'tags': tags_input
+                    }
+
+                    # Create audit log for successful submission
+                    create_audit_log(
+                        ip_address=client_ip,
+                        user_agent=user_agent,
+                        result='success',
+                        job=None,  # Not a job, but we'll reuse the log model
+                        company_name=post.name or 'Anonymous',
+                        job_title=post.title,
+                        form_data=form.cleaned_data
+                    )
+
+                    # Log successful submission
+                    submissions_logger.info(
+                        f'Hire Me submission successful - ID: {post.id}, Title: {post.title}, '
+                        f'IP: {client_ip}, Status: {post.status}'
+                    )
+
+                    return redirect('hire_me_submission_success')
+
+            except Exception as e:
+                # Create audit log for system error
+                create_audit_log(
+                    ip_address=client_ip,
+                    user_agent=user_agent,
+                    result='system_error',
+                    error_details=str(e),
+                    form_data=form.cleaned_data if form.is_valid() else None
+                )
+
+                messages.error(request, 'An error occurred while submitting your post. Please try again.')
+                # Log the error
+                security_logger.error(
+                    f'Hire Me submission error from IP: {client_ip}, Error: {str(e)}, '
+                    f'User-Agent: {user_agent}'
+                )
+        else:
+            # Create audit log for validation error
+            create_audit_log(
+                ip_address=client_ip,
+                user_agent=user_agent,
+                result='validation_error',
+                error_details=str(form.errors),
+                form_data=request.POST.dict()
+            )
+
+            # Log form validation errors
+            security_logger.warning(
+                f'Hire Me submission failed validation from IP: {client_ip}, '
+                f'Errors: {form.errors}, User-Agent: {user_agent}'
+            )
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = HireMeSubmissionForm()
+
+    return render(request, 'tallinnstartups/post_hire_me.html', {'form': form})
+
+
+def hire_me_submission_success(request):
+    """
+    Thank you page after successful Hire Me submission.
+    """
+    submission_data = request.session.get('hire_me_submission')
+    if not submission_data:
+        # If no submission data, redirect to post hire me page
+        return redirect('post_hire_me')
+
+    # Clear the session data after displaying
+    if 'hire_me_submission' in request.session:
+        del request.session['hire_me_submission']
+
+    return render(request, 'tallinnstartups/hire_me_submission_success.html', {
+        'submission_data': submission_data
+    })
+
+
+def hire_me_detail(request, slug):
+    """
+    Hire Me post detail page view.
+    """
+    post = get_object_or_404(HireMePost, slug=slug)
+
+    # Check if post is visible (live status and not expired)
+    if not post.is_visible:
+        raise Http404("Post not found")
+
+    # Build breadcrumbs
+    breadcrumbs = [
+        {'name': 'Home', 'url': reverse('home')},
+        {'name': 'Hire Me', 'url': reverse('hire_me_list')},
+        {'name': post.title, 'url': None}
+    ]
+
+    return render(request, 'tallinnstartups/hire_me_detail.html', {
+        'post': post,
+        'post_breadcrumbs': breadcrumbs,
+    })
+
+
+def _process_hire_me_tags(post, tags_input):
+    """Process comma-separated tags and create/associate them with the post."""
+    tag_names = [tag.strip() for tag in tags_input.split(',') if tag.strip()]
+    for tag_name in tag_names:
+        tag, created = HireMeTag.objects.get_or_create(
+            name__iexact=tag_name,
+            defaults={'name': tag_name}
+        )
+        if not created:
+            # Update tag name to match the canonical version
+            tag.name = tag_name
+            tag.save()
+        HireMePostTag.objects.get_or_create(post=post, tag=tag)

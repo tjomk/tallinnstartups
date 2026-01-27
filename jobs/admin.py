@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Company, Job, JobSubmissionLog
+from .models import Company, Job, JobSubmissionLog, HireMePost, HireMeTag
 
 
 @admin.register(Company)
@@ -84,3 +84,53 @@ class JobSubmissionLogAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False  # Prevent deletion of audit logs
+
+
+@admin.register(HireMePost)
+class HireMePostAdmin(admin.ModelAdmin):
+    list_display = ['title', 'name', 'status', 'expires_at', 'created_at', 'slug']
+    list_filter = ['status', 'created_at', 'expires_at']
+    search_fields = ['title', 'description', 'name', 'contact_info', 'tags__name']
+    list_select_related = ['tags']
+    date_hierarchy = 'created_at'
+
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('title', 'name', 'status', 'slug')
+        }),
+        ('Post Details', {
+            'fields': ('description', 'contact_info', 'location')
+        }),
+        ('Visibility', {
+            'fields': ('expires_at',),
+            'description': 'Control post visibility and expiration'
+        }),
+    )
+
+    actions = ['mark_as_live', 'mark_as_in_review', 'mark_as_rejected']
+
+    def mark_as_live(self, request, queryset):
+        updated = queryset.update(status='live')
+        self.message_user(request, f'{updated} posts marked as live.')
+    mark_as_live.short_description = 'Mark selected posts as live'
+
+    def mark_as_in_review(self, request, queryset):
+        updated = queryset.update(status='in_review')
+        self.message_user(request, f'{updated} posts marked as in review.')
+    mark_as_in_review.short_description = 'Mark selected posts as in review'
+
+    def mark_as_rejected(self, request, queryset):
+        updated = queryset.update(status='rejected')
+        self.message_user(request, f'{updated} posts marked as rejected.')
+    mark_as_rejected.short_description = 'Mark selected posts as rejected'
+
+
+@admin.register(HireMeTag)
+class HireMeTagAdmin(admin.ModelAdmin):
+    list_display = ['name', 'slug', 'post_count']
+    search_fields = ['name']
+    ordering = ['name']
+
+    def post_count(self, obj):
+        return obj.posts.count()
+    post_count.short_description = 'Posts'

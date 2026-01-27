@@ -1,0 +1,74 @@
+{% extends "tallinnstartups/base.html" %}
+
+{% block title %}Hire Me - Find Talent in Tallinn{% endblock %}
+
+{% block meta_description %}<meta name="description" content="Browse profiles of talented professionals available for hire in Estonia. Find developers, designers, marketers, and more.">{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Breadcrumbs -->
+    {% include "tallinnstartups/components/breadcrumbs.html" with breadcrumbs=hire_me_breadcrumbs %}
+
+    <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Main Content -->
+        <div class="flex-1">
+            <h1 class="text-3xl font-bold mb-6">Hire Me</h1>
+
+            {% if current_tag %}
+                <div class="mb-6">
+                    <h2 class="text-xl font-semibold">Posts tagged with "{{ current_tag.name }}"</h2>
+                    <p class="text-gray-600">{{ total_results }} result(s) found</p>
+                </div>
+            {% endif %}
+
+            <!-- Hire Me Posts List -->
+            <div class="space-y-4">
+                {% for post in posts %}
+                    <a href="{% url 'hire_me_detail' post.slug %}" class="block">
+                        {% include "tallinnstartups/components/hire_me_card.html" with post=post %}
+                    </a>
+                {% empty %}
+                    <div class="text-center py-12">
+                        <p class="text-gray-500">No Hire Me posts found.</p>
+                        {% if not current_tag %}
+                            <p class="mt-2">Be the first to post your profile!</p>
+                            <a href="{% url 'post_hire_me' %}" class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                                Post Your Profile
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if page_obj.paginator.num_pages > 1 %}
+                <div class="mt-8">
+                    {% include "tallinnstartups/components/pagination.html" with page_obj=page_obj %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="lg:w-80">
+            <div class="bg-white rounded-lg shadow p-6 sticky top-8">
+                <h3 class="text-lg font-semibold mb-4">Popular Tags</h3>
+                <div class="flex flex-wrap gap-2">
+                    {% for tag in tags %}
+                        <a href="{% url 'hire_me_tag' tag.slug %}" class="theme-tag">
+                            {{ tag.name }} ({{ tag.count }})
+                        </a>
+                    {% empty %}
+                        <p class="text-gray-500">No tags available yet.</p>
+                    {% endfor %}
+                </div>
+
+                <div class="mt-6">
+                    <a href="{% url 'post_hire_me' %}" class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-center block">
+                        Post Your Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

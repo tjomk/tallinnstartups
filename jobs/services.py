@@ -1,7 +1,7 @@
 from typing import List, Dict, Any
 from django.core.paginator import Paginator
 from django.urls import reverse
-from .repositories import JobRepository, CompanyRepository
+from .repositories import JobRepository, CompanyRepository, HireMeRepository
 from .models import Job
 import uuid
 
@@ -222,3 +222,56 @@ class CompanyService:
             'total_results': paginator.count,
             'page_obj': page_obj
         }
+
+
+class HireMeService:
+    """Service for Hire Me post business logic."""
+
+    def __init__(self):
+        self.hire_me_repository = HireMeRepository()
+
+    def get_hire_me_posts(self, page: int = 1, posts_per_page: int = 10, tag_slug: str = None) -> Dict[str, Any]:
+        """Get paginated Hire Me posts, optionally filtered by tag."""
+        if tag_slug:
+            posts = self.hire_me_repository.get_posts_by_tag(tag_slug)
+        else:
+            posts = self.hire_me_repository.get_all_posts()
+
+        paginator = Paginator(posts, posts_per_page)
+        page_obj = paginator.get_page(page)
+
+        formatted_posts = [self._format_post_data(post) for post in page_obj]
+
+        return {
+            'posts': formatted_posts,
+            'total_results': paginator.count,
+            'page_obj': page_obj,
+            'tags': self._get_popular_tags()
+        }
+
+    def _format_post_data(self, post) -> Dict[str, Any]:
+        """Format post data for template consumption."""
+        return {
+            'title': post.title,
+            'name': post.name or 'Anonymous',
+            'description': post.description,
+            'contact_info': post.contact_info,
+            'location': post.location,
+            'slug': post.slug,
+            'created_at': post.created_at,
+            'tags': [post_tag.tag.name for post_tag in post.tags.all()],
+            'tag_slugs': [post_tag.tag.slug for post_tag in post.tags.all()]
+        }
+
+    def _get_popular_tags(self) -> List[Dict[str, Any]]:
+        """Get popular tags with counts."""
+        tag_counts = self.hire_me_repository.get_tag_counts()
+        return [
+            {
+                'name': tag['tag__name'],
+                'count': tag['count'],
+                'slug': tag['tag__slug'],
+                'url': reverse('hire_me_tag', kwargs={'tag_slug': tag['tag__slug']})
+            }
+            for tag in tag_counts
+        ]

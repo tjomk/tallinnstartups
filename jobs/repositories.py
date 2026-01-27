@@ -2,7 +2,7 @@ from typing import List, Dict, Any, Optional
 from django.db.models import Count, QuerySet
 from django.db import models
 from django.utils import timezone
-from .models import Job, Company
+from .models import Job, Company, HireMePost, HireMeTag, HireMePostTag
 import uuid
 
 
@@ -170,3 +170,47 @@ class CompanyRepository:
         ).annotate(
             active_job_count=Count('jobs', filter=active_jobs_filter)
         ).filter(active_job_count__gt=0).order_by('-active_job_count').distinct()
+
+
+class HireMeRepository:
+    """Repository for Hire Me post database operations."""
+
+    @staticmethod
+    def get_all_posts() -> QuerySet:
+        """Get all live, non-expired posts ordered by creation date."""
+        now = timezone.now()
+        return HireMePost.objects.filter(
+            status='live'
+        ).exclude(
+            expires_at__lte=now
+        ).prefetch_related('tags').order_by('-created_at')
+
+    @staticmethod
+    def get_posts_by_tag(tag_slug: str) -> QuerySet:
+        """Get all live, non-expired posts with a specific tag."""
+        now = timezone.now()
+        return HireMePost.objects.filter(
+            status='live',
+            tags__tag__slug=tag_slug
+        ).exclude(
+            expires_at__lte=now
+        ).prefetch_related('tags').order_by('-created_at').distinct()
+
+    @staticmethod
+    def get_tag_counts() -> QuerySet:
+        """Get tag counts for popular tags."""
+        # Use HireMePostTag to count tags for live posts
+        from django.db.models import Count
+        return HireMePostTag.objects.filter(
+            post__status='live'
+        ).values('tag__name', 'tag__slug').annotate(
+            count=Count('tag')
+        ).order_by('-count').values('tag__name', 'tag__slug', 'count')
+
+    @staticmethod
+    def get_post_by_slug(slug: str) -> Optional[HireMePost]:
+        """Get a single post by slug."""
+        try:
+            return HireMePost.objects.prefetch_related('tags').get(slug=slug)
+        except HireMePost.DoesNotExist:
+            return None

@@ -44,6 +44,12 @@ urlpatterns = [
         content_type='text/plain'
     )),
     path('guides/', include('blog.urls')),
+    # Hire Me feature
+    path('hire-me/', views.hire_me_list, name='hire_me_list'),
+    path('hire-me/tag/<slug:tag_slug>/', views.hire_me_list, name='hire_me_tag'),
+    path('hire-me/post/', views.post_hire_me, name='post_hire_me'),
+    path('hire-me/submitted/', views.hire_me_submission_success, name='hire_me_submission_success'),
+    path('hire-me/<slug:slug>/', views.hire_me_detail, name='hire_me_detail'),
     # API endpoints
     path('api/companies/no-jobs/', CompaniesWithoutJobsView.as_view(), name='companies_without_jobs'),
 ]

@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
+from django.urls import reverse
 import uuid
 
 
@@ -145,3 +146,82 @@ class JobSubmissionLog(models.Model):
             models.Index(fields=['ip_address', 'submitted_at']),
             models.Index(fields=['result', 'submitted_at']),
         ]
+
+
+class HireMePost(models.Model):
+    STATUS_CHOICES = [
+        ('in_review', 'In Review'),
+        ('rejected', 'Rejected'),
+        ('live', 'Live'),
+        ('expired', 'Expired'),
+    ]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    expires_at = models.DateTimeField(null=True, blank=True, help_text="When this post expires and is no longer visible")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='in_review', help_text="Current status of the post")
+    title = models.CharField(max_length=200, help_text="Short title for the post (e.g., 'Senior React Developer Available')")
+    description = models.TextField(help_text="Detailed description of skills, experience, and what you're looking for")
+    contact_info = models.CharField(max_length=255, help_text="Email or other contact information")
+    name = models.CharField(max_length=100, help_text="Your name (optional)")
+    location = models.CharField(max_length=100, blank=True, help_text="Your location (optional)")
+    slug = models.SlugField(max_length=255, unique=True, blank=True, null=True, help_text="SEO-friendly URL slug")
+
+    def __str__(self):
+        return f"{self.title} by {self.name or 'Anonymous'}"
+
+    def generate_slug(self):
+        """Generate SEO-friendly slug from title and UUID"""
+        base_slug = slugify(self.title)
+        uuid_suffix = str(self.id)[:8]
+        return f"{base_slug}-{uuid_suffix}"[:255]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self.generate_slug()
+            while HireMePost.objects.filter(slug=self.slug).exists():
+                self.slug = self.generate_slug()
+        super().save(*args, **kwargs)
+
+    @property
+    def is_expired(self):
+        """Check if post has expired"""
+        return self.expires_at and self.expires_at <= timezone.now()
+
+    @property
+    def is_visible(self):
+        """Check if post is visible to public (live status and not expired)"""
+        return self.status == 'live' and not self.is_expired
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Hire Me Post"
+        verbose_name_plural = "Hire Me Posts"
+
+
+class HireMeTag(models.Model):
+    name = models.CharField(max_length=50, unique=True, help_text="Tag name (e.g., 'React', 'Marketing')")
+    slug = models.SlugField(max_length=50, unique=True, help_text="SEO-friendly URL slug")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ['name']
+
+
+class HireMePostTag(models.Model):
+    post = models.ForeignKey(HireMePost, on_delete=models.CASCADE, related_name='tags')
+    tag = models.ForeignKey(HireMeTag, on_delete=models.CASCADE, related_name='posts')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('post', 'tag')
+        ordering = ['-created_at']

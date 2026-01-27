@@ -416,3 +416,166 @@ class CofounderSubmissionForm(forms.Form):
             except ValidationError:
                 raise ValidationError('Please enter a valid company website URL.')
         return website
+
+
+class HireMeSubmissionForm(forms.Form):
+    """Form for Hire Me post submissions - free service similar to co-founder feature"""
+
+    # Basic information
+    title = forms.CharField(
+        max_length=200,
+        required=True,
+        strip=True,
+        help_text="Short title for your post (e.g., 'Senior React Developer Available')"
+    )
+
+    name = forms.CharField(
+        max_length=100,
+        required=False,
+        strip=True,
+        help_text="Your name (optional)"
+    )
+
+    description = forms.CharField(
+        widget=forms.Textarea,
+        required=True,
+        strip=True,
+        min_length=50,
+        max_length=5000,
+        help_text="Describe your skills, experience, and what you're looking for"
+    )
+
+    contact_info = forms.CharField(
+        max_length=255,
+        required=True,
+        strip=True,
+        help_text="Email or other contact information"
+    )
+
+    location = forms.CharField(
+        max_length=100,
+        required=False,
+        strip=True,
+        help_text="Your location (optional)"
+    )
+
+    tags = forms.CharField(
+        max_length=255,
+        required=False,
+        strip=True,
+        help_text="Comma-separated list of skills/tags (e.g., 'React, JavaScript, Marketing')"
+    )
+
+    # Terms and Conditions
+    terms_accepted = forms.BooleanField(
+        required=True,
+        error_messages={'required': 'You must accept the Terms and Conditions.'}
+    )
+
+    # Security Fields
+    captcha = ReCaptchaField(
+        widget=ReCaptchaV2Invisible,
+        error_messages={'required': 'Please complete the CAPTCHA verification.'}
+    )
+
+    # Honeypot field (hidden, should remain empty)
+    website_url = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(),
+        initial=''
+    )
+
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        if title:
+            # Remove any potential HTML/script tags
+            title = re.sub(r'<[^>]*>', '', title)
+            # Basic sanitization - remove potentially harmful characters
+            if any(char in title for char in ['<', '>', '"', "'"]):
+                raise ValidationError('Title contains invalid characters.')
+        return title
+
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        if name:
+            # Remove any potential HTML/script tags
+            name = re.sub(r'<[^>]*>', '', name)
+            # Basic sanitization
+            if any(char in name for char in ['<', '>', '"', "'"]):
+                raise ValidationError('Name contains invalid characters.')
+        return name
+
+    def clean_description(self):
+        description = self.cleaned_data.get('description')
+        if description:
+            # Allow only safe HTML tags and attributes
+            allowed_tags = ['p', 'br', 'strong', 'em', 'u', 'ul', 'ol', 'li', 'h3', 'h4']
+            allowed_attributes = {
+                '*': ['class'],
+                'li': ['type'],
+            }
+            description = bleach.clean(
+                description, 
+                tags=allowed_tags, 
+                attributes=allowed_attributes,
+                strip=True
+            )
+        return description
+
+    def clean_contact_info(self):
+        contact_info = self.cleaned_data.get('contact_info')
+        if contact_info:
+            # Check if it's an email or URL
+            if '@' in contact_info:
+                # Validate as email
+                try:
+                    EmailValidator()(contact_info)
+                except ValidationError:
+                    raise ValidationError('Please enter a valid email address.')
+            elif contact_info.startswith(('http://', 'https://')):
+                # Validate as URL
+                try:
+                    URLValidator()(contact_info)
+                except ValidationError:
+                    raise ValidationError('Please enter a valid URL.')
+            else:
+                raise ValidationError('Contact information must be a valid email address or URL.')
+            
+            # Basic sanitization
+            contact_info = re.sub(r'<[^>]*>', '', contact_info)
+        return contact_info
+
+    def clean_location(self):
+        location = self.cleaned_data.get('location')
+        if location:
+            # Remove any potential HTML/script tags
+            location = re.sub(r'<[^>]*>', '', location)
+            # Basic sanitization
+            if any(char in location for char in ['<', '>', '"', "'"]):
+                raise ValidationError('Location contains invalid characters.')
+        return location
+
+    def clean_tags(self):
+        tags = self.cleaned_data.get('tags')
+        if tags:
+            # Remove any potential HTML/script tags
+            tags = re.sub(r'<[^>]*>', '', tags)
+            # Basic sanitization
+            if any(char in tags for char in ['<', '>', '"', "'"]):
+                raise ValidationError('Tags contain invalid characters.')
+            
+            # Validate individual tags
+            tag_list = [tag.strip() for tag in tags.split(',') if tag.strip()]
+            for tag in tag_list:
+                if len(tag) > 50:
+                    raise ValidationError(f'Tag "{tag}" is too long (max 50 characters).')
+                if not re.match(r'^[\w\s\-]+$', tag):
+                    raise ValidationError(f'Tag "{tag}" contains invalid characters.')
+        return tags
+
+    def clean_website_url(self):
+        """Honeypot field validation - should be empty"""
+        website_url = self.cleaned_data.get('website_url')
+        if website_url:
+            raise ValidationError('Automated submissions are not allowed.')
+        return website_url
