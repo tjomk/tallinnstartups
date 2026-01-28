@@ -7,45 +7,7 @@
 {% block content %}
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-2xl mx-auto">
-        <div class="bg-white rounded-lg shadow p-8 text-center">
-            <div class="mb-6">
-                <svg class="w-16 h-16 text-green-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-            </div>
-            
-            <h1 class="text-3xl font-bold mb-4">Thank You!</h1>
-            
-            <p class="text-gray-600 mb-6">
-                Your profile has been successfully submitted and is now under review.
-            </p>
-            
-            <div class="bg-gray-50 rounded-lg p-4 mb-6">
-                <h3 class="font-semibold mb-2">Your Submission Details:</h3>
-                <p class="text-gray-700"><strong>Title:</strong> {{ submission_data.title }}</p>
-                {% if submission_data.name %}
-                    <p class="text-gray-700"><strong>Name:</strong> {{ submission_data.name }}</p>
-                {% endif %}
-                <p class="text-gray-700"><strong>Contact:</strong> {{ submission_data.contact_info }}</p>
-                {% if submission_data.tags %}
-                    <p class="text-gray-700"><strong>Skills:</strong> {{ submission_data.tags }}</p>
-                {% endif %}
-            </div>
-            
-            <p class="text-gray-600 mb-6">
-                Our team will review your submission and it will be published within 24-48 hours.
-                Once approved, your profile will be visible to potential employers for 7 days.
-            </p>
-            
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="{% url 'hire_me_list' %}" class="bg-blue-600 text-white px-6 py-3 rounded-md font-medium hover:bg-blue-700">
-                    Browse Hire Me Profiles
-                </a>
-                <a href="{% url 'home' %}" class="bg-gray-600 text-white px-6 py-3 rounded-md font-medium hover:bg-gray-700">
-                    Return to Home
-                </a>
-            </div>
-        </div>
+        {% include 'tallinnstartups/components/success_card.html' %}
     </div>
 </div>
 {% endblock %}

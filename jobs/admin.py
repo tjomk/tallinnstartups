@@ -91,7 +91,6 @@ class HireMePostAdmin(admin.ModelAdmin):
     list_display = ['title', 'name', 'status', 'expires_at', 'created_at', 'slug']
     list_filter = ['status', 'created_at', 'expires_at']
     search_fields = ['title', 'description', 'name', 'contact_info', 'tags__name']
-    list_select_related = ['tags']
     date_hierarchy = 'created_at'
 
     fieldsets = (

@@ -1316,3 +1316,29 @@ main {
   background-repeat: no-repeat;
   background-size: contain;
 }
+
+.theme-success-icon {
+    color: var(--color-success);
+}
+
+.theme-button-secondary {
+  background-color: var(--bg-light-alt);
+  color: var(--text-primary);
+  border-radius: 0.125rem;
+  height: 2.5rem;
+  padding: 0 1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.25rem;
+  letter-spacing: 0.015em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: background-color 0.2s;
+}
+
+.theme-button-secondary:hover {
+  background-color: var(--bg-light-darker);
+}
