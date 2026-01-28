@@ -36,55 +36,59 @@ class JobSubmissionForm(forms.Form):
         ('estonia_startup', 'Estonia-based startup'),
         ('incubator_accelerator_vc', 'Startup Incubator, Accelerator, or VC'),
     ]
-    
+
     POST_OPTION_CHOICES = [
         ('featured', 'Featured job post: 75€/90 days'),
         ('standard', 'Standard job post: 35€/90 days'),
     ]
-    
+
     # Step 1: Company Type
     company_type = forms.ChoiceField(
         choices=COMPANY_TYPE_CHOICES,
         required=True,
         error_messages={'required': 'Please select a company type.'}
     )
-    
+
     # Step 2: Post Option
     post_option = forms.ChoiceField(
         choices=POST_OPTION_CHOICES,
         required=True,
         error_messages={'required': 'Please select a post option.'}
     )
-    
+
     # Step 3: Job Description
     job_title = forms.CharField(
         max_length=200,
         required=True,
         strip=True,
-        error_messages={'required': 'Job title is required.', 'max_length': 'Job title must be 200 characters or less.'}
+        error_messages={'required': 'Job title is required.', 'max_length': 'Job title must be 200 characters or less.'},
+        widget=forms.TextInput(attrs={'class': 'theme-input'})
     )
-    
+
     company_name = forms.CharField(
         max_length=200,
         required=True,
         strip=True,
-        error_messages={'required': 'Company name is required.', 'max_length': 'Company name must be 200 characters or less.'}
+        error_messages={'required': 'Company name is required.', 'max_length': 'Company name must be 200 characters or less.'},
+        widget=forms.TextInput(attrs={'class': 'theme-input'})
     )
-    
+
     job_category = forms.ChoiceField(
         choices=Job.CATEGORY_CHOICES,
         required=True,
-        error_messages={'required': 'Please select a job category.'}
+        error_messages={'required': 'Please select a job category.'},
+        widget=forms.Select(attrs={'class': 'theme-input'})
     )
-    
+
     company_website = forms.URLField(
         required=True,
         validators=[URLValidator()],
-        error_messages={'required': 'Company website is required.', 'invalid': 'Please enter a valid URL.'}
+        error_messages={'required': 'Company website is required.', 'invalid': 'Please enter a valid URL.'},
+        widget=forms.TextInput(attrs={'class': 'theme-input'})
     )
-    
+
     job_description = forms.CharField(
-        widget=forms.Textarea,
+        widget=forms.Textarea(attrs={'class': 'theme-input', 'rows': 6}),
         required=True,
         strip=True,
         min_length=50,
@@ -95,49 +99,52 @@ class JobSubmissionForm(forms.Form):
             'max_length': 'Job description must be 5000 characters or less.'
         }
     )
-    
+
     application_contact = forms.CharField(
         max_length=255,
         required=True,
         strip=True,
-        error_messages={'required': 'Application contact is required.', 'max_length': 'Application contact must be 255 characters or less.'}
+        error_messages={'required': 'Application contact is required.', 'max_length': 'Application contact must be 255 characters or less.'},
+        widget=forms.TextInput(attrs={'class': 'theme-input'})
     )
-    
+
     # Step 4: Payment Details
     legal_company_name = forms.CharField(
         max_length=200,
         required=True,
         strip=True,
-        error_messages={'required': 'Legal company name is required.', 'max_length': 'Legal company name must be 200 characters or less.'}
+        error_messages={'required': 'Legal company name is required.', 'max_length': 'Legal company name must be 200 characters or less.'},
+        widget=forms.TextInput(attrs={'class': 'theme-input'})
     )
-    
+
     company_address = forms.CharField(
-        widget=forms.Textarea,
+        widget=forms.Textarea(attrs={'class': 'theme-input', 'rows': 3}),
         required=True,
         strip=True,
         max_length=500,
         error_messages={'required': 'Company address is required.', 'max_length': 'Company address must be 500 characters or less.'}
     )
-    
+
     invoice_email = forms.EmailField(
         required=True,
         validators=[EmailValidator()],
-        error_messages={'required': 'Invoice email is required.', 'invalid': 'Please enter a valid email address.'}
+        error_messages={'required': 'Invoice email is required.', 'invalid': 'Please enter a valid email address.'},
+        widget=forms.TextInput(attrs={'class': 'theme-input'})
     )
-    
+
     vat_number = forms.CharField(
         max_length=20,
         required=False,
         strip=True,
-        error_messages={'max_length': 'VAT number must be 20 characters or less.'}
+        error_messages={'max_length': 'VAT number must be 20 characters or less.'},
+        widget=forms.TextInput(attrs={'class': 'theme-input'})
     )
-    
+
     # Terms and Conditions
     terms_accepted = forms.BooleanField(
         required=True,
         error_messages={'required': 'You must accept the Terms and Conditions.'}
-    )
-    
+    )    
     # Security Fields
     captcha = ReCaptchaField(
         widget=ReCaptchaV2Invisible,
@@ -426,18 +433,20 @@ class HireMeSubmissionForm(forms.Form):
         max_length=200,
         required=True,
         strip=True,
-        help_text="Short title for your post (e.g., 'Senior React Developer Available')"
+        help_text="Short title for your post (e.g., 'Senior React Developer Available')",
+        widget=forms.TextInput(attrs={'class': 'theme-input'})
     )
 
     name = forms.CharField(
         max_length=100,
         required=False,
         strip=True,
-        help_text="Your name (optional)"
+        help_text="Your name (optional)",
+        widget=forms.TextInput(attrs={'class': 'theme-input'})
     )
 
     description = forms.CharField(
-        widget=forms.Textarea,
+        widget=forms.Textarea(attrs={'class': 'theme-input', 'rows': 6}),
         required=True,
         strip=True,
         min_length=50,
@@ -449,21 +458,24 @@ class HireMeSubmissionForm(forms.Form):
         max_length=255,
         required=True,
         strip=True,
-        help_text="Email or other contact information"
+        help_text="Email or other contact information",
+        widget=forms.TextInput(attrs={'class': 'theme-input'})
     )
 
     location = forms.CharField(
         max_length=100,
         required=False,
         strip=True,
-        help_text="Your location (optional)"
+        help_text="Your location (optional)",
+        widget=forms.TextInput(attrs={'class': 'theme-input'})
     )
 
     tags = forms.CharField(
         max_length=255,
         required=False,
         strip=True,
-        help_text="Comma-separated list of skills/tags (e.g., 'React, JavaScript, Marketing')"
+        help_text="Comma-separated list of skills/tags (e.g., 'React, JavaScript, Marketing')",
+        widget=forms.TextInput(attrs={'class': 'theme-input'})
     )
 
     # Terms and Conditions

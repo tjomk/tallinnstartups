@@ -82,8 +82,8 @@
                 <h2 class="text-main text-[22px] font-bold leading-tight tracking-[-0.015em]">Step 3 - Job Description</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="flex flex-col gap-2">
-                        <label class="text-main text-sm font-medium">Job Title</label>
-                        <input type="text" name="job_title" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-var-radius text-main focus:outline-0 focus:ring-2 focus:ring-primary-soft border theme-border-light theme-input-bg focus:border-primary h-14 placeholder:text-muted p-[15px] text-base font-normal leading-normal" value="{{ form.job_title.value|default:'' }}">
+                        <label for="{{ form.job_title.id_for_label }}" class="text-main text-sm font-medium">Job Title</label>
+                        {{ form.job_title }}
                         {% if form.job_title.errors %}
                             <div class="text-danger-color text-sm mt-1">
                                 {% for error in form.job_title.errors %}
@@ -93,8 +93,8 @@
                         {% endif %}
                     </div>
                     <div class="flex flex-col gap-2">
-                        <label class="text-main text-sm font-medium">Company Name</label>
-                        <input type="text" name="company_name" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-var-radius text-main focus:outline-0 focus:ring-2 focus:ring-primary-soft border theme-border-light theme-input-bg focus:border-primary h-14 placeholder:text-muted p-[15px] text-base font-normal leading-normal" value="{{ form.company_name.value|default:'' }}">
+                        <label for="{{ form.company_name.id_for_label }}" class="text-main text-sm font-medium">Company Name</label>
+                        {{ form.company_name }}
                         {% if form.company_name.errors %}
                             <div class="text-danger-color text-sm mt-1">
                                 {% for error in form.company_name.errors %}
@@ -104,19 +104,8 @@
                         {% endif %}
                     </div>
                     <div class="flex flex-col gap-2">
-                        <label class="text-main text-sm font-medium">Job Category</label>
-                        <select name="job_category" required class="form-select flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-var-radius text-main focus:outline-0 focus:ring-2 focus:ring-primary-soft border theme-border-light theme-input-bg focus:border-primary h-14 placeholder:text-muted p-[15px] text-base font-normal leading-normal">
-                            <option value="">Select a category</option>
-                            <option value="engineering" {% if form.job_category.value == 'engineering' %}selected{% endif %}>Engineering</option>
-                            <option value="design" {% if form.job_category.value == 'design' %}selected{% endif %}>Design</option>
-                            <option value="product" {% if form.job_category.value == 'product' %}selected{% endif %}>Product</option>
-                            <option value="marketing" {% if form.job_category.value == 'marketing' %}selected{% endif %}>Marketing</option>
-                            <option value="sales" {% if form.job_category.value == 'sales' %}selected{% endif %}>Sales</option>
-                            <option value="operations" {% if form.job_category.value == 'operations' %}selected{% endif %}>Operations</option>
-                            <option value="finance" {% if form.job_category.value == 'finance' %}selected{% endif %}>Finance</option>
-                            <option value="hr" {% if form.job_category.value == 'hr' %}selected{% endif %}>HR</option>
-                            <option value="other" {% if form.job_category.value == 'other' %}selected{% endif %}>Other</option>
-                        </select>
+                        <label for="{{ form.job_category.id_for_label }}" class="text-main text-sm font-medium">Job Category</label>
+                        {{ form.job_category }}
                         {% if form.job_category.errors %}
                             <div class="text-danger-color text-sm mt-1">
                                 {% for error in form.job_category.errors %}
@@ -126,8 +115,8 @@
                         {% endif %}
                     </div>
                     <div class="flex flex-col gap-2">
-                        <label class="text-main text-sm font-medium">Link to Company Website</label>
-                        <input type="url" name="company_website" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-var-radius text-main focus:outline-0 focus:ring-2 focus:ring-primary-soft border theme-border-light theme-input-bg focus:border-primary h-14 placeholder:text-muted p-[15px] text-base font-normal leading-normal" placeholder="https://example.com" value="{{ form.company_website.value|default:'' }}">
+                        <label for="{{ form.company_website.id_for_label }}" class="text-main text-sm font-medium">Link to Company Website</label>
+                        {{ form.company_website }}
                         {% if form.company_website.errors %}
                             <div class="text-danger-color text-sm mt-1">
                                 {% for error in form.company_website.errors %}
@@ -138,8 +127,8 @@
                     </div>
                 </div>
                 <div class="flex flex-col gap-2">
-                    <label class="text-main text-sm font-medium">Job Description</label>
-                    <textarea name="job_description" required rows="6" class="form-textarea flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-var-radius text-main focus:outline-0 focus:ring-2 focus:ring-primary-soft border theme-border-light theme-input-bg focus:border-primary placeholder:text-muted p-[15px] text-base font-normal leading-normal" placeholder="Describe the role, responsibilities, requirements, and benefits...">{{ form.job_description.value|default:'' }}</textarea>
+                    <label for="{{ form.job_description.id_for_label }}" class="text-main text-sm font-medium">Job Description</label>
+                    {{ form.job_description }}
                     {% if form.job_description.errors %}
                         <div class="text-danger-color text-sm mt-1">
                             {% for error in form.job_description.errors %}
@@ -149,8 +138,8 @@
                     {% endif %}
                 </div>
                 <div class="flex flex-col gap-2">
-                    <label class="text-main text-sm font-medium">Email/Link for applications</label>
-                    <input type="text" name="application_contact" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-var-radius text-main focus:outline-0 focus:ring-2 focus:ring-primary-soft border theme-border-light theme-input-bg focus:border-primary h-14 placeholder:text-muted p-[15px] text-base font-normal leading-normal" placeholder="careers@company.com or https://company.com/apply" value="{{ form.application_contact.value|default:'' }}">
+                    <label for="{{ form.application_contact.id_for_label }}" class="text-main text-sm font-medium">Email/Link for applications</label>
+                    {{ form.application_contact }}
                     {% if form.application_contact.errors %}
                         <div class="text-danger-color text-sm mt-1">
                             {% for error in form.application_contact.errors %}
@@ -166,8 +155,8 @@
                 <h2 class="text-main text-[22px] font-bold leading-tight tracking-[-0.015em]">Step 4 - Payment Details</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="flex flex-col gap-2">
-                        <label class="text-main text-sm font-medium">Legal Company Name</label>
-                        <input type="text" name="legal_company_name" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-var-radius text-main focus:outline-0 focus:ring-2 focus:ring-primary-soft border theme-border-light theme-input-bg focus:border-primary h-14 placeholder:text-muted p-[15px] text-base font-normal leading-normal" value="{{ form.legal_company_name.value|default:'' }}">
+                        <label for="{{ form.legal_company_name.id_for_label }}" class="text-main text-sm font-medium">Legal Company Name</label>
+                        {{ form.legal_company_name }}
                         {% if form.legal_company_name.errors %}
                             <div class="text-danger-color text-sm mt-1">
                                 {% for error in form.legal_company_name.errors %}
@@ -177,8 +166,8 @@
                         {% endif %}
                     </div>
                     <div class="flex flex-col gap-2">
-                        <label class="text-main text-sm font-medium">Invoice Email</label>
-                        <input type="email" name="invoice_email" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-var-radius text-main focus:outline-0 focus:ring-2 focus:ring-primary-soft border theme-border-light theme-input-bg focus:border-primary h-14 placeholder:text-muted p-[15px] text-base font-normal leading-normal" value="{{ form.invoice_email.value|default:'' }}">
+                        <label for="{{ form.invoice_email.id_for_label }}" class="text-main text-sm font-medium">Invoice Email</label>
+                        {{ form.invoice_email }}
                         {% if form.invoice_email.errors %}
                             <div class="text-danger-color text-sm mt-1">
                                 {% for error in form.invoice_email.errors %}
@@ -189,8 +178,8 @@
                     </div>
                 </div>
                 <div class="flex flex-col gap-2">
-                    <label class="text-main text-sm font-medium">Company Address</label>
-                    <textarea name="company_address" required rows="3" class="form-textarea flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-var-radius text-main focus:outline-0 focus:ring-2 focus:ring-primary-soft border theme-border-light theme-input-bg focus:border-primary placeholder:text-muted p-[15px] text-base font-normal leading-normal" placeholder="Street address, city, postal code, country">{{ form.company_address.value|default:'' }}</textarea>
+                    <label for="{{ form.company_address.id_for_label }}" class="text-main text-sm font-medium">Company Address</label>
+                    {{ form.company_address }}
                     {% if form.company_address.errors %}
                         <div class="text-danger-color text-sm mt-1">
                             {% for error in form.company_address.errors %}
@@ -200,8 +189,8 @@
                     {% endif %}
                 </div>
                 <div class="flex flex-col gap-2">
-                    <label class="text-main text-sm font-medium">VAT (Optional)</label>
-                    <input type="text" name="vat_number" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-var-radius text-main focus:outline-0 focus:ring-2 focus:ring-primary-soft border theme-border-light theme-input-bg focus:border-primary h-14 placeholder:text-muted p-[15px] text-base font-normal leading-normal" placeholder="EE123456789" value="{{ form.vat_number.value|default:'' }}">
+                    <label for="{{ form.vat_number.id_for_label }}" class="text-main text-sm font-medium">VAT (Optional)</label>
+                    {{ form.vat_number }}
                     {% if form.vat_number.errors %}
                         <div class="text-danger-color text-sm mt-1">
                             {% for error in form.vat_number.errors %}

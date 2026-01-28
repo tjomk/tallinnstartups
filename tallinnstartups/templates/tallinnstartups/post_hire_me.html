@@ -2,145 +2,148 @@
 
 {% block title %}Post Your Profile - Hire Me{% endblock %}
 
-{% block meta_description %}Post your professional profile to be discovered by Tallinn startups. Share your skills, experience, and contact information.{% endblock %}
+{% block meta_description %}
+<meta name="description" content="Post your professional profile to be discovered by Tallinn startups. Share your skills, experience, and contact information.">
+{% endblock %}
 
 {% block content %}
 <div class="container mx-auto px-4 py-8">
-    <div class="max-w-2xl mx-auto">
-        <h1 class="text-3xl font-bold mb-6">Post Your Profile</h1>
-        
-        <div class="bg-white rounded-lg shadow p-6">
-            <p class="mb-6 text-gray-600">
-                Share your skills and experience to be discovered by Tallinn startups. This is a free service!
-            </p>
-            
-            <form method="post" class="space-y-6">
-                {% csrf_token %}
-                
-                <!-- Title -->
-                <div>
-                    <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-                        Title <span class="text-red-500">*</span>
-                    </label>
-                    {{ form.title }}
-                    <p class="text-xs text-gray-500 mt-1">{{ form.title.help_text }}</p>
-                    {% if form.title.errors %}
-                        <div class="text-red-500 text-sm mt-1">
-                            {{ form.title.errors.0 }}
-                        </div>
-                    {% endif %}
-                </div>
-                
-                <!-- Name -->
-                <div>
-                    <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-                        Your Name (optional)
-                    </label>
-                    {{ form.name }}
-                    <p class="text-xs text-gray-500 mt-1">{{ form.name.help_text }}</p>
-                    {% if form.name.errors %}
-                        <div class="text-red-500 text-sm mt-1">
-                            {{ form.name.errors.0 }}
-                        </div>
-                    {% endif %}
-                </div>
-                
-                <!-- Description -->
-                <div>
-                    <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-                        Description <span class="text-red-500">*</span>
-                    </label>
-                    {{ form.description }}
-                    <p class="text-xs text-gray-500 mt-1">{{ form.description.help_text }}</p>
-                    {% if form.description.errors %}
-                        <div class="text-red-500 text-sm mt-1">
-                            {{ form.description.errors.0 }}
-                        </div>
-                    {% endif %}
-                </div>
-                
-                <!-- Contact Info -->
-                <div>
-                    <label for="{{ form.contact_info.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-                        Contact Information <span class="text-red-500">*</span>
-                    </label>
-                    {{ form.contact_info }}
-                    <p class="text-xs text-gray-500 mt-1">{{ form.contact_info.help_text }}</p>
-                    {% if form.contact_info.errors %}
-                        <div class="text-red-500 text-sm mt-1">
-                            {{ form.contact_info.errors.0 }}
-                        </div>
-                    {% endif %}
-                </div>
-                
-                <!-- Location -->
-                <div>
-                    <label for="{{ form.location.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-                        Location (optional)
-                    </label>
-                    {{ form.location }}
-                    <p class="text-xs text-gray-500 mt-1">{{ form.location.help_text }}</p>
-                    {% if form.location.errors %}
-                        <div class="text-red-500 text-sm mt-1">
-                            {{ form.location.errors.0 }}
-                        </div>
-                    {% endif %}
-                </div>
-                
-                <!-- Tags -->
-                <div>
-                    <label for="{{ form.tags.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-                        Skills/Tags (optional)
-                    </label>
-                    {{ form.tags }}
-                    <p class="text-xs text-gray-500 mt-1">{{ form.tags.help_text }}</p>
-                    {% if form.tags.errors %}
-                        <div class="text-red-500 text-sm mt-1">
-                            {{ form.tags.errors.0 }}
-                        </div>
-                    {% endif %}
-                </div>
-                
-                <!-- Terms and Conditions -->
-                <div class="mt-6">
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0">
-                            {{ form.terms_accepted }}
-                        </div>
-                        <div class="ml-3">
-                            <p class="text-sm text-gray-600">
-                                I accept the <a href="{% url 'terms_of_service' %}" class="text-blue-600 hover:underline">Terms of Service</a> and <a href="{% url 'privacy_policy' %}" class="text-blue-600 hover:underline">Privacy Policy</a>
-                            </p>
-                            {% if form.terms_accepted.errors %}
-                                <div class="text-red-500 text-sm mt-1">
-                                    {{ form.terms_accepted.errors.0 }}
-                                </div>
-                            {% endif %}
-                        </div>
+    <div class="max-w-4xl mx-auto">
+        <div class="md:grid md:grid-cols-3 md:gap-10">
+            <div class="md:col-span-1 mb-8 md:mb-0">
+                <div class="sticky top-24">
+                    <h1 class="text-3xl font-bold">Post Your Profile</h1>
+                    <p class="mt-2 text-muted">
+                        Share your skills and experience to be discovered by Tallinn startups. This is a free service to help you find your next opportunity.
+                    </p>
+                    <div class="mt-6 p-4 rounded-lg theme-info-box">
+                        <p class="text-sm font-semibold">Your profile will be publicly visible for 30 days. After that, it will be automatically archived.</p>
                     </div>
                 </div>
-                
-                <!-- CAPTCHA -->
-                <div class="mt-6">
-                    {{ form.captcha }}
-                    {% if form.captcha.errors %}
-                        <div class="text-red-500 text-sm mt-1">
-                            {{ form.captcha.errors.0 }}
+            </div>
+
+            <div class="md:col-span-2">
+                <div class="theme-card p-6 md:p-8">
+                    <form method="post" class="space-y-6">
+                        {% csrf_token %}
+
+                        <div>
+                            <label for="{{ form.title.id_for_label }}" class="block text-sm font-bold text-main mb-1">
+                                Title <span class="text-red-500">*</span>
+                            </label>
+                            {{ form.title }}
+                            <p class="text-xs text-muted mt-1">{{ form.title.help_text }}</p>
+                            {% if form.title.errors %}
+                            <div class="text-red-500 text-sm mt-1">
+                                {{ form.title.errors.0 }}
+                            </div>
+                            {% endif %}
                         </div>
-                    {% endif %}
+
+                        <div>
+                            <label for="{{ form.name.id_for_label }}" class="block text-sm font-bold text-main mb-1">
+                                Your Name (optional)
+                            </label>
+                            {{ form.name }}
+                            <p class="text-xs text-muted mt-1">{{ form.name.help_text }}</p>
+                            {% if form.name.errors %}
+                            <div class="text-red-500 text-sm mt-1">
+                                {{ form.name.errors.0 }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label for="{{ form.description.id_for_label }}" class="block text-sm font-bold text-main mb-1">
+                                Description <span class="text-red-500">*</span>
+                            </label>
+                            {{ form.description }}
+                            <p class="text-xs text-muted mt-1">{{ form.description.help_text }}</p>
+                            {% if form.description.errors %}
+                            <div class="text-red-500 text-sm mt-1">
+                                {{ form.description.errors.0 }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label for="{{ form.contact_info.id_for_label }}" class="block text-sm font-bold text-main mb-1">
+                                Contact Information <span class="text-red-500">*</span>
+                            </label>
+                            {{ form.contact_info }}
+                            <p class="text-xs text-muted mt-1">{{ form.contact_info.help_text }}</p>
+                            {% if form.contact_info.errors %}
+                            <div class="text-red-500 text-sm mt-1">
+                                {{ form.contact_info.errors.0 }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label for="{{ form.location.id_for_label }}" class="block text-sm font-bold text-main mb-1">
+                                Location (optional)
+                            </label>
+                            {{ form.location }}
+                            <p class="text-xs text-muted mt-1">{{ form.location.help_text }}</p>
+                            {% if form.location.errors %}
+                            <div class="text-red-500 text-sm mt-1">
+                                {{ form.location.errors.0 }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label for="{{ form.tags.id_for_label }}" class="block text-sm font-bold text-main mb-1">
+                                Skills/Tags (optional)
+                            </label>
+                            {{ form.tags }}
+                            <p class="text-xs text-muted mt-1">{{ form.tags.help_text }}</p>
+                            {% if form.tags.errors %}
+                            <div class="text-red-500 text-sm mt-1">
+                                {{ form.tags.errors.0 }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mt-6">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    {{ form.terms_accepted }}
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-muted">
+                                        I accept the <a href="{% url 'terms_of_service' %}" class="theme-link">Terms of Service</a> and <a href="{% url 'privacy_policy' %}" class="theme-link">Privacy Policy</a>.
+                                    </p>
+                                    {% if form.terms_accepted.errors %}
+                                    <div class="text-red-500 text-sm mt-1">
+                                        {{ form.terms_accepted.errors.0 }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                            {{ form.captcha }}
+                            {% if form.captcha.errors %}
+                            <div class="text-red-500 text-sm mt-1">
+                                {{ form.captcha.errors.0 }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        {{ form.website_url }}
+
+                        <div class="mt-8 border-t border-border-color pt-6">
+                            <button type="submit" class="w-full btn-primary">
+                                Submit Your Profile
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                
-                <!-- Honeypot field (hidden) -->
-                {{ form.website_url }}
-                
-                <!-- Submit Button -->
-                <div class="mt-8">
-                    <button type="submit" class="w-full bg-blue-600 text-white px-4 py-3 rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                        Submit Your Profile
-                    </button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
 {% endblock %}
+
