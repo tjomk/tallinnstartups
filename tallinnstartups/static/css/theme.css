@@ -272,6 +272,66 @@ body {
   padding: 1rem;
 }
 
+/* Alert classes for Django messages */
+.theme-alert {
+  padding: 1rem;
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.theme-alert-success {
+  background-color: var(--bg-success-light);
+  border: 1px solid var(--border-success);
+  color: var(--text-success-dark);
+}
+
+.theme-alert-error {
+  background-color: var(--bg-danger-light);
+  border: 1px solid var(--border-danger);
+  color: var(--text-danger-dark);
+}
+
+.theme-alert-info {
+  background-color: var(--bg-info-light);
+  border: 1px solid var(--border-info);
+  color: var(--text-info-dark);
+}
+
+.theme-alert-warning {
+  background-color: #fef3c7; /* Tailwind yellow-50 */
+  border: 1px solid #fde047; /* Tailwind yellow-200 */
+  color: #92400e; /* Tailwind yellow-800 */
+}
+
+[data-theme="dark"] .theme-alert-success,
+.dark-theme .theme-alert-success {
+  background-color: var(--bg-success-light);
+  border-color: var(--border-success);
+  color: var(--text-success-dark);
+}
+
+[data-theme="dark"] .theme-alert-error,
+.dark-theme .theme-alert-error {
+  background-color: var(--bg-danger-light);
+  border-color: var(--border-danger);
+  color: var(--text-danger-dark);
+}
+
+[data-theme="dark"] .theme-alert-info,
+.dark-theme .theme-alert-info {
+  background-color: var(--bg-info-light);
+  border-color: var(--border-info);
+  color: var(--text-info-dark);
+}
+
+[data-theme="dark"] .theme-alert-warning,
+.dark-theme .theme-alert-warning {
+  background-color: #7c2d12; /* Darker yellow for dark theme */
+  border-color: #fbbf24; /* Brighter yellow for dark theme border */
+  color: #fde047; /* Lighter text for dark theme */
+}
+
 /* Custom text color classes for direct use */
 .text-main {
   color: var(--text-main);

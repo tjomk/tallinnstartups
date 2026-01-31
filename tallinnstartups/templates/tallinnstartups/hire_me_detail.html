@@ -9,6 +9,17 @@
     <!-- Breadcrumbs -->
     {% include "tallinnstartups/components/breadcrumbs.html" with breadcrumbs=post_breadcrumbs %}
 
+    <!-- Messages -->
+    {% if messages %}
+        <div class="mb-6">
+            {% for message in messages %}
+                <div class="theme-alert theme-alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <div class="flex flex-col lg:flex-row gap-8">
         <!-- Main Content -->
         <div class="flex-1">
@@ -40,10 +51,59 @@
                     {{ post.description|safe }}
                 </div>
 
-                <!-- Contact Section -->
+                <!-- Contact Form Section -->
                 <div class="bg-[var(--bg-body)] rounded-lg p-4">
-                    <h3 class="font-semibold mb-2">Contact Information</h3>
-                    <p class="text-muted">{{ post.contact_info }}</p>
+                    <h3 class="font-semibold mb-4">Contact {{ post.name|default:'this person' }}</h3>
+                    
+                    <form method="post" class="space-y-4">
+                        {% csrf_token %}
+                        
+                        <!-- Form fields -->
+                        <div>
+                            {{ contact_form.sender_name }}
+                            {% if contact_form.sender_name.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {{ contact_form.sender_name.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div>
+                            {{ contact_form.sender_email }}
+                            {% if contact_form.sender_email.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {{ contact_form.sender_email.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div>
+                            {{ contact_form.message }}
+                            {% if contact_form.message.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {{ contact_form.message.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Honeypot field (hidden) -->
+                        {{ contact_form.website_url }}
+                        
+                        <!-- CAPTCHA -->
+                        <div>
+                            {{ contact_form.captcha }}
+                            {% if contact_form.captcha.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {{ contact_form.captcha.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Submit button -->
+                        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors">
+                            Send Message
+                        </button>
+                    </form>
                 </div>
 
                 <!-- Posted Date -->

@@ -425,6 +425,96 @@ class CofounderSubmissionForm(forms.Form):
         return website
 
 
+class ContactHireMeForm(forms.Form):
+    """Form for contacting Hire Me post owners"""
+
+    sender_name = forms.CharField(
+        max_length=100,
+        required=True,
+        strip=True,
+        error_messages={'required': 'Your name is required.', 'max_length': 'Name must be 100 characters or less.'},
+        widget=forms.TextInput(attrs={'class': 'theme-input', 'placeholder': 'Your Name'})
+    )
+
+    sender_email = forms.EmailField(
+        required=True,
+        error_messages={'required': 'Your email is required.', 'invalid': 'Please enter a valid email address.'},
+        widget=forms.TextInput(attrs={'class': 'theme-input', 'placeholder': 'Your Email'})
+    )
+
+    message = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'theme-input', 'rows': 4, 'placeholder': 'Your Message'}),
+        required=True,
+        strip=True,
+        min_length=10,
+        max_length=2000,
+        error_messages={
+            'required': 'Message is required.',
+            'min_length': 'Message must be at least 10 characters.',
+            'max_length': 'Message must be 2000 characters or less.'
+        }
+    )
+
+    # Security Fields
+    captcha = ReCaptchaField(
+        widget=ReCaptchaV2Invisible,
+        error_messages={'required': 'Please complete the CAPTCHA verification.'}
+    )
+
+    # Honeypot field (hidden, should remain empty)
+    website_url = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(),
+        initial=''
+    )
+
+    def clean_sender_name(self):
+        sender_name = self.cleaned_data.get('sender_name')
+        if sender_name:
+            # Remove any potential HTML/script tags
+            sender_name = re.sub(r'<[^>]*>', '', sender_name)
+            # Basic sanitization - remove potentially harmful characters
+            if any(char in sender_name for char in ['<', '>', '"', "'"]):
+                raise ValidationError('Name contains invalid characters.')
+        return sender_name
+
+    def clean_sender_email(self):
+        sender_email = self.cleaned_data.get('sender_email')
+        if sender_email:
+            # Basic sanitization
+            sender_email = re.sub(r'<[^>]*>', '', sender_email)
+            # Validate email format
+            try:
+                EmailValidator()(sender_email)
+            except ValidationError:
+                raise ValidationError('Please enter a valid email address.')
+        return sender_email
+
+    def clean_message(self):
+        message = self.cleaned_data.get('message')
+        if message:
+            # Allow only safe HTML tags and attributes
+            allowed_tags = ['p', 'br', 'strong', 'em', 'u', 'ul', 'ol', 'li']
+            allowed_attributes = {
+                '*': ['class'],
+                'li': ['type'],
+            }
+            message = bleach.clean(
+                message, 
+                tags=allowed_tags, 
+                attributes=allowed_attributes,
+                strip=True
+            )
+        return message
+
+    def clean_website_url(self):
+        """Honeypot field validation - should be empty"""
+        website_url = self.cleaned_data.get('website_url')
+        if website_url:
+            raise ValidationError('Automated submissions are not allowed.')
+        return website_url
+
+
 class HireMeSubmissionForm(forms.Form):
     """Form for Hire Me post submissions - free service similar to co-founder feature"""
 

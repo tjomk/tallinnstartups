@@ -1,6 +1,8 @@
 from typing import List, Dict, Any
 from django.core.paginator import Paginator
 from django.urls import reverse
+from django.core.mail import send_mail
+from django.conf import settings
 from .repositories import JobRepository, CompanyRepository, HireMeRepository
 from .models import Job
 import uuid
@@ -279,3 +281,48 @@ class HireMeService:
             }
             for tag in tag_counts
         ]
+
+    def send_contact_email(self, post, form_data) -> bool:
+        """Send contact email to Hire Me post owner."""
+        try:
+            # Construct email subject
+            subject = f"New contact message about your Hire Me post: {post.title}"
+
+            # Construct email body
+            message = f"""
+You have received a new contact message about your Hire Me post: "{post.title}"
+
+From: {form_data['sender_name']}
+Email: {form_data['sender_email']}
+
+Message:
+{form_data['message']}
+
+---
+This message was sent through Estonian Startup Jobs.
+Post: {post.title}
+Post URL: {settings.SITE_BASE_URL}{reverse('hire_me_detail', kwargs={'slug': post.slug})}
+"""
+
+            # Prepare recipient list
+            recipient_list = [post.contact_info]
+            
+            # Add BCC email if configured
+            bcc_list = []
+            if hasattr(settings, 'BCC_EMAIL') and settings.BCC_EMAIL:
+                bcc_list = [settings.BCC_EMAIL]
+
+            # Send email
+            send_mail(
+                subject=subject,
+                message=message,
+                from_email='noreply@estonianstartupjobs.ee',
+                recipient_list=recipient_list,
+                fail_silently=False,
+            )
+
+            return True
+        except Exception as e:
+            # Log the error and return False
+            print(f"Error sending contact email: {e}")
+            return False

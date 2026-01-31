@@ -11,7 +11,7 @@ import hashlib
 import json
 from django_ratelimit.decorators import ratelimit
 from jobs.services import HomePageService, CompanyService, HireMeService
-from jobs.forms import JobSubmissionForm, JobSearchForm, CofounderSubmissionForm, HireMeSubmissionForm
+from jobs.forms import JobSubmissionForm, JobSearchForm, CofounderSubmissionForm, HireMeSubmissionForm, ContactHireMeForm
 from jobs.models import Job, Company, JobSubmissionLog, HireMePost, HireMeTag, HireMePostTag
 from django.urls import reverse
 from django.template.loader import render_to_string
@@ -796,15 +796,113 @@ def hire_me_submission_success(request):
     })
 
 
+@ratelimit(key='ip', rate='5/h', method='POST', block=True)
 def hire_me_detail(request, slug):
     """
-    Hire Me post detail page view.
+    Hire Me post detail page view with contact form functionality.
     """
     post = get_object_or_404(HireMePost, slug=slug)
 
     # Check if post is visible (live status and not expired)
     if not post.is_visible:
         raise Http404("Post not found")
+
+    # Get client IP for logging
+    client_ip = request.META.get('HTTP_X_FORWARDED_FOR')
+    if client_ip:
+        client_ip = client_ip.split(',')[0]
+    else:
+        client_ip = request.META.get('REMOTE_ADDR')
+
+    user_agent = request.META.get('HTTP_USER_AGENT', 'Unknown')
+
+    # Handle contact form submission
+    if request.method == 'POST':
+        # Log contact attempt
+        submissions_logger.info(f'Contact attempt for Hire Me post {post.id} from IP: {client_ip}, User-Agent: {user_agent}')
+        
+        form = ContactHireMeForm(request.POST)
+        if form.is_valid():
+            try:
+                # Send contact email
+                hire_me_service = HireMeService()
+                success = hire_me_service.send_contact_email(post, form.cleaned_data)
+                
+                if success:
+                    # Log successful contact
+                    submissions_logger.info(
+                        f'Contact email sent successfully for Hire Me post {post.id} to {post.contact_info}, '
+                        f'IP: {client_ip}'
+                    )
+                    
+                    messages.success(request, 'Your message has been sent successfully!')
+                    
+                    # Create audit log for successful contact
+                    create_audit_log(
+                        ip_address=client_ip,
+                        user_agent=user_agent,
+                        result='success',
+                        job=None,
+                        company_name=post.name or 'Anonymous',
+                        job_title=post.title,
+                        error_details='Contact form submission successful',
+                        form_data={'contact_type': 'hire_me', 'post_id': str(post.id)}
+                    )
+                else:
+                    messages.error(request, 'There was an error sending your message. Please try again.')
+                    
+                    # Create audit log for system error
+                    create_audit_log(
+                        ip_address=client_ip,
+                        user_agent=user_agent,
+                        result='system_error',
+                        job=None,
+                        company_name=post.name or 'Anonymous',
+                        job_title=post.title,
+                        error_details='Email sending failed',
+                        form_data={'contact_type': 'hire_me', 'post_id': str(post.id)}
+                    )
+                    
+            except Exception as e:
+                messages.error(request, 'There was an error sending your message. Please try again.')
+                
+                # Create audit log for system error
+                create_audit_log(
+                    ip_address=client_ip,
+                    user_agent=user_agent,
+                    result='system_error',
+                    job=None,
+                    company_name=post.name or 'Anonymous',
+                    job_title=post.title,
+                    error_details=str(e),
+                    form_data={'contact_type': 'hire_me', 'post_id': str(post.id)}
+                )
+                
+                # Log the error
+                security_logger.error(
+                    f'Contact form error for Hire Me post {post.id} from IP: {client_ip}, '
+                    f'Error: {str(e)}, User-Agent: {user_agent}'
+                )
+        else:
+            # Create audit log for validation error
+            create_audit_log(
+                ip_address=client_ip,
+                user_agent=user_agent,
+                result='validation_error',
+                job=None,
+                company_name=post.name or 'Anonymous',
+                job_title=post.title,
+                error_details=str(form.errors),
+                form_data={'contact_type': 'hire_me', 'post_id': str(post.id)}
+            )
+            
+            # Log form validation errors
+            security_logger.warning(
+                f'Contact form validation failed for Hire Me post {post.id} from IP: {client_ip}, '
+                f'Errors: {form.errors}, User-Agent: {user_agent}'
+            )
+    else:
+        form = ContactHireMeForm()
 
     # Build breadcrumbs
     breadcrumbs = [
@@ -816,6 +914,7 @@ def hire_me_detail(request, slug):
     return render(request, 'tallinnstartups/hire_me_detail.html', {
         'post': post,
         'post_breadcrumbs': breadcrumbs,
+        'contact_form': form,
     })
 
 
