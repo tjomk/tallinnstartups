@@ -1,24 +1,29 @@
-<div class="theme-job-card">
-    <div class="flex flex-col justify-center flex-1">
-        <p class="theme-primary-text text-base font-medium leading-normal line-clamp-1">
-            {{ post.title }}
-        </p>
-        <p class="theme-secondary-text text-sm font-normal leading-normal line-clamp-1 mt-1">
-            by {% if post.name %}{{ post.name }}{% else %}Anonymous{% endif %}
-        </p>
+<div class="theme-card talent-card">
+  <div class="talent-header">
+    <h3 class="talent-title theme-primary-text">{{ post.title }}</h3>
+    <span class="talent-author theme-secondary-text">by {% if post.name %}{{ post.name }}{% else %}Anonymous{% endif %}</span>
+  </div>
+
+  <p class="talent-description theme-secondary-text">
+    {{ post.content|truncatewords:30 }}
+  </p>
+
+  <div class="talent-footer">
+    <div class="talent-meta">
         {% if post.location %}
-            <p class="theme-tertiary-text text-xs font-normal leading-normal line-clamp-1 mt-1">
-                {{ post.location }}
-            </p>
-        {% endif %}
-        {% if post.tags %}
-            <div class="flex flex-wrap gap-1 mt-2">
-                {% for tag in post.tags %}
-                    <span class="theme-tag">
-                        {{ tag }}
-                    </span>
-                {% endfor %}
-            </div>
+          <span class="talent-location">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
+            </svg>
+            {{ post.location }}
+          </span>
         {% endif %}
     </div>
+
+    <div class="talent-skills">
+        {% for tag in post.tags.all %}
+            <span class="skill-badge">{{ tag.name }}</span>
+        {% endfor %}
+    </div>
+  </div>
 </div>
