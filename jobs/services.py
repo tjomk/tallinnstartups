@@ -29,7 +29,7 @@ class HomePageService:
             formatted_latest = [self._format_job_data(job) for job in page_obj]
             
             return {
-                'categories': self._get_formatted_categories(),
+                'tags': self._get_formatted_categories(),
                 'featured_jobs': self._get_formatted_featured_jobs(),
                 'latest_jobs': formatted_latest,
                 'is_search_results': False,
@@ -56,7 +56,7 @@ class HomePageService:
         total_results = paginator.count + len(formatted_featured)
         
         return {
-            'categories': self._get_formatted_categories(),
+            'tags': self._get_formatted_categories(),
             'featured_jobs': formatted_featured,
             'latest_jobs': formatted_paginated,
             'is_search_results': True,
@@ -68,20 +68,20 @@ class HomePageService:
     def _get_formatted_categories(self) -> List[Dict[str, Any]]:
         """Get formatted category data with counts."""
         category_counts = self.job_repository.get_category_counts()
-        categories = []
+        tags = []
         
         for cat in category_counts:
             category_name = dict(Job.CATEGORY_CHOICES).get(
                 cat['category'], 
                 cat['category'].title()
             )
-            categories.append({
+            tags.append({
                 'name': category_name,
                 'count': cat['count'],
                 'url': reverse('category_jobs', kwargs={'category': cat['category']})
             })
         
-        return categories
+        return tags
     
     def _get_formatted_featured_jobs(self) -> List[Dict[str, Any]]:
         """Get formatted featured jobs data."""
@@ -120,7 +120,7 @@ class HomePageService:
             formatted_jobs = [self._format_job_data(job) for job in page_obj]
             
             return {
-                'categories': self._get_formatted_categories(),
+                'tags': self._get_formatted_categories(),
                 'featured_jobs': [],  # No featured section on jobs listing page
                 'latest_jobs': formatted_jobs,
                 'is_search_results': bool(search_query),
@@ -145,7 +145,7 @@ class HomePageService:
         return {
             'category': category,
             'category_display_name': category_display_name,
-            'categories': self._get_formatted_categories(),
+            'tags': self._get_formatted_categories(),
             'jobs': formatted_jobs,
             'total_results': paginator.count,
             'page_obj': page_obj

@@ -2,7 +2,7 @@
 
 {% block title %}{{ category_display_name }} Jobs in Estonia - {{ total_results }} Startup Opportunities{% endblock %}
 
-{% block meta_description %}Find {{ total_results }} {{ category_display_name|lower }} jobs at Estonian startups. Browse positions in Tallinn, Tartu, and across Estonia. Apply to innovative companies hiring {{ category_display_name|lower }} professionals.{% endblock %}
+{% block meta_description %}<meta name="description" content="Find {{ total_results }} {{ category_display_name|lower }} jobs at Estonian startups. Browse positions in Tallinn, Tartu, and across Estonia. Apply to innovative companies hiring {{ category_display_name|lower }} professionals.">{% endblock %}
 
 {% block meta_keywords %}<meta name="keywords" content="{{ category_display_name|lower }} jobs Estonia, {{ category_display_name|lower }} startup jobs Tallinn, Estonian {{ category_display_name|lower }} careers, {{ category_display_name|lower }} positions Estonia">{% endblock %}
 
@@ -13,40 +13,40 @@
         <div class="px-4">
             {% include 'tallinnstartups/components/breadcrumbs.html' with breadcrumbs=category_breadcrumbs %}
         </div>
-        
+
         <!-- Category Header -->
         <div class="px-4 py-6">
-            <h1 class="text-[#0d141c] text-[32px] font-bold leading-tight tracking-[-0.015em] mb-2">
+            <h1 class="theme-primary-text text-[32px] font-bold leading-tight tracking-[-0.015em] mb-2">
                 {{ category_display_name }} Jobs
             </h1>
-            <p class="text-[#49719c] text-base">
+            <p class="theme-secondary-text text-base">
                 {{ total_results }} job{{ total_results|pluralize }} found in {{ category_display_name|lower }}
             </p>
         </div>
 
         <!-- Job Categories -->
         <div class="mb-6">
-            <h2 class="text-[#0d141c] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3">Browse Other Categories</h2>
-            {% include 'tallinnstartups/components/job_categories.html' %}
+            <h2 class="theme-primary-text text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3">Browse Other Categories</h2>
+            {% include 'tallinnstartups/components/tag_cloud.html' with tags=tags %}
         </div>
 
         <!-- Jobs List -->
         {% if jobs %}
             <div class="px-4">
-                <h2 class="text-[#0d141c] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 mb-3">
+                <h2 class="theme-primary-text text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 mb-3">
                     {{ category_display_name }} Jobs
                 </h2>
-                
+
                 {% for job in jobs %}
                     {% include 'tallinnstartups/components/job_card.html' %}
                 {% endfor %}
             </div>
         {% else %}
             <div class="text-center py-8">
-                <h2 class="text-[#0d141c] text-[24px] font-bold leading-tight tracking-[-0.015em] mb-2">
+                <h2 class="theme-primary-text text-[24px] font-bold leading-tight tracking-[-0.015em] mb-2">
                     No {{ category_display_name|lower }} jobs found
                 </h2>
-                <p class="text-[#49719c] text-base mb-4">
+                <p class="theme-secondary-text text-base mb-4">
                     There are currently no jobs available in the {{ category_display_name|lower }} category.
                 </p>
                 <a href="/" class="inline-block bg-[#007bff] text-white px-6 py-2 rounded-md hover:bg-[#0056b3] transition-colors">

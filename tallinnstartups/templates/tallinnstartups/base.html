@@ -14,7 +14,7 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?display=swap&family=Sora:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Sora:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900"></noscript>
     <title>{% block title %}Estonian Startup Jobs{% endblock %}</title>
-    {% block meta_description %}<meta name="description" content="Find your dream job at Estonia's most innovative startups. Browse hundreds of tech jobs in Tallinn, Tartu, and across Estonia. Apply directly to top employers.">{% endblock %}
+    {% block meta_description %}<meta name="description" content="Discover your next career move in Estonia's vibrant startup ecosystem. Browse hundreds of jobs in engineering, marketing, and more. Apply to top startups in Tallinn, Tartu, and beyond.">{% endblock %}
     {% block meta_keywords %}<meta name="keywords" content="Estonia jobs, Tallinn startup jobs, tech jobs Estonia, Estonian companies, startup careers">{% endblock %}
     <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
 
@@ -31,7 +31,7 @@
     <!-- Open Graph Meta Tags -->
     <meta property="og:type" content="{% block og_type %}website{% endblock %}">
     <meta property="og:title" content="{% block og_title %}Estonian Startup Jobs{% endblock %}">
-    <meta property="og:description" content="{% block og_description %}Find your dream job at Estonia's most innovative startups. Browse hundreds of tech jobs in Tallinn, Tartu, and across Estonia. Apply directly to top employers.{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Discover your next career move in Estonia's vibrant startup ecosystem. Browse hundreds of jobs in engineering, marketing, and more. Apply to top startups in Tallinn, Tartu, and beyond.{% endblock %}">
     <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}">
     <meta property="og:site_name" content="Estonian Startup Jobs">
     <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/og.png' %}?version=2025-12-02{% endblock %}">
@@ -41,7 +41,7 @@
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="{% block twitter_card %}summary_large_image{% endblock %}">
     <meta name="twitter:title" content="{% block twitter_title %}Estonian Startup Jobs{% endblock %}">
-    <meta name="twitter:description" content="{% block twitter_description %}Find your dream job at Estonia's most innovative startups. Browse hundreds of tech jobs in Tallinn, Tartu, and across Estonia. Apply directly to top employers.{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Discover your next career move in Estonia's vibrant startup ecosystem. Browse hundreds of jobs in engineering, marketing, and more. Apply to top startups in Tallinn, Tartu, and beyond.{% endblock %}">
     <meta name="twitter:image" content="{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/og.png' %}?version=2025-12-02{% endblock %}">
     <meta name="twitter:image:alt" content="{% block twitter_image_alt %}Estonian Startup Jobs - Find your dream job{% endblock %}">
     <script src="https://cdn.tailwindcss.com?plugins=typography,forms,container-queries"></script>
