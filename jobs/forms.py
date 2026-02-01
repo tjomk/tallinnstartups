@@ -7,6 +7,7 @@ import bleach
 from urllib.parse import urlparse
 from .models import Job
 import re
+from django.conf import settings
 
 
 class JobSearchForm(forms.Form):
@@ -158,6 +159,11 @@ class JobSubmissionForm(forms.Form):
         initial=''
     )
     
+    def __init__(self, *args, **kwargs):
+        super(JobSubmissionForm, self).__init__(*args, **kwargs)
+        if settings.DEBUG:
+            del self.fields['captcha']
+
     def clean_job_title(self):
         job_title = self.cleaned_data.get('job_title')
         if job_title:
@@ -344,6 +350,11 @@ class CofounderSubmissionForm(forms.Form):
         initial=''
     )
 
+    def __init__(self, *args, **kwargs):
+        super(CofounderSubmissionForm, self).__init__(*args, **kwargs)
+        if settings.DEBUG:
+            del self.fields['captcha']
+
     # Reuse validation methods from JobSubmissionForm
     def clean_job_title(self):
         job_title = self.cleaned_data.get('job_title')
@@ -468,6 +479,11 @@ class ContactHireMeForm(forms.Form):
         initial=''
     )
 
+    def __init__(self, *args, **kwargs):
+        super(ContactHireMeForm, self).__init__(*args, **kwargs)
+        if settings.DEBUG:
+            del self.fields['captcha']
+
     def clean_sender_name(self):
         sender_name = self.cleaned_data.get('sender_name')
         if sender_name:
@@ -586,6 +602,11 @@ class HireMeSubmissionForm(forms.Form):
         widget=forms.HiddenInput(),
         initial=''
     )
+
+    def __init__(self, *args, **kwargs):
+        super(HireMeSubmissionForm, self).__init__(*args, **kwargs)
+        if settings.DEBUG:
+            del self.fields['captcha']
 
     def clean_title(self):
         title = self.cleaned_data.get('title')

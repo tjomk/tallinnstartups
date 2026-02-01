@@ -836,6 +836,7 @@ def hire_me_detail(request, slug):
                     )
                     
                     messages.success(request, 'Your message has been sent successfully!')
+                    form = ContactHireMeForm() # Clear the form fields after successful submission
                     
                     # Create audit log for successful contact
                     create_audit_log(
