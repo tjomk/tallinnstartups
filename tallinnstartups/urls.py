@@ -39,6 +39,7 @@ urlpatterns = [
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
     path('terms-of-service/', views.terms_of_service, name='terms_of_service'),
     path('sitemap.xml', views.sitemap_xml, name='sitemap'),
+    path('sitemap.txt', views.sitemap_xml, name='sitemap_txt'),
     path('robots.txt', lambda r: HttpResponse(
         open(settings.BASE_DIR / 'tallinnstartups' / 'static' / 'robots.txt', 'r').read(),
         content_type='text/plain'

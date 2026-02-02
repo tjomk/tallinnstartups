@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'tallinnstartups.middleware.simple_middleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -209,15 +210,27 @@ LOGGING = {
     'handlers': {
         'file_security': {
             'level': 'INFO',
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': BASE_DIR / 'logs' / 'security.log',
+            'maxBytes': 1024 * 1024 * 5,  # 5 MB
+            'backupCount': 5,
             'formatter': 'verbose',
         },
         'file_submissions': {
             'level': 'INFO',
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': BASE_DIR / 'logs' / 'job_submissions.log',
+            'maxBytes': 1024 * 1024 * 5,  # 5 MB
+            'backupCount': 5,
             'formatter': 'verbose',
+        },
+        'blacklist': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': BASE_DIR / 'logs' / 'blacklist.log',
+            'maxBytes': 1024 * 1024 * 5,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'simple',
         },
         'console': {
             'level': 'DEBUG',
@@ -233,6 +246,11 @@ LOGGING = {
         },
         'job_submissions': {
             'handlers': ['file_submissions', 'console'] if DEBUG else ['file_submissions'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'blacklist': {
+            'handlers': ['blacklist', 'console'] if DEBUG else ['blacklist'],
             'level': 'INFO',
             'propagate': False,
         },
