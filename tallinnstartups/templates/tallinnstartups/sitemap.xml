@@ -54,6 +54,62 @@
   </url>
   {% endfor %}
   
+  <!-- Blog articles -->
+  {% for article in blog_articles %}
+  <url>
+    <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'blog:article_detail' slug=article.slug %}</loc>
+    <lastmod>{{ article.updated_at|date:'Y-m-d' }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  {% endfor %}
+  
+  <!-- Blog category pages -->
+  {% for category in blog_categories %}
+  <url>
+    <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'blog:category_articles' category_slug=category.slug %}</loc>
+    <lastmod>{{ last_modified }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  {% endfor %}
+  
+  <!-- Blog listing page -->
+  <url>
+    <loc>{{ request.scheme }}://{{ request.get_host }}/guides/</loc>
+    <lastmod>{{ last_modified }}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Co-founder posts -->
+  {% for post in cofounder_posts %}
+  <url>
+    <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'job_detail' slug=post.slug %}</loc>
+    <lastmod>{{ post.updated_at|date:'Y-m-d' }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  {% endfor %}
+  
+  <!-- Hire Me posts -->
+  {% for post in hire_me_posts %}
+  <url>
+    <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'hire_me_detail' slug=post.slug %}</loc>
+    <lastmod>{{ post.updated_at|date:'Y-m-d' }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  {% endfor %}
+  
+  <!-- Hire Me listing page -->
+  <url>
+    <loc>{{ request.scheme }}://{{ request.get_host }}/hire-me/</loc>
+    <lastmod>{{ last_modified }}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
   <!-- Static pages -->
   <url>
     <loc>{{ request.scheme }}://{{ request.get_host }}/privacy-policy/</loc>

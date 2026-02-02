@@ -13,6 +13,7 @@ from django_ratelimit.decorators import ratelimit
 from jobs.services import HomePageService, CompanyService, HireMeService
 from jobs.forms import JobSubmissionForm, JobSearchForm, CofounderSubmissionForm, HireMeSubmissionForm, ContactHireMeForm
 from jobs.models import Job, Company, JobSubmissionLog, HireMePost, HireMeTag, HireMePostTag
+from blog.models import BlogArticle, BlogCategory
 from django.urls import reverse
 from django.template.loader import render_to_string
 
@@ -620,12 +621,37 @@ def sitemap_xml(request):
         expires_at__lte=timezone.now()
     ).values_list('category', flat=True).distinct()
 
+    # Get all published blog articles
+    blog_articles = BlogArticle.objects.filter(status='published')
+
+    # Get all blog categories with published articles
+    blog_categories = BlogCategory.objects.filter(articles__status='published').distinct()
+
+    # Get all visible co-founder posts (live, not expired)
+    cofounder_posts = Job.objects.filter(
+        job_type='cofounder',
+        status='live'
+    ).exclude(
+        expires_at__lte=timezone.now()
+    ).select_related('company')
+
+    # Get all visible hire-me posts (live, not expired)
+    hire_me_posts = HireMePost.objects.filter(
+        status='live'
+    ).exclude(
+        expires_at__lte=timezone.now()
+    )
+
     # Build sitemap data
     sitemap_data = {
         'jobs': jobs,
         'companies': companies,
         'job_categories': job_categories,
         'category_choices': dict(Job.CATEGORY_CHOICES),
+        'blog_articles': blog_articles,
+        'blog_categories': blog_categories,
+        'cofounder_posts': cofounder_posts,
+        'hire_me_posts': hire_me_posts,
         'request': request,
         'last_modified': timezone.now().strftime('%Y-%m-%d')
     }
