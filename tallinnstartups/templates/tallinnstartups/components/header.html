@@ -34,9 +34,24 @@
             </button>
 
             <!-- Desktop Post Job Button -->
+            <div class="split-button-container">
+                <a href="/post-job/" class="btn-primary-main">Post a Job</a>
+                <button class="btn-primary-dropdown" aria-label="More posting options" id="post-dropdown-btn">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path d="M7 10l5 5 5-5z"/></svg>
+                </button>
+                <div id="post-dropdown" class="dropdown-menu">
+                    <a href="{% url 'post_hire_me' %}" class="dropdown-item">
+                        <strong>Post Professional Profile</strong>
+                        <span>For freelancers & consultants</span>
+                    </a>
+                </div>
+            </div>
+
+            <!--
             <a href="{% url 'post_job' %}" class="hidden sm:flex items-center justify-center theme-button-primary min-w-[84px] max-w-[480px]">
                 <span class="truncate">Post a New Job</span>
             </a>
+            -->
 
             <!-- Mobile Post Job Button -->
             <a href="{% url 'post_job' %}" class="sm:hidden theme-button-primary px-3 py-2 text-sm">

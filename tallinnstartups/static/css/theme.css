@@ -1,6 +1,4 @@
-/* Estonian Startup Jobs Theme Colors - Modern Professional Design */
 :root {
-  /* Light Theme - Modern High-Contrast Palette */
   --bg-body: #f8fafc;
   --bg-card: #ffffff;
   --border-color: #e2e8f0;
@@ -115,6 +113,13 @@
   --bg-info-light: #eff6ff; /* Tailwind blue-50 */
   --border-info: #bfdbfe; /* Tailwind blue-200 */
   --text-info-dark: #1e40af; /* Tailwind blue-700 */
+
+  --dropdown-bg: #ffffff;
+  --dropdown-border: #e2e8f0;
+  --dropdown-hover: #f8fafc;
+  --dropdown-text-main: #1e293b;
+  --dropdown-text-sub: #64748b;
+  --dropdown-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 /* Dark Theme */
@@ -220,6 +225,13 @@
   --bg-info-light: #1e3a8a; /* Darker blue for dark theme */
   --border-info: #93c5fd; /* Brighter blue for dark theme border */
   --text-info-dark: #bfdbfe; /* Lighter text for dark theme */
+
+  --dropdown-bg: #1e293b; /* Matches your dark cards */
+  --dropdown-border: #334155;
+  --dropdown-hover: #334155;
+  --dropdown-text-main: #f8fafc;
+  --dropdown-text-sub: #94a3b8;
+  --dropdown-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
 }
 
 /* Base Body Styles */
@@ -431,8 +443,6 @@ body {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
 }
 
-
-
 .theme-category-badge {
   background-color: var(--bg-light);
   color: var(--text-primary);
@@ -472,6 +482,115 @@ body {
   font-weight: 700;
   letter-spacing: 0.015em;
 }
+
+/* Container to hold both parts */
+.split-button-container {
+  display: inline-flex;
+  position: relative;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* The Main Action
+  overflow: hidden;
+*/
+
+.btn-primary-main {
+  background-color: var(--primary-blue);
+  color: var(--nordic-cream);
+  padding: 0 1rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  line-height: 1.25rem;
+  letter-spacing: 0.015em;
+  display: flex;
+  cursor: pointer;
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.btn-primary-dropdown {
+  background-color: var(--primary-blue);
+  color: var(--nordic-cream);
+  border: none;
+  padding: 0 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.btn-primary-dropdown svg {
+  fill: var(--nordic-cream);
+  opacity: 0.9;
+}
+
+.btn-primary-main:hover, .btn-primary-dropdown:hover {
+  background-color: var(--primary-blue-dark);
+}
+
+/* The actual Menu */
+.dropdown-menu {
+  /*
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 240px;
+  background-color: var(--primary-blue);
+  border: 1px solid var(--color-slate-200);
+  border-radius: 8px;
+  padding: 8px;
+  display: none;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+  */
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 280px;
+  background-color: var(--dropdown-bg);
+  border: 1px solid var(--dropdown-border);
+  border-radius: 12px;
+  padding: 8px;
+  display: none;
+  flex-direction: column;
+  box-shadow: var(--dropdown-shadow);
+  z-index: 1000;
+  animation: dropdownFadeIn 0.2s ease-out;
+}
+
+.dropdown-item {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+  background: transparent;
+}
+
+.dropdown-item strong {
+  color: var(--dropdown-text-main);
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.dropdown-item span {
+  color: var(--dropdown-text-sub);
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.dropdown-item:hover {
+  background-color: var(--dropdown-hover);
+}
+
+/* end of the toggle button css */
 
 .company-logo-default {
   background-color: var(--bg-light);
@@ -817,7 +936,7 @@ body {
 /* Professional Button Styles */
 .btn-primary {
     background: var(--primary);
-    color: white;
+    color: var(--nordic-cream);
     padding: 10px 20px;
     border-radius: 6px;
     font-weight: 600;

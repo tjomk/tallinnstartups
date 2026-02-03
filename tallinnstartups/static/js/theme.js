@@ -70,4 +70,28 @@ document.addEventListener('DOMContentLoaded', function() {
             updateThemeIcons(newTheme);
         });
     }
+
+    const btn = document.getElementById('post-dropdown-btn');
+    const menu = document.getElementById('post-dropdown');
+
+    if (!btn || !menu) {
+        console.error("Dropdown elements not found! Check your IDs.");
+        return;
+    }
+
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation(); // Stop the click from immediately reaching 'window'
+
+        const isHidden = (window.getComputedStyle(menu).display === 'none');
+        menu.style.display = isHidden ? 'flex' : 'none';
+    });
+
+    // Close when clicking outside
+    window.addEventListener('click', () => {
+        if (menu.style.display === 'flex') {
+            menu.style.display = 'none';
+        }
+    });
+
 });
