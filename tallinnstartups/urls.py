@@ -48,6 +48,11 @@ urlpatterns = [
         INDEXNOW_KEY,
         content_type='text/plain'
     )),
+    # Yandex verification
+    path('yandex_804af7d126488b3d.html', lambda r: HttpResponse(
+        '<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>Verification: 804af7d126488b3d</body></html>',
+        content_type='text/html'
+    )),
     path('guides/', include('blog.urls')),
     # Hire Me feature
     path('hire-me/', views.hire_me_list, name='hire_me_list'),
