@@ -23,6 +23,14 @@ from . import views
 from jobs.api import CompaniesWithoutJobsView
 from jobs.services import INDEXNOW_KEY
 
+YANDEX_VERIFICATION_HTML = '''<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>Verification: 804af7d126488b3d</body>
+</html>
+'''
+
 urlpatterns = [
     path('_/admin/', admin.site.urls),
     path('', views.home, name='home'),
@@ -49,10 +57,7 @@ urlpatterns = [
         content_type='text/plain'
     )),
     # Yandex verification
-    path('yandex_804af7d126488b3d.html', lambda r: HttpResponse(
-        '<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>Verification: 804af7d126488b3d</body></html>',
-        content_type='text/html'
-    )),
+    path('yandex_804af7d126488b3d.html', lambda r: HttpResponse(YANDEX_VERIFICATION_HTML, content_type='text/html')),
     path('guides/', include('blog.urls')),
     # Hire Me feature
     path('hire-me/', views.hire_me_list, name='hire_me_list'),
