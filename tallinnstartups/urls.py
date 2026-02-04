@@ -23,13 +23,7 @@ from . import views
 from jobs.api import CompaniesWithoutJobsView
 from jobs.services import INDEXNOW_KEY
 
-YANDEX_VERIFICATION_HTML = '''<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    </head>
-    <body>Verification: 804af7d126488b3d</body>
-</html>
-'''
+YANDEX_VERIFICATION_HTML = open(settings.BASE_DIR / 'yandex_804af7d126488b3d.html').read()
 
 urlpatterns = [
     path('_/admin/', admin.site.urls),
