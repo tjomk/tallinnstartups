@@ -2,9 +2,13 @@
 
 {% block title %}{{ category_display_name }} Jobs in Estonia - {{ total_results }} Startup Opportunities{% endblock %}
 
-{% block meta_description %}<meta name="description" content="Find {{ total_results }} {{ category_display_name|lower }} jobs at Estonian startups. Browse positions in Tallinn, Tartu, and across Estonia. Apply to innovative companies hiring {{ category_display_name|lower }} professionals.">{% endblock %}
+{% block meta_description %}<meta name="description" content="Find {{ total_results }} {{ category_display_name|lower }} jobs at Estonian startups. Browse positions in Tallinn, Tartu, and across Estonia. Apply to innovative companies hiring {{ category_display_name|lower }} professionals.{% if page_obj.number > 1 %} - Page {{ page_obj.number }}{% endif %}">{% endblock %}
 
 {% block meta_keywords %}<meta name="keywords" content="{{ category_display_name|lower }} jobs Estonia, {{ category_display_name|lower }} startup jobs Tallinn, Estonian {{ category_display_name|lower }} careers, {{ category_display_name|lower }} positions Estonia">{% endblock %}
+
+{% block og_description %}Find {{ total_results }} {{ category_display_name|lower }} jobs at Estonian startups. Browse positions in Tallinn, Tartu, and across Estonia.{% if page_obj.number > 1 %} - Page {{ page_obj.number }}{% endif %}{% endblock %}
+
+{% block twitter_description %}Find {{ total_results }} {{ category_display_name|lower }} jobs at Estonian startups. Browse positions in Tallinn, Tartu, and across Estonia.{% if page_obj.number > 1 %} - Page {{ page_obj.number }}{% endif %}{% endblock %}
 
 {% block content %}
 <div class="px-4 sm:px-8 lg:px-40 flex flex-1 justify-center py-5">

@@ -115,7 +115,7 @@
                     {% endif %}
 
                     <div class="flex-1 min-w-0">
-                        <h1 class="text-xl font-bold text-[var(--text-primary)] leading-tight">{{ job.title }}</h1>
+                        <p class="text-xl font-bold text-[var(--text-primary)] leading-tight" aria-hidden="true">{{ job.title }}</p>
                         <p class="text-base text-[var(--text-secondary)] mt-1">
                             <a href="{% url 'company_jobs' slug=job.company.slug %}" class="theme-link">{{ job.company.name }}</a>
                         </p>

@@ -2,9 +2,13 @@
 
 {% block title %}{% if is_search_results %}{{ search_query }} Jobs - Estonian Startup Jobs{% else %}All Jobs - Browse {{ total_results|default:"Latest" }} Startup Opportunities in Estonia{% endif %}{% endblock %}
 
-{% block meta_description %}<meta name="description" content="{% if is_search_results %}Browse {{ total_results }} {{ search_query }} jobs at Estonian startups. Find opportunities in Tallinn, Tartu, and across Estonia. Apply directly to innovative companies.{% else %}Explore all {{ total_results|default:"available" }} startup jobs in Estonia. From engineering to marketing roles at top companies in Tallinn and nationwide. Start your career journey today.{% endif %}">{% endblock %}
+{% block meta_description %}<meta name="description" content="{% if is_search_results %}Browse {{ total_results }} {{ search_query }} jobs at Estonian startups. Find opportunities in Tallinn, Tartu, and across Estonia. Apply directly to innovative companies.{% else %}Explore all {{ total_results|default:"available" }} startup jobs in Estonia. From engineering to marketing roles at top companies in Tallinn and nationwide. Start your career journey today.{% endif %}{% if page_obj.number > 1 %} - Page {{ page_obj.number }}{% endif %}">{% endblock %}
 
 {% block meta_keywords %}<meta name="keywords" content="{% if is_search_results %}{{ search_query }} jobs Estonia, startup {{ search_query }} roles{% else %}all jobs Estonia, startup jobs Tallinn, Estonian job listings, career opportunities Estonia{% endif %}">{% endblock %}
+
+{% block og_description %}{% if is_search_results %}Browse {{ total_results }} {{ search_query }} jobs at Estonian startups.{% else %}Explore all {{ total_results|default:"available" }} startup jobs in Estonia. From engineering to marketing roles.{% endif %}{% if page_obj.number > 1 %} - Page {{ page_obj.number }}{% endif %}{% endblock %}
+
+{% block twitter_description %}{% if is_search_results %}Browse {{ total_results }} {{ search_query }} jobs at Estonian startups.{% else %}Explore all {{ total_results|default:"available" }} startup jobs in Estonia. From engineering to marketing roles.{% endif %}{% if page_obj.number > 1 %} - Page {{ page_obj.number }}{% endif %}{% endblock %}
 
 {% block content %}
 <div class="px-4 sm:px-8 lg:px-40 flex flex-1 justify-center py-5">

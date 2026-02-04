@@ -4,8 +4,14 @@ from django.urls import reverse
 from django.core.mail import send_mail
 from django.conf import settings
 from .repositories import JobRepository, CompanyRepository, HireMeRepository
-from .models import Job
+from .models import Job, Company
 import uuid
+import requests
+
+# IndexNow configuration
+INDEXNOW_KEY = "c81adff745fc4a74b04fa00ec204e71d"
+INDEXNOW_ENDPOINT = "https://api.indexnow.org/indexnow"
+SITE_HOST = "estonianstartupjobs.ee"
 
 
 class HomePageService:
@@ -326,3 +332,168 @@ Post URL: {settings.SITE_BASE_URL}{reverse('hire_me_detail', kwargs={'slug': pos
             # Log the error and return False
             print(f"Error sending contact email: {e}")
             return False
+
+
+class IndexNowService:
+    """
+    Service for submitting URLs to IndexNow for faster search engine indexing.
+    https://www.indexnow.org/documentation
+    """
+
+    def __init__(self, key: str = INDEXNOW_KEY, host: str = SITE_HOST):
+        self.key = key
+        self.host = host
+        self.endpoint = INDEXNOW_ENDPOINT
+
+    def _build_url(self, path: str) -> str:
+        """Build full URL from path."""
+        return f"https://{self.host}{path}"
+
+    def submit_url(self, url: str) -> dict:
+        """Submit a single URL to IndexNow."""
+        params = {
+            "url": url,
+            "key": self.key,
+        }
+
+        try:
+            response = requests.get(self.endpoint, params=params, timeout=30)
+            return {
+                "success": response.status_code in (200, 202),
+                "status_code": response.status_code,
+                "url": url,
+                "message": self._get_status_message(response.status_code),
+            }
+        except requests.RequestException as e:
+            return {
+                "success": False,
+                "status_code": None,
+                "url": url,
+                "message": str(e),
+            }
+
+    def submit_urls(self, urls: List[str]) -> dict:
+        """Submit multiple URLs to IndexNow (batch submission)."""
+        if not urls:
+            return {"success": False, "message": "No URLs provided"}
+
+        if len(urls) > 10000:
+            return {"success": False, "message": "Maximum 10,000 URLs per request"}
+
+        payload = {
+            "host": self.host,
+            "key": self.key,
+            "urlList": urls,
+        }
+
+        headers = {
+            "Content-Type": "application/json; charset=utf-8",
+        }
+
+        try:
+            response = requests.post(
+                self.endpoint,
+                json=payload,
+                headers=headers,
+                timeout=60
+            )
+            return {
+                "success": response.status_code in (200, 202),
+                "status_code": response.status_code,
+                "url_count": len(urls),
+                "message": self._get_status_message(response.status_code),
+            }
+        except requests.RequestException as e:
+            return {
+                "success": False,
+                "status_code": None,
+                "url_count": len(urls),
+                "message": str(e),
+            }
+
+    def _get_status_message(self, status_code: int) -> str:
+        """Get human-readable message for status code."""
+        messages = {
+            200: "OK - URL submitted successfully",
+            202: "Accepted - URL received, pending validation",
+            400: "Bad Request - Invalid format",
+            403: "Forbidden - Invalid key",
+            422: "Unprocessable Entity - URLs don't match host",
+            429: "Too Many Requests - Rate limited",
+        }
+        return messages.get(status_code, f"Unknown status: {status_code}")
+
+    def get_all_job_urls(self) -> List[str]:
+        """Get all live job URLs."""
+        urls = []
+        jobs = Job.objects.filter(status='live')
+
+        for job in jobs:
+            if job.slug:
+                urls.append(self._build_url(reverse('job_detail', kwargs={'slug': job.slug})))
+
+        return urls
+
+    def get_all_company_urls(self) -> List[str]:
+        """Get all company URLs (companies with live jobs)."""
+        urls = []
+        companies = Company.objects.filter(jobs__status='live').distinct()
+
+        for company in companies:
+            if company.slug:
+                urls.append(self._build_url(reverse('company_jobs', kwargs={'slug': company.slug})))
+
+        return urls
+
+    def get_all_category_urls(self) -> List[str]:
+        """Get all category URLs."""
+        urls = []
+        # Get categories that have live jobs
+        categories = Job.objects.filter(status='live').values_list('category', flat=True).distinct()
+
+        for category in categories:
+            urls.append(self._build_url(reverse('category_jobs', kwargs={'category': category})))
+
+        return urls
+
+    def get_all_blog_urls(self) -> List[str]:
+        """Get all published blog article URLs."""
+        from blog.models import BlogArticle, BlogCategory
+
+        urls = []
+
+        # Blog index
+        urls.append(self._build_url(reverse('blog:article_list')))
+
+        # Blog articles
+        articles = BlogArticle.objects.filter(status='published')
+        for article in articles:
+            if article.slug:
+                urls.append(self._build_url(reverse('blog:article_detail', kwargs={'slug': article.slug})))
+
+        # Blog categories
+        categories = BlogCategory.objects.all()
+        for category in categories:
+            if category.slug:
+                urls.append(self._build_url(reverse('blog:category_articles', kwargs={'category_slug': category.slug})))
+
+        return urls
+
+    def get_static_urls(self) -> List[str]:
+        """Get static page URLs."""
+        return [
+            self._build_url("/"),
+            self._build_url(reverse('jobs')),
+            self._build_url(reverse('companies')),
+            self._build_url(reverse('hire_me_list')),
+        ]
+
+    def get_all_urls(self) -> List[str]:
+        """Get all URLs for the site."""
+        urls = []
+        urls.extend(self.get_static_urls())
+        urls.extend(self.get_all_job_urls())
+        urls.extend(self.get_all_company_urls())
+        urls.extend(self.get_all_category_urls())
+        urls.extend(self.get_all_blog_urls())
+        return list(set(urls))  # Remove duplicates

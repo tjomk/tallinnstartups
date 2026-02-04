@@ -21,6 +21,7 @@ from django.http import HttpResponse
 
 from . import views
 from jobs.api import CompaniesWithoutJobsView
+from jobs.services import INDEXNOW_KEY
 
 urlpatterns = [
     path('_/admin/', admin.site.urls),
@@ -40,6 +41,11 @@ urlpatterns = [
     path('sitemap.txt', views.sitemap_xml, name='sitemap_txt'),
     path('robots.txt', lambda r: HttpResponse(
         open(settings.BASE_DIR / 'tallinnstartups' / 'static' / 'robots.txt', 'r').read(),
+        content_type='text/plain'
+    )),
+    # IndexNow key verification file
+    path(f'{INDEXNOW_KEY}.txt', lambda r: HttpResponse(
+        INDEXNOW_KEY,
         content_type='text/plain'
     )),
     path('guides/', include('blog.urls')),
