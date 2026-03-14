@@ -486,6 +486,67 @@ def job_detail(request, slug):
     })
 
 
+CATEGORY_INTROS = {
+    'engineering': (
+        "Estonian startups are home to world-class engineering teams building products used by millions globally. "
+        "From backend and frontend roles to DevOps, embedded systems, and AI/ML engineering, companies like Bolt, "
+        "Pipedrive, Veriff, and Wise offer challenging technical problems and competitive compensation. Most roles "
+        "are based in Tallinn or Tartu, with many offering hybrid or remote flexibility."
+    ),
+    'design': (
+        "Design-driven Estonian startups hire product designers, UX researchers, and brand designers to shape "
+        "products shipped to millions of users. Tallinn's tight-knit design community offers impactful work with "
+        "direct access to founding teams and short feedback cycles — a contrast to larger corporate environments."
+    ),
+    'marketing': (
+        "Marketing roles at Estonian startups span growth, content, performance, and brand strategy. With companies "
+        "like Bolt, Pipedrive, Modash, and Outfunnel operating at European scale, marketers get real budgets and "
+        "measurable impact from day one. Common roles include growth marketers, content leads, and performance "
+        "marketing specialists targeting European and global markets."
+    ),
+    'sales': (
+        "Estonian startups are hiring across the full sales funnel — from SDRs and account executives to sales "
+        "engineers and business development managers. Companies like Bolt, Pipedrive, Katana, Outfunnel, and "
+        "Wallester need commercially-minded professionals to drive revenue growth across European and global "
+        "markets. Most roles involve B2B sales with international scope and strong commission structures."
+    ),
+    'product': (
+        "Product managers and product owners at Estonian startups work closely with engineering and design to ship "
+        "products to millions of users. Tallinn's ecosystem offers PM roles with real ownership — short feedback "
+        "cycles and direct influence on product direction at companies like Pipedrive, Bolt, Veriff, and Katana."
+    ),
+    'operations': (
+        "Operations roles at Estonian startups cover logistics, supply chain, finance ops, and business operations. "
+        "High-growth companies like Bolt and Katana hire operations specialists to streamline processes as they "
+        "scale across dozens of markets. Roles range from junior operations coordinators to senior ops leads "
+        "managing cross-functional projects."
+    ),
+    'finance': (
+        "Finance and accounting roles at Estonian startups span controllers, FP&A analysts, compliance specialists, "
+        "and CFOs. Estonia's digital-first environment and favourable e-residency framework have concentrated "
+        "fintech talent at companies like Wise, Wallester, LHV, and Pipedrive — offering finance professionals "
+        "exposure to fast-moving, internationally regulated businesses."
+    ),
+    'hr': (
+        "People operations and HR roles at Estonian startups cover talent acquisition, HR business partnering, "
+        "and culture-building. As Estonia's startup ecosystem matures, demand is growing for recruiters, people "
+        "ops specialists, and HR managers who can scale teams quickly at high-growth companies across Tallinn "
+        "and Tartu."
+    ),
+    'customer_support': (
+        "Customer support and customer success roles at Estonian startups serve global user bases across multiple "
+        "languages. Companies like Bolt, Pipedrive, and Bob W hire multilingual support specialists and customer "
+        "success managers to help customers across Europe and beyond — often with flexible or remote working "
+        "arrangements."
+    ),
+    'other': (
+        "Estonian startups regularly hire for roles outside standard categories — from legal counsel and data "
+        "analysts to project managers and content creators. Browse all available positions across Estonia's "
+        "growing startup ecosystem in Tallinn, Tartu, and beyond."
+    ),
+}
+
+
 def category_jobs(request, category):
     """
     Category page view that displays jobs for a specific category.
@@ -494,12 +555,12 @@ def category_jobs(request, category):
     valid_categories = dict(Job.CATEGORY_CHOICES)
     if category not in valid_categories:
         raise Http404("Category not found")
-    
+
     page = request.GET.get('page', 1)
-    
+
     home_service = HomePageService()
     context = home_service.get_category_page_data(category=category, page=int(page))
-    
+
     # Add breadcrumbs
     category_display_name = valid_categories[category]
     breadcrumbs = [
@@ -508,7 +569,8 @@ def category_jobs(request, category):
         {'name': f'{category_display_name} Jobs', 'url': None}
     ]
     context['category_breadcrumbs'] = breadcrumbs
-    
+    context['category_intro'] = CATEGORY_INTROS.get(category, '')
+
     return render(request, 'tallinnstartups/category_jobs.html', context)
 
 

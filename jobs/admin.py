@@ -4,8 +4,9 @@ from .models import Company, Job, JobSubmissionLog, HireMePost, HireMeTag
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
-    list_display = ['name']
+    list_display = ['name', 'website_url']
     search_fields = ['name']
+    fields = ['name', 'description', 'logo_url', 'website_url', 'slug']
 
 
 @admin.register(Job)

@@ -23,8 +23,8 @@ def blog_article_list(request):
 
     context = {
         'articles': articles_page,
-        'page_title': 'Guides - Estonian Startup Jobs',
-        'meta_description': 'Expert guides and career advice for tech professionals in Estonia',
+        'page_title': 'Startup & Career Guides - Estonian Startup Jobs',
+        'meta_description': 'Career guides, co-working space reviews, and hiring insights for Estonia\'s startup and tech scene. Practical advice for job seekers and founders.',
     }
 
     return render(request, 'blog/article_list.html', context)
@@ -77,7 +77,7 @@ def blog_category_articles(request, category_slug):
         'category': category,
         'articles': articles_page,
         'page_title': f'{category.name} Guides - Estonian Startup Jobs',
-        'meta_description': f'Guides and articles about {category.name} in the Estonian startup ecosystem',
+        'meta_description': f'In-depth guides and practical articles about {category.name.lower()} in Estonia\'s startup and tech ecosystem. Insights for professionals and job seekers.',
     }
 
     return render(request, 'blog/category_articles.html', context)
