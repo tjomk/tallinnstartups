@@ -1,6 +1,7 @@
 {% extends 'tallinnstartups/base.html' %}
 {% load currency_filters %}
 {% load markdown_extras %}
+{% load url_filters %}
 
 {% block title %}{{ job.title }} at {{ job.company.name }} | {{ job.location }} | Estonian Startup Jobs{% endblock %}
 
@@ -238,7 +239,7 @@
                         Apply via Email
                     </a>
                 {% else %}
-                    <a href="{{ job.application_contact }}" target="_blank" rel="noopener noreferrer"
+                    <a href="{{ job.application_contact|add_utm }}" target="_blank" rel="noopener noreferrer"
                        class="btn-primary inline-block">
                         Apply Now
                     </a>

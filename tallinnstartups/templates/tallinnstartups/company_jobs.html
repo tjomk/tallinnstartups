@@ -1,4 +1,5 @@
 {% extends 'tallinnstartups/base.html' %}
+{% load url_filters %}
 
 {% block title %}{{ company.name }} Jobs & Careers - Estonian Startup Jobs{% endblock %}
 
@@ -49,7 +50,7 @@
 
             <div class="flex items-center gap-4 mb-4">
                 {% if company.website_url %}
-                <a href="{{ company.website_url }}" target="_blank" rel="noopener noreferrer"
+                <a href="{{ company.website_url|add_utm }}" target="_blank" rel="noopener noreferrer"
                    class="theme-secondary-text text-sm hover:theme-primary-text transition-colors">
                     ↗ {{ company.website_url|cut:"https://"|cut:"http://"|cut:"www." }}
                 </a>
