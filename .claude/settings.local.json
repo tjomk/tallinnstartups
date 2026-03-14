@@ -17,7 +17,8 @@
       "mcp__browsermcp__browser_navigate",
       "mcp__browsermcp__browser_click",
       "mcp__browsermcp__browser_screenshot",
-      "mcp__browsermcp__browser_wait"
+      "mcp__browsermcp__browser_wait",
+      "WebFetch(domain:upcatalyst.factorialhr.com)"
     ],
     "deny": []
   }
