@@ -1,9 +1,9 @@
-<div class="flex gap-3 px-4 py-3 flex-wrap">
+<div class="tag-cloud">
     {% for tag in tags %}
-        <div class="theme-category-badge flex h-8 shrink-0 items-center justify-center gap-x-2">
-            <p class="theme-primary-text text-sm font-medium leading-normal">
+        <div class="theme-category-badge">
+            <p class="theme-primary-text">
                 {% if tag.url %}
-                    <a href="{{ tag.url }}" class="hover:underline">
+                    <a href="{{ tag.url }}">
                         {{ tag.name }} ({{ tag.count }})
                     </a>
                 {% else %}
@@ -12,23 +12,23 @@
             </p>
         </div>
     {% empty %}
-        <div class="theme-category-badge flex h-8 shrink-0 items-center justify-center gap-x-2">
-            <p class="theme-primary-text text-sm font-medium leading-normal">Engineering (120)</p>
+        <div class="theme-category-badge">
+            <p class="theme-primary-text">Engineering (120)</p>
         </div>
-        <div class="theme-category-badge flex h-8 shrink-0 items-center justify-center gap-x-2">
-            <p class="theme-primary-text text-sm font-medium leading-normal">Marketing (85)</p>
+        <div class="theme-category-badge">
+            <p class="theme-primary-text">Marketing (85)</p>
         </div>
-        <div class="theme-category-badge flex h-8 shrink-0 items-center justify-center gap-x-2">
-            <p class="theme-primary-text text-sm font-medium leading-normal">Sales (110)</p>
+        <div class="theme-category-badge">
+            <p class="theme-primary-text">Sales (110)</p>
         </div>
-        <div class="theme-category-badge flex h-8 shrink-0 items-center justify-center gap-x-2">
-            <p class="theme-primary-text text-sm font-medium leading-normal">Product (90)</p>
+        <div class="theme-category-badge">
+            <p class="theme-primary-text">Product (90)</p>
         </div>
-        <div class="theme-category-badge flex h-8 shrink-0 items-center justify-center gap-x-2">
-            <p class="theme-primary-text text-sm font-medium leading-normal">Design (75)</p>
+        <div class="theme-category-badge">
+            <p class="theme-primary-text">Design (75)</p>
         </div>
-        <div class="theme-category-badge flex h-8 shrink-0 items-center justify-center gap-x-2">
-            <p class="theme-primary-text text-sm font-medium leading-normal">Operations (60)</p>
+        <div class="theme-category-badge">
+            <p class="theme-primary-text">Operations (60)</p>
         </div>
     {% endfor %}
 </div>

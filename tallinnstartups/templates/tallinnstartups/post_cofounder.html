@@ -7,48 +7,48 @@
 {% block meta_keywords %}<meta name="keywords" content="find co-founder Estonia, co-founder search Tallinn, Estonian startup co-founder, tech co-founder Estonia, business co-founder Estonia">{% endblock %}
 
 {% block content %}
-<div class="flex flex-1 justify-center py-5">
-    <div class="container layout-content-container flex flex-col max-w-reading-container flex-1">
-        <div class="flex flex-wrap justify-between gap-3 p-4">
-            <div class="flex min-w-72 flex-col gap-3">
-                <p class="text-main tracking-light text-[32px] font-bold leading-tight">Find a Co-founder</p>
-                <p class="text-muted text-sm font-normal leading-normal">Fill out the form below to post your co-founder search</p>
-                <div class="theme-success-box rounded-var-radius mt-2">
-                    <p class="text-sm font-medium">✓ Co-founder ads are completely free!</p>
-                    <p class="text-sm mt-1">Your submission will be reviewed and published within 24-48 hours.</p>
+<div class="page-wrapper">
+    <div class="container page-content max-w-reading-container">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem; padding: 1rem;">
+            <div style="display: flex; min-width: 18rem; flex-direction: column; gap: 0.75rem;">
+                <p class="heading-page">Find a Co-founder</p>
+                <p class="text-muted">Fill out the form below to post your co-founder search</p>
+                <div class="theme-success-box" style="border-radius: var(--radius); margin-top: 0.5rem;">
+                    <p style="font-size: 0.875rem; font-weight: 500;">✓ Co-founder ads are completely free!</p>
+                    <p style="font-size: 0.875rem; margin-top: 0.25rem;">Your submission will be reviewed and published within 24-48 hours.</p>
                 </div>
             </div>
         </div>
 
         <!-- Display form errors -->
         {% if messages %}
-            <div class="p-4">
+            <div style="padding: 1rem;">
                 {% for message in messages %}
-                    <div class="{% if message.tags == 'error' %}theme-error-box{% else %}theme-info-box{% endif %} rounded-var-radius p-4 mb-4">
+                    <div class="{% if message.tags == 'error' %}theme-error-box{% else %}theme-info-box{% endif %}" style="border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem;">
                         {{ message }}
                     </div>
                 {% endfor %}
             </div>
         {% endif %}
 
-        <form method="post" class="flex flex-col gap-8 p-4">
+        <form method="post" class="form-stack">
             {% csrf_token %}
 
             <!-- Step 1: Company Type -->
-            <div class="flex flex-col gap-4">
-                <h2 class="text-main text-[22px] font-bold leading-tight tracking-[-0.015em]">Step 1 - Company Type</h2>
-                <div class="flex flex-col gap-3">
-                    <label class="flex items-center gap-3">
-                        <input type="radio" name="company_type" value="tallinn_startup" required class="h-5 w-5 theme-radio-primary" {% if form.company_type.value == 'tallinn_startup' %}checked{% endif %}>
-                        <span class="text-main text-sm font-medium">Tallinn-based startup</span>
+            <div class="form-section">
+                <h2 class="form-step-heading">Step 1 - Company Type</h2>
+                <div class="form-radio-group">
+                    <label class="form-radio-option">
+                        <input type="radio" name="company_type" value="tallinn_startup" required class="form-radio theme-radio-primary" {% if form.company_type.value == 'tallinn_startup' %}checked{% endif %}>
+                        <span class="form-label">Tallinn-based startup</span>
                     </label>
-                    <label class="flex items-center gap-3">
-                        <input type="radio" name="company_type" value="estonia_startup" required class="h-5 w-5 theme-radio-primary" {% if form.company_type.value == 'estonia_startup' %}checked{% endif %}>
-                        <span class="text-main text-sm font-medium">Estonia-based startup</span>
+                    <label class="form-radio-option">
+                        <input type="radio" name="company_type" value="estonia_startup" required class="form-radio theme-radio-primary" {% if form.company_type.value == 'estonia_startup' %}checked{% endif %}>
+                        <span class="form-label">Estonia-based startup</span>
                     </label>
                 </div>
                 {% if form.company_type.errors %}
-                    <div class="text-danger-color text-sm mt-1">
+                    <div class="form-error">
                         {% for error in form.company_type.errors %}
                             <p>{{ error }}</p>
                         {% endfor %}
@@ -57,34 +57,34 @@
             </div>
 
             <!-- Step 2: Requirements -->
-            <div class="flex flex-col gap-4">
-                <h2 class="text-main text-[22px] font-bold leading-tight tracking-[-0.015em]">Step 2 - Requirements</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="flex flex-col gap-2">
-                        <label class="text-main text-sm font-medium">Title</label>
-                        <input type="text" name="job_title" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-var-radius text-main focus:outline-0 focus:ring-2 focus:ring-primary-soft border theme-border-light theme-input-bg focus:border-primary h-14 placeholder:text-muted p-[15px] text-base font-normal leading-normal" placeholder="e.g., Looking for Technical Co-founder" value="{{ form.job_title.value|default:'' }}">
+            <div class="form-section">
+                <h2 class="form-step-heading">Step 2 - Requirements</h2>
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label class="form-label">Title</label>
+                        <input type="text" name="job_title" required class="theme-input" placeholder="e.g., Looking for Technical Co-founder" value="{{ form.job_title.value|default:'' }}">
                         {% if form.job_title.errors %}
-                            <div class="text-danger-color text-sm mt-1">
+                            <div class="form-error">
                                 {% for error in form.job_title.errors %}
                                     <p>{{ error }}</p>
                                 {% endfor %}
                             </div>
                         {% endif %}
                     </div>
-                    <div class="flex flex-col gap-2">
-                        <label class="text-main text-sm font-medium">Company Name</label>
-                        <input type="text" name="company_name" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-var-radius text-main focus:outline-0 focus:ring-2 focus:ring-primary-soft border theme-border-light theme-input-bg focus:border-primary h-14 placeholder:text-muted p-[15px] text-base font-normal leading-normal" placeholder="e.g., Looking for Technical Co-founder" value="{{ form.company_name.value|default:'' }}">
+                    <div class="form-field">
+                        <label class="form-label">Company Name</label>
+                        <input type="text" name="company_name" required class="theme-input" placeholder="e.g., Looking for Technical Co-founder" value="{{ form.company_name.value|default:'' }}">
                         {% if form.company_name.errors %}
-                            <div class="text-danger-color text-sm mt-1">
+                            <div class="form-error">
                                 {% for error in form.company_name.errors %}
                                     <p>{{ error }}</p>
                                 {% endfor %}
                             </div>
                         {% endif %}
                     </div>
-                    <div class="flex flex-col gap-2">
-                        <label class="text-main text-sm font-medium">Category</label>
-                        <select name="job_category" required class="form-select flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-var-radius text-main focus:outline-0 focus:ring-2 focus:ring-primary-soft border theme-border-light theme-input-bg focus:border-primary h-14 placeholder:text-muted p-[15px] text-base font-normal leading-normal">
+                    <div class="form-field">
+                        <label class="form-label">Category</label>
+                        <select name="job_category" required class="theme-input">
                             <option value="">Select a category</option>
                             <option value="engineering" {% if form.job_category.value == 'engineering' %}selected{% endif %}>Engineering</option>
                             <option value="design" {% if form.job_category.value == 'design' %}selected{% endif %}>Design</option>
@@ -97,18 +97,18 @@
                             <option value="other" {% if form.job_category.value == 'other' %}selected{% endif %}>Other</option>
                         </select>
                         {% if form.job_category.errors %}
-                            <div class="text-danger-color text-sm mt-1">
+                            <div class="form-error">
                                 {% for error in form.job_category.errors %}
                                     <p>{{ error }}</p>
                                 {% endfor %}
                             </div>
                         {% endif %}
                     </div>
-                    <div class="flex flex-col gap-2">
-                        <label class="text-main text-sm font-medium">Link to Company Website</label>
-                        <input type="url" name="company_website" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-var-radius text-main focus:outline-0 focus:ring-2 focus:ring-primary-soft border theme-border-light theme-input-bg focus:border-primary h-14 placeholder:text-muted p-[15px] text-base font-normal leading-normal" placeholder="https://example.com" value="{{ form.company_website.value|default:'' }}">
+                    <div class="form-field">
+                        <label class="form-label">Link to Company Website</label>
+                        <input type="url" name="company_website" required class="theme-input" placeholder="https://example.com" value="{{ form.company_website.value|default:'' }}">
                         {% if form.company_website.errors %}
-                            <div class="text-danger-color text-sm mt-1">
+                            <div class="form-error">
                                 {% for error in form.company_website.errors %}
                                     <p>{{ error }}</p>
                                 {% endfor %}
@@ -116,22 +116,22 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="flex flex-col gap-2">
-                    <label class="text-main text-sm font-medium">Description</label>
-                    <textarea name="job_description" required rows="6" class="form-textarea flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-var-radius text-main focus:outline-0 focus:ring-2 focus:ring-primary-soft border theme-border-light theme-input-bg focus:border-primary placeholder:text-muted p-[15px] text-base font-normal leading-normal" placeholder="Describe what you're building, what skills/experience you're looking for in a co-founder, equity offered, etc.">{{ form.job_description.value|default:'' }}</textarea>
+                <div class="form-field">
+                    <label class="form-label">Description</label>
+                    <textarea name="job_description" required rows="6" class="theme-input" style="resize: none;" placeholder="Describe what you're building, what skills/experience you're looking for in a co-founder, equity offered, etc.">{{ form.job_description.value|default:'' }}</textarea>
                     {% if form.job_description.errors %}
-                        <div class="text-danger-color text-sm mt-1">
+                        <div class="form-error">
                             {% for error in form.job_description.errors %}
                                 <p>{{ error }}</p>
                             {% endfor %}
                         </div>
                     {% endif %}
                 </div>
-                <div class="flex flex-col gap-2">
-                    <label class="text-main text-sm font-medium">Email/Link for applications</label>
-                    <input type="text" name="application_contact" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-var-radius text-main focus:outline-0 focus:ring-2 focus:ring-primary-soft border theme-border-light theme-input-bg focus:border-primary h-14 placeholder:text-muted p-[15px] text-base font-normal leading-normal" placeholder="your@email.com or https://yourwebsite.com/contact" value="{{ form.application_contact.value|default:'' }}">
+                <div class="form-field">
+                    <label class="form-label">Email/Link for applications</label>
+                    <input type="text" name="application_contact" required class="theme-input" placeholder="your@email.com or https://yourwebsite.com/contact" value="{{ form.application_contact.value|default:'' }}">
                     {% if form.application_contact.errors %}
-                        <div class="text-danger-color text-sm mt-1">
+                        <div class="form-error">
                             {% for error in form.application_contact.errors %}
                                 <p>{{ error }}</p>
                             {% endfor %}
@@ -141,13 +141,13 @@
             </div>
 
             <!-- Terms and Submit -->
-            <div class="flex flex-col gap-4">
-                <label class="flex items-center gap-3">
-                    <input type="checkbox" name="terms_accepted" required class="h-5 w-5 theme-radio-primary flex-shrink-0" {% if form.terms_accepted.value %}checked{% endif %}>
-                    <span class="text-main text-sm font-medium">I agree to <a href="{% url 'terms_of_service' %}" target="_blank" class="theme-link">Terms and Conditions</a></span>
+            <div class="form-section">
+                <label class="form-radio-option">
+                    <input type="checkbox" name="terms_accepted" required class="form-checkbox theme-radio-primary" {% if form.terms_accepted.value %}checked{% endif %}>
+                    <span class="form-label">I agree to <a href="{% url 'terms_of_service' %}" target="_blank" class="theme-link">Terms and Conditions</a></span>
                 </label>
                 {% if form.terms_accepted.errors %}
-                    <div class="text-danger-color text-sm mt-1">
+                    <div class="form-error">
                         {% for error in form.terms_accepted.errors %}
                             <p>{{ error }}</p>
                         {% endfor %}
@@ -155,10 +155,10 @@
                 {% endif %}
 
                 <!-- reCAPTCHA -->
-                <div class="flex flex-col gap-2">
+                <div class="form-field">
                     {{ form.captcha }}
                     {% if form.captcha.errors %}
-                        <div class="text-danger-color text-sm mt-1">
+                        <div class="form-error">
                             {% for error in form.captcha.errors %}
                                 <p>{{ error }}</p>
                             {% endfor %}
@@ -169,8 +169,8 @@
                 <!-- Honeypot field (hidden) -->
                 {{ form.website_url }}
 
-                <button type="submit" class="theme-button-primary min-w-[84px] max-w-[480px]">
-                    <span class="truncate">Submit for Review</span>
+                <button type="submit" class="theme-button-primary" style="min-width: 84px; max-width: 480px;">
+                    <span class="text-truncate">Submit for Review</span>
                 </button>
             </div>
         </form>

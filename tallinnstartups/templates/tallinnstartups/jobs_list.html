@@ -11,30 +11,30 @@
 {% block twitter_description %}{% if is_search_results %}Browse {{ total_results }} {{ search_query }} jobs at Estonian startups.{% else %}Explore all {{ total_results|default:"available" }} startup jobs in Estonia. From engineering to marketing roles.{% endif %}{% if page_obj.number > 1 %} - Page {{ page_obj.number }}{% endif %}{% endblock %}
 
 {% block content %}
-<div class="px-4 sm:px-8 lg:px-40 flex flex-1 justify-center py-5">
-    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+<div class="page-wrapper">
+    <div class="page-content">
         <!-- Search Section -->
         <div class="search-hero">
             <div class="search-container">
-                <h1 class="theme-primary-text text-[32px] font-bold leading-tight tracking-[-0.015em] mb-2">All Jobs</h1>
-                <p class="theme-secondary-text text-base">Find your next opportunity from our latest job openings</p>
+                <h1 class="heading-page" style="margin-bottom: 0.5rem;">All Jobs</h1>
+                <p class="theme-secondary-text">Find your next opportunity from our latest job openings</p>
                 {% include 'tallinnstartups/components/search_bar.html' with placeholder="Search all jobs" large=True %}
             </div>
         </div>
 
         <!-- Search Results Header -->
         {% if is_search_results %}
-            <div class="px-4 py-3">
+            <div style="padding: 0.75rem 1rem;">
                 {% if total_results > 0 %}
-                    <h2 class="theme-primary-text text-[24px] font-bold leading-tight tracking-[-0.015em]">
+                    <h2 class="heading-section">
                         Search Results for "{{ search_query }}" ({{ total_results }} found)
                     </h2>
                 {% else %}
-                    <div class="text-center py-8">
-                        <h2 class="theme-primary-text text-[24px] font-bold leading-tight tracking-[-0.015em] mb-2">
+                    <div style="text-align: center; padding: 2rem 0;">
+                        <h2 class="heading-section" style="margin-bottom: 0.5rem;">
                             No jobs found for "{{ search_query }}"
                         </h2>
-                        <p class="theme-secondary-text text-base">
+                        <p class="theme-secondary-text">
                             Try different keywords or check the spelling.
                         </p>
                     </div>
@@ -43,8 +43,8 @@
         {% else %}
             <!-- Job Count -->
             {% if total_results %}
-                <div class="px-4 py-2">
-                    <p class="theme-secondary-text text-sm">{{ total_results }} job{{ total_results|pluralize }} available</p>
+                <div style="padding: 0.5rem 1rem;">
+                    <p class="theme-secondary-text" style="font-size: 0.875rem;">{{ total_results }} job{{ total_results|pluralize }} available</p>
                 </div>
             {% endif %}
         {% endif %}
@@ -56,11 +56,11 @@
 
         <!-- Jobs List -->
         {% if latest_jobs %}
-            <div class="px-4 py-3">
+            <div style="padding: 0.75rem 1rem;">
                 {% if is_search_results %}
-                    <h3 class="theme-primary-text text-[20px] font-bold leading-tight tracking-[-0.015em] mb-4">Results</h3>
+                    <h3 class="heading-subsection" style="margin-bottom: 1rem;">Results</h3>
                 {% else %}
-                    <h3 class="theme-primary-text text-[20px] font-bold leading-tight tracking-[-0.015em] mb-4">Latest Jobs</h3>
+                    <h3 class="heading-subsection" style="margin-bottom: 1rem;">Latest Jobs</h3>
                 {% endif %}
 
                 {% for job in latest_jobs %}
@@ -69,9 +69,9 @@
             </div>
         {% else %}
             {% if not is_search_results %}
-                <div class="text-center py-12">
-                    <h3 class="theme-primary-text text-[20px] font-bold leading-tight tracking-[-0.015em] mb-2">No jobs available</h3>
-                    <p class="theme-secondary-text text-base mb-4">Check back later for new job opportunities!</p>
+                <div style="text-align: center; padding: 3rem 0;">
+                    <h3 class="heading-subsection" style="margin-bottom: 0.5rem;">No jobs available</h3>
+                    <p class="theme-secondary-text" style="margin-bottom: 1rem;">Check back later for new job opportunities!</p>
                     <a href="{% url 'post_job' %}" class="theme-button-primary">
                         Post a Job
                     </a>

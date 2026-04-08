@@ -18,7 +18,9 @@
       "mcp__browsermcp__browser_click",
       "mcp__browsermcp__browser_screenshot",
       "mcp__browsermcp__browser_wait",
-      "WebFetch(domain:upcatalyst.factorialhr.com)"
+      "WebFetch(domain:upcatalyst.factorialhr.com)",
+      "mcp__browsermcp__browser_get_console_logs",
+      "mcp__browsermcp__browser_press_key"
     ],
     "deny": []
   }

@@ -1,33 +1,33 @@
 {% if job.slug %}
-    <a href="{% url 'job_detail' slug=job.slug %}" class="block">
+    <a href="{% url 'job_detail' slug=job.slug %}" style="display: block;">
         <div class="theme-job-card category-{{ job.category_key }}">
             {% if job.company_logo %}
                 <img src="{{ job.company_logo }}"
                      alt="{{ job.company_name }} company logo"
                      loading="lazy"
-                     class="w-12 h-12 object-contain rounded-lg theme-logo-container"
+                     class="job-card-logo theme-logo-container"
                      onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="company-logo-default aspect-square rounded-lg size-12" style="display: none;">
+                <div class="company-logo-default logo-sm" style="display: none;">
                 </div>
             {% else %}
-                <div class="company-logo-default aspect-square rounded-lg size-12"
+                <div class="company-logo-default logo-sm"
                      role="img"
                      aria-label="{{ job.company_name }} default logo">
                 </div>
             {% endif %}
-            <div class="flex flex-col justify-center flex-1 ml-4">
-                <p class="theme-primary-text text-base font-medium leading-normal line-clamp-1">
+            <div class="job-card-body">
+                <p class="job-card-title line-clamp-1">
                     {{ job.title }}
                 </p>
-                <p class="theme-secondary-text text-sm font-normal leading-normal line-clamp-2 mt-1">
+                <p class="job-card-company line-clamp-2">
                     {{ job.company_name }}
                 </p>
             </div>
             {% if job.is_featured and show_featured_tag %}
-                <div class="flex items-center justify-center">
+                <div class="job-card-featured">
                     <span class="theme-featured-tag">
-                        <span class="sm:hidden">⭐</span>
-                        <span class="hidden sm:inline">⭐ Featured</span>
+                        <span class="featured-mobile">⭐</span>
+                        <span class="featured-desktop">⭐ Featured</span>
                     </span>
                 </div>
             {% endif %}
@@ -39,28 +39,28 @@
             <img src="{{ job.company_logo }}"
                  alt="{{ job.company_name }} company logo"
                  loading="lazy"
-                 class="w-12 h-12 object-contain rounded-lg theme-logo-container"
+                 class="job-card-logo theme-logo-container"
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="company-logo-default aspect-square rounded-lg size-12"
+            <div class="company-logo-default logo-sm"
                  role="img"
                  aria-label="{{ job.company_name }} default logo">
             </div>
         {% else %}
-            <div class="company-logo-default aspect-square rounded-lg size-12"
+            <div class="company-logo-default logo-sm"
                  role="img"
                  aria-label="{{ job.company_name }} default logo">
             </div>
         {% endif %}
-        <div class="flex flex-col justify-center flex-1 ml-4">
-            <p class="theme-primary-text text-base font-medium leading-normal line-clamp-1">
+        <div class="job-card-body">
+            <p class="job-card-title line-clamp-1">
                 {{ job.title }}
             </p>
-            <p class="theme-secondary-text text-sm font-normal leading-normal line-clamp-2">
+            <p class="job-card-company line-clamp-2">
                 {{ job.company_name }}
             </p>
         </div>
         {% if job.is_featured and show_featured_tag %}
-            <div class="flex items-center justify-center">
+            <div class="job-card-featured">
                 <span class="theme-featured-tag">⭐ Featured</span>
             </div>
         {% endif %}

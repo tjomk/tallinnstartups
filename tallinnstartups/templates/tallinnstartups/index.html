@@ -76,8 +76,8 @@
 {% endblock %}
 
 {% block content %}
-<div class="px-4 sm:px-8 lg:px-40 flex flex-1 justify-center py-5">
-    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+<div class="page-wrapper">
+    <div class="page-content">
         <!-- Main Search Section -->
         <div class="search-hero">
             <div class="search-container">
@@ -89,17 +89,17 @@
 
         <!-- Search Results Header -->
         {% if is_search_results %}
-            <div class="px-4 py-3">
+            <div style="padding: 0 1rem;">
                 {% if total_results > 0 %}
-                    <h1 class="text-[#0d141c] text-[24px] font-bold leading-tight tracking-[-0.015em]">
+                    <h1 class="heading-section">
                         Search Results for "{{ search_query }}" ({{ total_results }} found)
                     </h1>
                 {% else %}
-                    <div class="text-center py-8">
-                        <h1 class="text-[#0d141c] text-[24px] font-bold leading-tight tracking-[-0.015em] mb-2">
+                    <div style="text-align: center; padding: 2rem 0;">
+                        <h1 class="heading-section" style="margin-bottom: 0.5rem;">
                             No jobs found for "{{ search_query }}"
                         </h1>
-                        <p class="text-[#49719c] text-base">
+                        <p class="theme-secondary-text">
                             Try different keywords or check the spelling. You can also browse all jobs below.
                         </p>
                     </div>
@@ -115,12 +115,12 @@
         <!-- Featured Jobs Section -->
         {% if featured_jobs %}
             {% if is_search_results %}
-                <h2 class="theme-primary-text text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 mb-3">Featured Results</h2>
+                <h2 class="heading-section" style="padding: 1.25rem 1rem 0.75rem; margin-bottom: 0.75rem;">Featured Results</h2>
             {% else %}
-                <h2 class="theme-primary-text text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 mb-3">Featured Jobs</h2>
+                <h2 class="heading-section" style="padding: 1.25rem 1rem 0.75rem; margin-bottom: 0.75rem;">Featured Jobs</h2>
             {% endif %}
 
-            <div class="px-4">
+            <div style="padding: 0 1rem;">
             {% for job in featured_jobs %}
                 {% include 'tallinnstartups/components/job_card.html' with show_featured_tag=True %}
             {% endfor %}
@@ -130,13 +130,13 @@
         <!-- Latest Jobs Section -->
         {% if latest_jobs or not is_search_results %}
             {% if is_search_results %}
-                <h2 class="theme-primary-text text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 mb-3">Latest Results</h2>
+                <h2 class="heading-section" style="padding: 1.25rem 1rem 0.75rem; margin-bottom: 0.75rem;">Latest Results</h2>
             {% else %}
-                <h2 class="theme-primary-text text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 mb-3">Latest Jobs</h2>
+                <h2 class="heading-section" style="padding: 1.25rem 1rem 0.75rem; margin-bottom: 0.75rem;">Latest Jobs</h2>
             {% endif %}
 
             {% if latest_jobs %}
-            <div class="px-4">
+            <div style="padding: 0 1rem;">
             {% for job in latest_jobs %}
                 {% include 'tallinnstartups/components/job_card.html' with show_featured_tag=False %}
             {% endfor %}

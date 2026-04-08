@@ -7,7 +7,6 @@
 
     <!-- DNS prefetch and preconnect for performance -->
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 
     <!-- Preload critical fonts -->
@@ -44,7 +43,6 @@
     <meta name="twitter:description" content="{% block twitter_description %}Discover your next career move in Estonia's vibrant startup ecosystem. Browse hundreds of jobs in engineering, marketing, and more. Apply to top startups in Tallinn, Tartu, and beyond.{% endblock %}">
     <meta name="twitter:image" content="{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/og.png' %}?version=2025-12-02{% endblock %}">
     <meta name="twitter:image:alt" content="{% block twitter_image_alt %}Estonian Startup Jobs - Find your dream job{% endblock %}">
-    <script src="https://cdn.tailwindcss.com?plugins=typography,forms,container-queries"></script>
     <link rel="stylesheet" href="{% static 'css/theme.css' %}">
     <style>
         .featured-star-inline {
@@ -70,8 +68,8 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body>
-    <div class="relative flex size-full min-h-screen flex-col theme-gradient-bg group/design-root overflow-x-hidden" style='font-family: Sora, "Noto Sans", sans-serif;'>
-        <div class="layout-container flex h-full grow flex-col">
+    <div class="body-shell theme-gradient-bg" style='font-family: Sora, "Noto Sans", sans-serif;'>
+        <div class="body-inner">
             {% include 'tallinnstartups/components/header.html' %}
 
             <main>

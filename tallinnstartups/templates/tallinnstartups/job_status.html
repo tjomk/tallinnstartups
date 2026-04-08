@@ -3,164 +3,164 @@
 {% block title %}Job Status - {{ job.title }} - Estonian Startup Jobs{% endblock %}
 
 {% block content %}
-<div class="px-4 sm:px-8 lg:px-40 flex flex-1 justify-center py-5">
-    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+<div class="page-wrapper">
+    <div class="page-content">
         <!-- Status Header -->
-        <div class="flex flex-wrap justify-between gap-3 p-4">
-            <div class="flex min-w-72 flex-col gap-3">
-                <div class="flex items-center gap-3">
-                    <div class="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-full">
-                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem; padding: 1rem;">
+            <div style="display: flex; min-width: 18rem; flex-direction: column; gap: 0.75rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div class="icon-circle-sm icon-circle-sm--blue">
+                        <svg class="icon-md" style="color: #2563eb;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
                     <div>
-                        <p class="text-[#0d151c] tracking-light text-[32px] font-bold leading-tight">Job Status Tracking</p>
-                        <p class="text-[#49719c] text-sm font-normal leading-normal">Track the progress of your job submission</p>
+                        <p class="heading-page">Job Status Tracking</p>
+                        <p class="theme-secondary-text" style="font-size: 0.875rem;">Track the progress of your job submission</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Submission Details -->
-        <div class="flex flex-col gap-6 p-4">
-            <div class="bg-slate-50 border border-slate-200 rounded-xl p-6">
-                <h2 class="text-[#0d151c] text-[22px] font-bold leading-tight tracking-[-0.015em] mb-4">Submission Details</h2>
+        <div style="display: flex; flex-direction: column; gap: 1.5rem; padding: 1rem;">
+            <div class="neutral-panel">
+                <h2 class="heading-section" style="margin-bottom: 1rem;">Submission Details</h2>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="detail-grid">
                     <div>
-                        <span class="text-[#49719c] text-sm font-medium">Job Title:</span>
-                        <p class="text-[#0d151c] text-base font-normal">{{ job.title }}</p>
+                        <span class="step-description">Job Title:</span>
+                        <p class="theme-primary-text" style="font-size: 1rem;">{{ job.title }}</p>
                     </div>
                     <div>
-                        <span class="text-[#49719c] text-sm font-medium">Company:</span>
-                        <p class="text-[#0d151c] text-base font-normal">{{ company.name }}</p>
+                        <span class="step-description">Company:</span>
+                        <p class="theme-primary-text" style="font-size: 1rem;">{{ company.name }}</p>
                     </div>
                     <div>
-                        <span class="text-[#49719c] text-sm font-medium">Current Status:</span>
-                        <p class="text-[#0d151c] text-base font-normal">
+                        <span class="step-description">Current Status:</span>
+                        <p class="theme-primary-text" style="font-size: 1rem;">
                             {% if job.status == 'in_review' %}
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                                <span class="status-badge status-badge--review">
                                     In Review
                                 </span>
                             {% elif job.status == 'rejected' %}
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                                <span class="status-badge status-badge--rejected">
                                     Rejected
                                 </span>
                             {% elif job.status == 'waiting_for_payment' %}
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-orange-100 text-orange-800">
+                                <span class="status-badge status-badge--payment">
                                     Waiting for Payment
                                 </span>
                             {% elif job.status == 'refunded' %}
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+                                <span class="status-badge status-badge--refunded">
                                     Refunded
                                 </span>
                             {% elif job.status == 'live' %}
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                <span class="status-badge status-badge--live">
                                     Live
                                 </span>
                             {% endif %}
                         </p>
                     </div>
                     <div>
-                        <span class="text-[#49719c] text-sm font-medium">Job ID:</span>
-                        <p class="text-[#0d151c] text-base font-normal">#{{ job.id }}</p>
+                        <span class="step-description">Job ID:</span>
+                        <p class="theme-primary-text" style="font-size: 1rem;">#{{ job.id }}</p>
                     </div>
                     <div>
-                        <span class="text-[#49719c] text-sm font-medium">Submitted:</span>
-                        <p class="text-[#0d151c] text-base font-normal">{{ job.created_at|date:"F j, Y" }}</p>
+                        <span class="step-description">Submitted:</span>
+                        <p class="theme-primary-text" style="font-size: 1rem;">{{ job.created_at|date:"F j, Y" }}</p>
                     </div>
                 </div>
             </div>
 
             <!-- What Happens Next - Progress Tracker -->
-            <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
-                <h3 class="text-[#0d151c] text-[18px] font-bold leading-tight tracking-[-0.015em] mb-3">What happens next?</h3>
-                <div class="space-y-3">
+            <div class="info-panel">
+                <h3 class="heading-card" style="margin-bottom: 0.75rem;">What happens next?</h3>
+                <div class="stack-y-3">
                     {% if job.status == 'in_review' %}
                         <!-- Currently in review -->
-                        <div class="flex items-start gap-3">
-                            <div class="flex items-center justify-center w-6 h-6 bg-yellow-500 rounded-full mt-0.5 animate-pulse">
-                                <span class="text-white text-sm font-bold">1</span>
+                        <div class="step-item">
+                            <div class="step-circle step-circle--yellow step-circle--active">
+                                <span class="step-circle-text">1</span>
                             </div>
                             <div>
-                                <p class="text-[#0d151c] text-sm font-medium">Review Process (In Progress)</p>
-                                <p class="text-[#49719c] text-sm">Your job posting is currently being reviewed by our team. This usually takes 24-48 hours.</p>
+                                <p class="step-label">Review Process (In Progress)</p>
+                                <p class="step-description">Your job posting is currently being reviewed by our team. This usually takes 24-48 hours.</p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-3 opacity-50">
-                            <div class="flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full mt-0.5">
-                                <span class="text-blue-600 text-sm font-bold">2</span>
+                        <div class="step-item" style="opacity: 0.5;">
+                            <div class="step-circle step-circle--blue-light">
+                                <span class="step-circle-text">2</span>
                             </div>
                             <div>
-                                <p class="text-[#0d151c] text-sm font-medium">Invoice & Payment</p>
-                                <p class="text-[#49719c] text-sm">You'll receive an invoice once your job is approved</p>
+                                <p class="step-label">Invoice & Payment</p>
+                                <p class="step-description">You'll receive an invoice once your job is approved</p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-3 opacity-50">
-                            <div class="flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full mt-0.5">
-                                <span class="text-blue-600 text-sm font-bold">3</span>
+                        <div class="step-item" style="opacity: 0.5;">
+                            <div class="step-circle step-circle--blue-light">
+                                <span class="step-circle-text">3</span>
                             </div>
                             <div>
-                                <p class="text-[#0d151c] text-sm font-medium">Go Live</p>
-                                <p class="text-[#49719c] text-sm">Once payment is confirmed, your job will be live for 90 days</p>
+                                <p class="step-label">Go Live</p>
+                                <p class="step-description">Once payment is confirmed, your job will be live for 90 days</p>
                             </div>
                         </div>
                     {% elif job.status == 'rejected' %}
                         <!-- Job was rejected -->
-                        <div class="flex items-start gap-3">
-                            <div class="flex items-center justify-center w-6 h-6 bg-red-500 rounded-full mt-0.5">
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="step-item">
+                            <div class="step-circle step-circle--red">
+                                <svg class="icon-xs" style="color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-[#0d151c] text-sm font-medium">Submission Rejected</p>
-                                <p class="text-[#49719c] text-sm">Unfortunately, your job posting did not meet our requirements. Please contact support for more information.</p>
+                                <p class="step-label">Submission Rejected</p>
+                                <p class="step-description">Unfortunately, your job posting did not meet our requirements. Please contact support for more information.</p>
                             </div>
                         </div>
                     {% elif job.status == 'waiting_for_payment' %}
                         <!-- Waiting for payment -->
-                        <div class="flex items-start gap-3">
-                            <div class="flex items-center justify-center w-6 h-6 bg-green-500 rounded-full mt-0.5">
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="step-item">
+                            <div class="step-circle step-circle--green">
+                                <svg class="icon-xs" style="color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-[#0d151c] text-sm font-medium">Review Process (Completed)</p>
-                                <p class="text-[#49719c] text-sm">Your job posting has been approved!</p>
+                                <p class="step-label">Review Process (Completed)</p>
+                                <p class="step-description">Your job posting has been approved!</p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-3">
-                            <div class="flex items-center justify-center w-6 h-6 bg-orange-500 rounded-full mt-0.5 animate-pulse">
-                                <span class="text-white text-sm font-bold">2</span>
+                        <div class="step-item">
+                            <div class="step-circle step-circle--orange step-circle--active">
+                                <span class="step-circle-text">2</span>
                             </div>
                             <div>
-                                <p class="text-[#0d151c] text-sm font-medium">Invoice & Payment (Awaiting Payment)</p>
-                                <p class="text-[#49719c] text-sm">An invoice has been sent to your email. We are awaiting payment confirmation.</p>
+                                <p class="step-label">Invoice & Payment (Awaiting Payment)</p>
+                                <p class="step-description">An invoice has been sent to your email. We are awaiting payment confirmation.</p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-3 opacity-50">
-                            <div class="flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full mt-0.5">
-                                <span class="text-blue-600 text-sm font-bold">3</span>
+                        <div class="step-item" style="opacity: 0.5;">
+                            <div class="step-circle step-circle--blue-light">
+                                <span class="step-circle-text">3</span>
                             </div>
                             <div>
-                                <p class="text-[#0d151c] text-sm font-medium">Go Live</p>
-                                <p class="text-[#49719c] text-sm">Once payment is confirmed, your job will go live for 90 days</p>
+                                <p class="step-label">Go Live</p>
+                                <p class="step-description">Once payment is confirmed, your job will go live for 90 days</p>
                             </div>
                         </div>
                     {% elif job.status == 'refunded' %}
                         <!-- Job was refunded -->
-                        <div class="flex items-start gap-3">
-                            <div class="flex items-center justify-center w-6 h-6 bg-gray-500 rounded-full mt-0.5">
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="step-item">
+                            <div class="step-circle step-circle--gray">
+                                <svg class="icon-xs" style="color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-[#0d151c] text-sm font-medium">Payment Refunded</p>
-                                <p class="text-[#49719c] text-sm">Your payment has been refunded. Please contact support for more information.</p>
+                                <p class="step-label">Payment Refunded</p>
+                                <p class="step-description">Your payment has been refunded. Please contact support for more information.</p>
                             </div>
                         </div>
                     {% endif %}
@@ -168,31 +168,31 @@
             </div>
 
             <!-- Contact Information -->
-            <div class="bg-slate-50 border border-slate-200 rounded-xl p-6">
-                <h3 class="text-[#0d151c] text-[18px] font-bold leading-tight tracking-[-0.015em] mb-3">Need Help?</h3>
-                <p class="text-[#49719c] text-sm mb-3">
+            <div class="neutral-panel">
+                <h3 class="heading-card" style="margin-bottom: 0.75rem;">Need Help?</h3>
+                <p class="step-description" style="margin-bottom: 0.75rem;">
                     If you have any questions about your submission or need to make changes, please contact our support team.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-[#49719c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="actions-row">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <svg class="icon-sm" style="color: var(--text-secondary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                         </svg>
-                        <span class="text-[#49719c] text-sm">hello@estonianstartupjobs.ee</span>
+                        <span class="step-description">hello@estonianstartupjobs.ee</span>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-[#49719c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <svg class="icon-sm" style="color: var(--text-secondary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
                         </svg>
-                        <span class="text-[#49719c] text-sm">Reference ID: #{{ job.id }}</span>
+                        <span class="step-description">Reference ID: #{{ job.id }}</span>
                     </div>
                 </div>
             </div>
 
             <!-- Action Buttons -->
-            <div class="flex flex-col sm:flex-row gap-3 pt-4">
-                <a href="{% url 'home' %}" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-sm h-12 px-5 bg-[#1980e6] text-slate-50 text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#1668c7] transition-colors">
-                    <span class="truncate">Back to Home</span>
+            <div class="actions-row" style="padding-top: 1rem;">
+                <a href="{% url 'home' %}" class="btn-action btn-action-primary">
+                    <span class="text-truncate">Back to Home</span>
                 </a>
             </div>
         </div>

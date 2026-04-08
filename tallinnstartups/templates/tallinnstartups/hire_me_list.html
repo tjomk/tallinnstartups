@@ -5,8 +5,8 @@
 {% block meta_description %}<meta name="description" content="Find skilled professionals in Estonia. Browse profiles of developers, designers, marketers, and more who are available for hire.">{% endblock %}
 
 {% block content %}
-<div class="px-4 sm:px-8 lg:px-40 flex flex-1 justify-center py-5">
-    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+<div class="page-wrapper">
+    <div class="page-content">
         <!-- Main Search Section -->
         <div class="search-hero">
             <div class="search-container">
@@ -18,17 +18,17 @@
 
         <!-- Search Results Header -->
         {% if is_search_results %}
-            <div class="px-4 py-3">
+            <div style="padding: 0 1rem; padding-top: 0.75rem; padding-bottom: 0.75rem;">
                 {% if total_results > 0 %}
-                    <h1 class="text-[#0d141c] text-[24px] font-bold leading-tight tracking-[-0.015em]">
+                    <h1 class="heading-section">
                         Search Results for "{{ search_query }}" ({{ total_results }} found)
                     </h1>
                 {% else %}
-                    <div class="text-center py-8">
-                        <h1 class="text-[#0d141c] text-[24px] font-bold leading-tight tracking-[-0.015em] mb-2">
+                    <div style="text-align: center; padding: 2rem 0;">
+                        <h1 class="heading-section" style="margin-bottom: 0.5rem;">
                             No profiles found for "{{ search_query }}"
                         </h2>
-                        <p class="text-[#49719c] text-base">
+                        <p class="theme-secondary-text">
                             Try different keywords or check the spelling.
                         </p>
                     </div>
@@ -43,20 +43,20 @@
 
         {% if posts or not is_search_results %}
             {% if is_search_results %}
-                <h2 class="theme-primary-text text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 mb-3">Search Results</h2>
+                <h2 class="heading-section" style="padding: 0 1rem; padding-bottom: 0.75rem; padding-top: 1.25rem; margin-bottom: 0.75rem;">Search Results</h2>
             {% else %}
-                <h2 class="theme-primary-text text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 mb-3">Latest Posts</h2>
+                <h2 class="heading-section" style="padding: 0 1rem; padding-bottom: 0.75rem; padding-top: 1.25rem; margin-bottom: 0.75rem;">Latest Posts</h2>
             {% endif %}
 
             {% if posts %}
-                <div class="px-4">
+                <div style="padding: 0 1rem;">
                     {% for post in posts %}
-                        <a href="{% url 'hire_me_detail' post.slug %}" class="block mb-4">
+                        <a href="{% url 'hire_me_detail' post.slug %}" style="display: block; margin-bottom: 1rem;">
                             {% include "tallinnstartups/components/hire_me_card.html" with post=post %}
                         </a>
                     {% empty %}
-                        <div class="text-center py-12">
-                            <p class="text-gray-500">No "Hire Me" posts found.</p>
+                        <div style="text-align: center; padding: 3rem 0;">
+                            <p class="text-muted">No "Hire Me" posts found.</p>
                         </div>
                     {% endfor %}
                 </div>
@@ -65,7 +65,7 @@
 
         <!-- Pagination -->
         {% if page_obj.paginator.num_pages > 1 %}
-            <div class="mt-8 px-4">
+            <div style="margin-top: 2rem; padding: 0 1rem;">
                 {% include "tallinnstartups/components/pagination.html" with page_obj=page_obj %}
             </div>
         {% endif %}

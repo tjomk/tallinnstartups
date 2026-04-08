@@ -1,12 +1,12 @@
 {% if breadcrumbs %}
-<nav aria-label="Breadcrumb" class="mb-6">
+<nav aria-label="Breadcrumb" style="margin-bottom: 1.5rem;">
     <!-- Mobile breadcrumb: Show only back to parent -->
-    <div class="block sm:hidden">
+    <div class="breadcrumb-mobile">
         {% if breadcrumbs|length > 1 %}
             {% with breadcrumbs|slice:"-2:-1"|first as parent %}
                 {% if parent.url %}
-                    <a href="{{ parent.url }}" class="inline-flex items-center text-sm text-[#1980e6] hover:text-[#1668c7] transition-colors">
-                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ parent.url }}" class="breadcrumb-back">
+                        <svg class="icon-xs" style="margin-right: 0.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                         </svg>
                         Back to {{ parent.name }}
@@ -17,19 +17,19 @@
     </div>
     
     <!-- Desktop breadcrumb: Show full trail -->
-    <div class="hidden sm:flex items-center space-x-1 text-sm text-[var(--text-secondary)]">
+    <div class="breadcrumb-desktop">
         {% for breadcrumb in breadcrumbs %}
             {% if not forloop.last %}
                 {% if breadcrumb.url %}
-                    <a href="{{ breadcrumb.url }}" class="hover:text-[#1980e6] transition-colors">{{ breadcrumb.name }}</a>
+                    <a href="{{ breadcrumb.url }}" class="breadcrumb-link">{{ breadcrumb.name }}</a>
                 {% else %}
                     <span>{{ breadcrumb.name }}</span>
                 {% endif %}
-                <svg class="w-4 h-4 text-[var(--text-secondary)] opacity-60 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="breadcrumb-separator" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                 </svg>
             {% else %}
-                <span class="text-[var(--text-primary)] font-medium">{{ breadcrumb.name }}</span>
+                <span class="breadcrumb-current">{{ breadcrumb.name }}</span>
             {% endif %}
         {% endfor %}
     </div>

@@ -19,17 +19,17 @@
 {% block content %}
 <div class="article-container">
     <!-- Breadcrumbs -->
-    <nav class="mb-6">
-        <ul class="flex items-center gap-2 text-sm breadcrumbs-no-bullets">
-            <li><a href="{% url 'blog:article_list' %}" class="theme-secondary-text hover:underline">Guides</a></li>
+    <nav style="margin-bottom: 1.5rem;">
+        <ul class="meta-row article-breadcrumbs" style="gap: 0.5rem; list-style: none; padding: 0;">
+            <li><a href="{% url 'blog:article_list' %}" class="theme-secondary-text">Guides</a></li>
             <li class="theme-secondary-text">></li>
-            <li class="theme-primary-text font-medium">{{ category.name }}</li>
+            <li class="theme-primary-text" style="font-weight: 500;">{{ category.name }}</li>
         </ul>
     </nav>
 
-    <h1 class="theme-primary-text text-3xl font-bold mb-4">{{ category.name }} Guides</h1>
+    <h1 class="heading-page" style="margin-bottom: 1rem;">{{ category.name }} Guides</h1>
     {% if category.description %}
-        <p class="theme-secondary-text text-lg mb-8">{{ category.description }}</p>
+        <p class="theme-secondary-text" style="font-size: 1.125rem; margin-bottom: 2rem;">{{ category.description }}</p>
     {% endif %}
 
     {% if articles %}
@@ -61,11 +61,11 @@
             {% endfor %}
         <!-- Pagination -->
         {% if articles.paginator.num_pages > 1 %}
-            <nav class="mt-12 flex justify-center">
-                <ul class="flex items-center gap-2">
+            <nav style="margin-top: 3rem; display: flex; justify-content: center;">
+                <ul class="meta-row" style="gap: 0.5rem; list-style: none; padding: 0;">
                     {% if articles.has_previous %}
                         <li>
-                            <a href="?page={{ articles.previous_page_number }}" class="pagination-link px-3 py-2 rounded">
+                            <a href="?page={{ articles.previous_page_number }}" class="theme-link" style="padding: 0.5rem 0.75rem; border-radius: var(--radius); text-decoration: none;">
                                 &laquo; Previous
                             </a>
                         </li>
@@ -74,18 +74,18 @@
                     {% for page_num in articles.paginator.page_range %}
                         {% if page_num == articles.number %}
                             <li>
-                                <span class="pagination-link-active px-3 py-2 rounded">{{ page_num }}</span>
+                                <span class="theme-primary-text" style="padding: 0.5rem 0.75rem; border-radius: var(--radius); font-weight: 700;">{{ page_num }}</span>
                             </li>
                         {% else %}
                             <li>
-                                <a href="?page={{ page_num }}" class="pagination-link px-3 py-2 rounded">{{ page_num }}</a>
+                                <a href="?page={{ page_num }}" class="theme-link" style="padding: 0.5rem 0.75rem; border-radius: var(--radius); text-decoration: none;">{{ page_num }}</a>
                             </li>
                         {% endif %}
                     {% endfor %}
 
                     {% if articles.has_next %}
                         <li>
-                            <a href="?page={{ articles.next_page_number }}" class="pagination-link px-3 py-2 rounded">
+                            <a href="?page={{ articles.next_page_number }}" class="theme-link" style="padding: 0.5rem 0.75rem; border-radius: var(--radius); text-decoration: none;">
                                 Next &raquo;
                             </a>
                         </li>
@@ -94,8 +94,8 @@
             </nav>
         {% endif %}
     {% else %}
-        <div class="py-12">
-            <p class="theme-secondary-text text-lg">No articles in this category yet. Check back soon!</p>
+        <div style="padding: 3rem 0;">
+            <p class="theme-secondary-text" style="font-size: 1.125rem;">No articles in this category yet. Check back soon!</p>
         </div>
     {% endif %}
 </div>

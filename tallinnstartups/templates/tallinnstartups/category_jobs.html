@@ -11,36 +11,36 @@
 {% block twitter_description %}{% if category_intro %}{{ category_intro|truncatechars:155 }}{% else %}Find {{ total_results }} {{ category_display_name|lower }} jobs at Estonian startups in Tallinn, Tartu, and across Estonia.{% endif %}{% if page_obj.number > 1 %} - Page {{ page_obj.number }}{% endif %}{% endblock %}
 
 {% block content %}
-<div class="px-4 sm:px-8 lg:px-40 flex flex-1 justify-center py-5">
-    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+<div class="page-wrapper">
+    <div class="page-content">
         <!-- Breadcrumbs -->
-        <div class="px-4">
+        <div style="padding: 0 1rem;">
             {% include 'tallinnstartups/components/breadcrumbs.html' with breadcrumbs=category_breadcrumbs %}
         </div>
 
         <!-- Category Header -->
-        <div class="px-4 py-6">
-            <h1 class="theme-primary-text text-[32px] font-bold leading-tight tracking-[-0.015em] mb-2">
+        <div style="padding: 1.5rem 1rem;">
+            <h1 class="heading-page" style="margin-bottom: 0.5rem;">
                 {{ category_display_name }} Jobs in Estonia
             </h1>
-            <p class="theme-secondary-text text-base mb-3">
+            <p class="theme-secondary-text" style="margin-bottom: 0.75rem;">
                 {{ total_results }} job{{ total_results|pluralize }} found in {{ category_display_name|lower }}
             </p>
             {% if category_intro %}
-            <p class="theme-secondary-text text-base">{{ category_intro }}</p>
+            <p class="theme-secondary-text">{{ category_intro }}</p>
             {% endif %}
         </div>
 
         <!-- Job Categories -->
-        <div class="mb-6">
-            <h2 class="theme-primary-text text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3">Browse Other Categories</h2>
+        <div style="margin-bottom: 1.5rem;">
+            <h2 class="heading-section" style="padding: 0 1rem 0.75rem;">Browse Other Categories</h2>
             {% include 'tallinnstartups/components/tag_cloud.html' with tags=tags %}
         </div>
 
         <!-- Jobs List -->
         {% if jobs %}
-            <div class="px-4">
-                <h2 class="theme-primary-text text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 mb-3">
+            <div style="padding: 0 1rem;">
+                <h2 class="heading-section" style="padding-bottom: 0.75rem; margin-bottom: 0.75rem;">
                     {{ category_display_name }} Jobs
                 </h2>
 
@@ -49,14 +49,14 @@
                 {% endfor %}
             </div>
         {% else %}
-            <div class="text-center py-8">
-                <h2 class="theme-primary-text text-[24px] font-bold leading-tight tracking-[-0.015em] mb-2">
+            <div style="text-align: center; padding: 2rem 0;">
+                <h2 class="heading-section" style="margin-bottom: 0.5rem;">
                     No {{ category_display_name|lower }} jobs found
                 </h2>
-                <p class="theme-secondary-text text-base mb-4">
+                <p class="theme-secondary-text" style="margin-bottom: 1rem;">
                     There are currently no jobs available in the {{ category_display_name|lower }} category.
                 </p>
-                <a href="/" class="inline-block bg-[#007bff] text-white px-6 py-2 rounded-md hover:bg-[#0056b3] transition-colors">
+                <a href="/" class="btn-action btn-action-primary" style="display: inline-block;">
                     Browse All Jobs
                 </a>
             </div>

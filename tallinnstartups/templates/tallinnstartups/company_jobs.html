@@ -12,29 +12,29 @@
 {% block twitter_description %}{% if company.description %}{{ company.description }}{% else %}{{ company.name }} is an Estonian startup.{% endif %} View open {{ company.name }} jobs and apply directly on Estonian Startup Jobs.{% if page_obj.number > 1 %} - Page {{ page_obj.number }}{% endif %}{% endblock %}
 
 {% block content %}
-<div class="px-4 sm:px-8 lg:px-40 flex flex-1 justify-center py-5">
-    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+<div class="page-wrapper">
+    <div class="page-content">
         <!-- Breadcrumbs -->
-        <div class="px-4">
+        <div style="padding: 0 1rem;">
             {% include 'tallinnstartups/components/breadcrumbs.html' with breadcrumbs=company_breadcrumbs %}
         </div>
 
         <!-- Header with Company Info -->
-        <div class="px-4 py-6">
-            <div class="flex items-center mb-4">
+        <div style="padding: 1.5rem 1rem;">
+            <div class="meta-row" style="margin-bottom: 1rem;">
                 {% if company.logo_url %}
-                    <div class="bg-center bg-no-repeat aspect-square bg-contain rounded-lg size-16 mr-4"
+                    <div class="company-header-logo"
                          style='background-image: url("{{ company.logo_url }}");'>
                     </div>
                 {% else %}
-                    <div class="company-logo-default aspect-square rounded-lg size-16 mr-4">
+                    <div class="company-logo-default" style="width: 4rem; height: 4rem; aspect-ratio: 1; border-radius: var(--radius); margin-right: 1rem;">
                     </div>
                 {% endif %}
                 <div>
-                    <h1 class="theme-primary-text text-[32px] font-bold leading-tight tracking-[-0.015em] mb-1">
+                    <h1 class="heading-page" style="margin-bottom: 0.25rem;">
                         {{ company.name }}
                     </h1>
-                    <p class="theme-secondary-text text-sm">
+                    <p class="theme-secondary-text" style="font-size: 0.875rem;">
                         {% if total_results > 0 %}
                             {{ total_results }} open position{{ total_results|pluralize }} available
                         {% else %}
@@ -45,17 +45,17 @@
             </div>
 
             {% if company.description %}
-            <p class="theme-secondary-text text-base mb-3">{{ company.description }}</p>
+            <p class="theme-secondary-text" style="margin-bottom: 0.75rem;">{{ company.description }}</p>
             {% endif %}
 
-            <div class="flex items-center gap-4 mb-4">
+            <div class="meta-row" style="margin-bottom: 1rem;">
                 {% if company.website_url %}
                 <a href="{{ company.website_url|add_utm }}" target="_blank" rel="noopener noreferrer"
-                   class="theme-secondary-text text-sm hover:theme-primary-text transition-colors">
+                   class="theme-link" style="font-size: 0.875rem;">
                     ↗ {{ company.website_url|cut:"https://"|cut:"http://"|cut:"www." }}
                 </a>
                 {% endif %}
-                <a href="{% url 'companies' %}" class="theme-secondary-text text-sm hover:theme-primary-text transition-colors">
+                <a href="{% url 'companies' %}" class="theme-link" style="font-size: 0.875rem;">
                     ← All companies
                 </a>
             </div>
@@ -63,8 +63,8 @@
 
         <!-- Jobs List -->
         {% if jobs %}
-            <div class="px-4 py-3">
-                <h2 class="theme-primary-text text-[22px] font-bold leading-tight tracking-[-0.015em] mb-4">
+            <div style="padding: 0.75rem 1rem;">
+                <h2 class="heading-section" style="margin-bottom: 1rem;">
                     Open Positions
                 </h2>
 
@@ -73,19 +73,19 @@
                 {% endfor %}
             </div>
         {% else %}
-            <div class="text-center py-12">
-                <h2 class="theme-primary-text text-[24px] font-bold leading-tight tracking-[-0.015em] mb-2">
+            <div style="text-align: center; padding: 3rem 0;">
+                <h2 class="heading-section" style="margin-bottom: 0.5rem;">
                     No Open Positions
                 </h2>
-                <p class="theme-secondary-text text-base mb-4">
+                <p class="theme-secondary-text" style="margin-bottom: 1rem;">
                     {{ company.name }} doesn't have any open positions at the moment. Check back later for new opportunities!
                 </p>
-                <div class="flex flex-col gap-3 justify-center">
+                <div class="actions-row" style="justify-content: center;">
                     <a href="{% url 'companies' %}" class="theme-button-secondary">
-                        <span class="truncate">Browse Other Companies</span>
+                        <span class="text-truncate">Browse Other Companies</span>
                     </a>
                     <a href="{% url 'home' %}" class="theme-button-primary">
-                        <span class="truncate">View All Jobs</span>
+                        <span class="text-truncate">View All Jobs</span>
                     </a>
                 </div>
             </div>

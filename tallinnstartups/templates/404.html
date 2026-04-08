@@ -3,41 +3,39 @@
 {% block title %}Page Not Found - Estonian Startup Jobs{% endblock %}
 
 {% block content %}
-<div class="px-4 sm:px-8 lg:px-40 flex flex-1 justify-center py-5">
-    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-        <div class="flex flex-col items-center justify-center min-h-[60vh] text-center">
+<div class="page-wrapper">
+    <div class="page-content">
+        <div class="error-page-center">
             <!-- 404 Icon -->
-            <div class="mb-8">
-                <div class="w-24 h-24 bg-[#e7edf4] rounded-full flex items-center justify-center mb-4">
-                    <span class="text-4xl">🔍</span>
+            <div style="margin-bottom: 2rem;">
+                <div class="error-icon-circle">
+                    <span style="font-size: 2.25rem;">🔍</span>
                 </div>
             </div>
-            
+
             <!-- 404 Content -->
-            <div class="max-w-md">
-                <h1 class="text-4xl font-bold text-[#0e141b] mb-4">Page Not Found</h1>
-                <p class="text-lg text-[#4e7297] mb-8 leading-relaxed">
+            <div style="max-width: 28rem;">
+                <h1 class="heading-page" style="margin-bottom: 1rem;">Page Not Found</h1>
+                <p class="theme-secondary-text" style="font-size: 1.125rem; margin-bottom: 2rem; line-height: 1.625;">
                     Sorry, we couldn't find the page you're looking for. The job listing may have expired, been removed, or the URL might be incorrect.
                 </p>
-                
+
                 <!-- Action buttons -->
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="{% url 'home' %}" 
-                       class="bg-[#1980e6] text-white px-6 py-3 rounded-sm font-medium hover:bg-[#1668c7] transition-colors">
+                <div class="actions-row" style="justify-content: center;">
+                    <a href="{% url 'home' %}" class="btn-action btn-action-primary">
                         Browse All Jobs
                     </a>
-                    <a href="{% url 'jobs' %}" 
-                       class="border border-[#dde3e8] text-[#0e141b] px-6 py-3 rounded-sm font-medium hover:bg-[#f8f9fa] transition-colors">
+                    <a href="{% url 'jobs' %}" class="btn-action btn-action-outline">
                         Search Jobs
                     </a>
                 </div>
-                
+
                 <!-- Help text -->
-                <div class="mt-8 text-sm text-[#4e7297]">
+                <div class="theme-secondary-text" style="margin-top: 2rem; font-size: 0.875rem;">
                     <p>Looking for something specific?</p>
-                    <p class="mt-1">
-                        Try our <a href="{% url 'home' %}" class="text-[#1980e6] hover:text-[#1668c7]">job search</a> 
-                        or browse by <a href="{% url 'companies' %}" class="text-[#1980e6] hover:text-[#1668c7]">company</a>.
+                    <p style="margin-top: 0.25rem;">
+                        Try our <a href="{% url 'home' %}" class="theme-link">job search</a>
+                        or browse by <a href="{% url 'companies' %}" class="theme-link">company</a>.
                     </p>
                 </div>
             </div>

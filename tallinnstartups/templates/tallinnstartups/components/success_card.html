@@ -1,18 +1,18 @@
-<div class="theme-card text-center">
-    <div class="mb-6">
-        <svg class="w-16 h-16 theme-success-icon mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<div class="theme-card" style="text-align: center;">
+    <div style="margin-bottom: 1.5rem;">
+        <svg class="theme-success-icon" style="width: 4rem; height: 4rem; margin: 0 auto;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
         </svg>
     </div>
 
-    <h1 class="text-3xl font-bold mb-4 theme-primary-text">Thank You!</h1>
+    <h1 class="heading-page theme-primary-text" style="margin-bottom: 1rem;">Thank You!</h1>
 
-    <p class="theme-secondary-text mb-6">
+    <p class="theme-secondary-text" style="margin-bottom: 1.5rem;">
         Your profile has been successfully submitted and is now under review.
     </p>
 
-    <div class="theme-bg-light rounded-lg p-4 mb-6">
-        <h3 class="font-semibold mb-2 theme-primary-text">Your Submission Details:</h3>
+    <div class="theme-bg-light" style="border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.5rem;">
+        <h3 class="theme-primary-text" style="font-weight: 600; margin-bottom: 0.5rem;">Your Submission Details:</h3>
         <p class="theme-primary-text"><strong>Title:</strong> {{ submission_data.title }}</p>
         {% if submission_data.name %}
             <p class="theme-primary-text"><strong>Name:</strong> {{ submission_data.name }}</p>
@@ -23,12 +23,12 @@
         {% endif %}
     </div>
 
-    <p class="theme-secondary-text mb-6">
+    <p class="theme-secondary-text" style="margin-bottom: 1.5rem;">
         Our team will review your submission and it will be published within 24-48 hours.
         Once approved, your profile will be visible to potential employers for 7 days.
     </p>
 
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+    <div class="actions-row" style="justify-content: center;">
         <a href="{% url 'hire_me_list' %}" class="theme-button-primary">
             Browse Hire Me Profiles
         </a>
