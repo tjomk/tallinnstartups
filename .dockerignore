@@ -1,0 +1,15 @@
+__pycache__
+*.pyc
+*.pyo
+db.sqlite3
+.git
+.gitignore
+.DS_Store
+logs/*
+*.md
+!README.md
+_bmad
+_bmad-output
+docs
+5GB.gz
+palette.png

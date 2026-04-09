@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'tallinnstartups.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.environ.get('DATABASE_PATH', BASE_DIR / 'db.sqlite3'),
     }
 }
 
@@ -122,7 +122,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'tallinnstartups' / 'static',
 ]
-STATIC_ROOT = '/home/alius/apps/startupjobs_static'
+STATIC_ROOT = os.environ.get('STATIC_ROOT', '/home/alius/apps/startupjobs_static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
