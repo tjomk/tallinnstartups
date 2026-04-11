@@ -13,6 +13,9 @@ services:
       - ${DB_DIR:-.}/db.sqlite3:/app/data/db.sqlite3
       - logs:/app/logs
       - static_files:/app/staticfiles
+    command: >
+      sh -c "python manage.py collectstatic --noinput &&
+             gunicorn tallinnstartups.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 120"
     restart: unless-stopped
 
 volumes:
