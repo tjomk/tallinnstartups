@@ -21,6 +21,7 @@ from django.http import HttpResponse
 
 from . import views
 from jobs.api import CompaniesWithoutJobsView
+from jobs.feeds import AllPostsFeed
 from jobs.services import INDEXNOW_KEY
 
 YANDEX_VERIFICATION_HTML = open(settings.BASE_DIR / 'yandex_804af7d126488b3d.html').read()
@@ -39,6 +40,7 @@ urlpatterns = [
     path('status/<uuid:job_id>/', views.job_status, name='job_status'),
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
     path('terms-of-service/', views.terms_of_service, name='terms_of_service'),
+    path('feed/', AllPostsFeed(), name='feed'),
     path('sitemap.xml', views.sitemap_xml, name='sitemap'),
     path('sitemap.txt', views.sitemap_xml, name='sitemap_txt'),
     path('robots.txt', lambda r: HttpResponse(

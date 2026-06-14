@@ -4,7 +4,9 @@ from django.urls import reverse
 from django.core.mail import send_mail
 from django.conf import settings
 from .repositories import JobRepository, CompanyRepository, HireMeRepository
-from .models import Job, Company
+from .models import Job, Company, HireMePost
+from dataclasses import dataclass, field
+from datetime import datetime
 import uuid
 import requests
 
@@ -497,3 +499,62 @@ class IndexNowService:
         urls.extend(self.get_all_category_urls())
         urls.extend(self.get_all_blog_urls())
         return list(set(urls))  # Remove duplicates
+
+
+@dataclass
+class FeedItem:
+    """Normalized representation of a single post for the RSS feed."""
+    title: str
+    description: str
+    link: str  # absolute URL
+    pubdate: datetime
+    guid: str  # absolute URL, used as a stable unique id
+    categories: List[str] = field(default_factory=list)
+
+
+class FeedService:
+    """Service that builds the combined RSS feed of all public posts."""
+
+    DEFAULT_LIMIT = 50
+
+    def __init__(self):
+        self.job_repository = JobRepository()
+        self.hire_me_repository = HireMeRepository()
+
+    def _build_url(self, path: str) -> str:
+        """Build a full absolute URL from a site-relative path."""
+        return f"{settings.SITE_BASE_URL}{path}"
+
+    def _job_to_item(self, job: Job) -> FeedItem:
+        link = self._build_url(reverse('job_detail', kwargs={'slug': job.slug}))
+        return FeedItem(
+            title=f"{job.title} at {job.company.name}",
+            description=job.description,
+            link=link,
+            pubdate=job.created_at,
+            guid=link,
+            categories=[job.get_job_type_display(), job.get_category_display()],
+        )
+
+    def _hire_me_to_item(self, post: HireMePost) -> FeedItem:
+        link = self._build_url(reverse('hire_me_detail', kwargs={'slug': post.slug}))
+        return FeedItem(
+            title=post.title,
+            description=post.description,
+            link=link,
+            pubdate=post.created_at,
+            guid=link,
+            categories=['Professional Profile'],
+        )
+
+    def get_feed_items(self, limit: int = DEFAULT_LIMIT) -> List[FeedItem]:
+        """Return all live posts (jobs, co-founder posts, profiles) as feed
+        items, newest first, capped at ``limit``."""
+        # Skip any record without a slug: reverse() would raise NoReverseMatch
+        # and take down the whole feed (slugs can be absent on bulk-imported rows).
+        items = [self._job_to_item(job) for job in self.job_repository.get_all_jobs() if job.slug]
+        items += [self._hire_me_to_item(post) for post in self.hire_me_repository.get_all_posts() if post.slug]
+        # guid (a stable absolute URL) is the secondary key so ties on pubdate
+        # are ordered deterministically rather than by source-list position.
+        items.sort(key=lambda item: (item.pubdate, item.guid), reverse=True)
+        return items[:limit]

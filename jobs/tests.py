@@ -3,8 +3,8 @@ from django.urls import reverse
 from django.core import mail
 from unittest.mock import patch, MagicMock
 from jobs.forms import ContactHireMeForm
-from jobs.models import HireMePost, HireMeTag, HireMePostTag
-from jobs.services import HireMeService
+from jobs.models import Company, Job, HireMePost, HireMeTag, HireMePostTag
+from jobs.services import HireMeService, FeedService
 from datetime import timedelta
 from django.utils import timezone
 import uuid
@@ -316,3 +316,124 @@ class HireMeDetailViewTest(TestCase):
         url = reverse('hire_me_detail', kwargs={'slug': non_live_post.slug})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
+
+
+class RssFeedTest(TestCase):
+    """Tests for the combined RSS feed at /feed/."""
+
+    def setUp(self):
+        self.client = Client()
+        self.company = Company.objects.create(name='Acme')
+
+    def _make_job(self, title, job_type='job', status='live', expires_in_days=30):
+        expires_at = None
+        if expires_in_days is not None:
+            expires_at = timezone.now() + timedelta(days=expires_in_days)
+        return Job.objects.create(
+            title=title,
+            job_type=job_type,
+            description='A description',
+            salary_range='Competitive',
+            category='engineering',
+            location='Tallinn, Estonia',
+            company=self.company,
+            application_contact='careers@acme.test',
+            status=status,
+            expires_at=expires_at,
+        )
+
+    def _make_profile(self, title, status='live', expires_in_days=30):
+        expires_at = None
+        if expires_in_days is not None:
+            expires_at = timezone.now() + timedelta(days=expires_in_days)
+        return HireMePost.objects.create(
+            title=title,
+            description='Skilled professional',
+            contact_info='me@example.com',
+            name='Jane',
+            status=status,
+            expires_at=expires_at,
+        )
+
+    def _set_created_at(self, obj, when):
+        type(obj).objects.filter(pk=obj.pk).update(created_at=when)
+
+    def test_feed_lists_all_three_post_types_newest_first(self):
+        """Jobs, co-founder posts, and profiles all appear, ordered by created_at desc."""
+        now = timezone.now()
+        job = self._make_job('Backend Engineer', job_type='job')
+        cofounder = self._make_job('Technical Co-founder', job_type='cofounder')
+        profile = self._make_profile('Senior React Developer Available')
+        # Force a deterministic ordering: profile newest, then cofounder, then job
+        self._set_created_at(job, now - timedelta(hours=3))
+        self._set_created_at(cofounder, now - timedelta(hours=2))
+        self._set_created_at(profile, now - timedelta(hours=1))
+
+        response = self.client.get(reverse('feed'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('application/rss+xml', response['Content-Type'])
+
+        body = response.content.decode()
+        self.assertIn('Backend Engineer at Acme', body)
+        self.assertIn('Technical Co-founder at Acme', body)
+        self.assertIn('Senior React Developer Available', body)
+
+        # Ordering: profile title appears before cofounder, which appears before job
+        self.assertLess(
+            body.index('Senior React Developer Available'),
+            body.index('Technical Co-founder at Acme'),
+        )
+        self.assertLess(
+            body.index('Technical Co-founder at Acme'),
+            body.index('Backend Engineer at Acme'),
+        )
+
+    def test_feed_excludes_expired_and_non_live(self):
+        """Expired or non-live posts must not appear."""
+        self._make_job('Live Job', status='live')
+        self._make_job('Draft Job', status='in_review')
+        self._make_job('Expired Job', status='live', expires_in_days=-1)
+        self._make_profile('Live Profile', status='live')
+        self._make_profile('Rejected Profile', status='rejected')
+
+        body = self.client.get(reverse('feed')).content.decode()
+        self.assertIn('Live Job at Acme', body)
+        self.assertIn('Live Profile', body)
+        self.assertNotIn('Draft Job', body)
+        self.assertNotIn('Expired Job', body)
+        self.assertNotIn('Rejected Profile', body)
+
+    def test_feed_empty_channel_is_valid(self):
+        """With no live posts the feed is a valid empty RSS channel."""
+        response = self.client.get(reverse('feed'))
+        self.assertEqual(response.status_code, 200)
+        body = response.content.decode()
+        self.assertIn('<rss', body)
+        self.assertNotIn('<item>', body)
+
+    def test_feed_caps_at_50_items(self):
+        """No more than the 50 newest items are returned."""
+        for i in range(55):
+            self._make_job(f'Job {i}')
+        items = FeedService().get_feed_items()
+        self.assertEqual(len(items), 50)
+
+    def test_feed_skips_rows_without_slug(self):
+        """A live row with an empty slug must not crash the whole feed."""
+        good = self._make_job('Good Job')
+        bad = self._make_job('Slugless Job')
+        # Simulate a bulk-imported row that bypassed save() and has no slug
+        Job.objects.filter(pk=bad.pk).update(slug='')
+
+        items = FeedService().get_feed_items()
+        titles = [item.title for item in items]
+        self.assertIn('Good Job at Acme', titles)
+        self.assertNotIn('Slugless Job at Acme', titles)
+
+    def test_feed_item_links_are_absolute(self):
+        """Item links and guids are absolute URLs rooted at SITE_BASE_URL."""
+        self._make_job('Backend Engineer')
+        items = FeedService().get_feed_items()
+        self.assertEqual(len(items), 1)
+        self.assertTrue(items[0].link.startswith('https://estonianstartupjobs.ee/job/'))
+        self.assertEqual(items[0].link, items[0].guid)

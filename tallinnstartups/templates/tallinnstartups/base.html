@@ -16,6 +16,7 @@
     {% block meta_description %}<meta name="description" content="Discover your next career move in Estonia's vibrant startup ecosystem. Browse hundreds of jobs in engineering, marketing, and more. Apply to top startups in Tallinn, Tartu, and beyond.">{% endblock %}
     {% block meta_keywords %}<meta name="keywords" content="Estonia jobs, Tallinn startup jobs, tech jobs Estonia, Estonian companies, startup careers">{% endblock %}
     <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
+    <link rel="alternate" type="application/rss+xml" title="Estonian Startup Jobs" href="{% url 'feed' %}">
 
     <!-- Favicon and App Icons -->
     <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
